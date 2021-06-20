@@ -1,0 +1,19 @@
+https://dev.to/isaachagoel/drag-and-drop-with-svelte-using-svelte-dnd-action-4554
+
+https://home.aveek.io/blog/post/electron-svelte/
+
+https://dev.to/o_a_e/getting-started-with-electron-and-svelte-2gn8
+
+https://sam.elborai.me/blog/electron-svelte-3-typescript-part-1
+
+Live reload:
+https://fireship.io/snippets/svelte-electron-setup/
+
+
+Trello
+
+
+TreeView : https://www.youtube.com/watch?v=8ZU_wOn9BWA
+Autocomplete : https://framework7.io/
+
+Design the database
