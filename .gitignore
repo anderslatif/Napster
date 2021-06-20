@@ -1,3 +1,9 @@
+todo.txt
+
+/public/build/
+
+.DS_Store
+
 # Logs
 logs
 *.log

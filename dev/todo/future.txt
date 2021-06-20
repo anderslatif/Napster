@@ -26,3 +26,4 @@ double click to open in location
 
 MaterialUI / Dark theme 
 
+https://wavesurfer-js.org/example/spectrogram/index.html
