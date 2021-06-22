@@ -1,9 +1,9 @@
 <script>
-	export let name;
+	import Playlist from "./Components/Playlist/Playlist.svelte"
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
+	<Playlist />
 </main>
 
 <style>
