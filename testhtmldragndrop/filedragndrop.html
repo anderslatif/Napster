@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #dropZone {
+            background-color: green;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="dropZone" ondrop="dropHandler(event);" ondragover="event.preventDefault();"></div>
+    
+    <script>
+        function dropHandler(event) {
+            event.preventDefault();
+            
+            if (event.dataTransfer.items) {
+                const files = Object.keys(event.dataTransfer.items).map(key => {
+                    const value = event.dataTransfer.items[key];
+                    if (value.kind === "file") {
+                        return value.getAsFile();
+                    }
+                });
+                console.log(files);
+                return files;
+            } else {
+                return event.dataTransfer.files;
+            }
+        }
+    </script>
+</body>
+</html>

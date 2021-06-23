@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .draggable {
+            /* not necessary */
+            background-color: #333;
+            padding: 1rem;
+            color: white;
+            border: 1px solid white;
+            
+            /* necessary */
+            cursor: move;
+        }
+
+        .draggable.dragging {
+            opacity: .5
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <div class="container">
+            <div class="draggable multiselect" draggable="true">1</div>
+            <div class="draggable multiselect" draggable="true">2</div>    
+            <div class="draggable" draggable="true">3</div>    
+        </div>
+
+
+        <script>
+            const draggables = document.querySelectorAll(".draggable");
+            const containers = document.querySelectorAll(".container");
+
+            draggables.forEach(draggable => {
+                
+                draggable.addEventListener("dragstart", () => {
+                    draggable.classList.add("dragging")
+                });
+
+                draggable.addEventListener("dragend", () => {
+                    draggable.classList.remove("dragging");
+                });
+
+
+            });
+
+            containers.forEach(container => {
+                container.addEventListener("dragover", (event) => {
+                    event.preventDefault();
+
+
+                    const afterElement = findAfterElememnt(container, event.clientY)
+                    const draggable = document.querySelector(".dragging");
+                    
+                    if (!afterElement) {
+                        container.appendChild(draggable);
+                    } else {
+                        container.insertBefore(draggable, afterElement);
+                    }
+
+                });
+            });
+
+            function findAfterElememnt(container, y) {
+                const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)")];
+
+                return draggableElements.reduce((accumulator, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+
+                    if (offset < 0 && offset > accumulator.offset) {
+                        return { offset: offset, element: child }
+                    } else {
+                        return accumulator;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+
+
+            }
+
+            // https://www.youtube.com/watch?v=jfYWwQrtzzY
+        </script>
+</body>
+</html>
