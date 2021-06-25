@@ -1,0 +1,5 @@
+view lyrics
+
+double click to open in location
+
+Export/Import the database option

@@ -1,0 +1,21 @@
+Database
+https://stackoverflow.com/a/60600475
+https://github.com/kripken/sql.js/
+
+
+
+Github Releases
+
+https://stackoverflow.com/questions/37784164/how-to-add-custom-menu-in-menubar-in-mac-with-electron
+
+
+
+Use API to Output Album info
+
+MaterialUI / Dark theme 
+
+https://wavesurfer-js.org/example/spectrogram/index.html
+
+Building a distribution
+https://blog.morethan.io/getting-started-with-electron-and-svelte-7387cae9fe4f?gi=11d643bb26f2
+https://www.electronforge.io/
