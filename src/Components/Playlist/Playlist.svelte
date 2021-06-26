@@ -1,45 +1,57 @@
 <script>
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
   import Howler from "howler";
+  import { getSongTitle } from "../../utils/songutils.js";
+  import PlaylistColumn from "./SubComponents/PlaylistColumn.svelte";
+  import Song from "./SubComponents/Song.svelte";
+  import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
 
+  export let playlistName;
+  
   let songs = [
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
   ];
+  let currentlyPlayingIndex = 0;
   let sound;
 
-  function handleFileUpload(files) {
-    const filesWithId = files.map((file, index) => { return {file, id: index }});
-    songs = songs.concat(filesWithId);
-  }
+  async function handleFileUpload(files) {
+    const filesWithMetaData = await files.map(async (file, index) => {
+      const title = getSongTitle(file.name);
 
-  function handleSelectSong(event) {
-    const foundSong = songs.find(song => song.id === Number(event.target.id));
-    playSong(foundSong);
-  }
+      // todo get metadata
 
-  function playSong(song) {
-    sound?.stop();
-    sound = new Howler.Howl({
-      src: song.file.path,
-      html5: true
+      console.log(title);
+      
+      if (!title) { /* todo handle invalid files uploaded */ }
+      return {
+        file,
+        title,
+        type: title ? "song" : "video",
+        id: index 
+      }
     });
-
-    sound.play();
+    Promise.all(filesWithMetaData).then((filesReady) => {
+      songs = songs.concat(filesReady);
+    });
   }
 
 
 </script>
 
 <main>
-  <FileUpload class="file-upload" onFileUpload={handleFileUpload}>
-    {#each songs as song, i}
-      <div  id="{song.id}" class="song-container song-container-{i % 2}"
-            on:click={handleSelectSong}
-            draggable="true"
-      >
-        {song.file.name}
-      </div>
-    {/each}
-  </FileUpload>
+  <PlaylistBar playlistName={playlistName} />
+  <table class="playlist-table">
+    <PlaylistColumn />
+    <FileUpload onFileUpload={handleFileUpload}>
+      {#each songs as song, i}
+          <Song song={song} index={i} />
+      {/each}
+    </FileUpload>
+  </table>
+
 
 </main>
 
@@ -48,14 +60,7 @@
       height: 90vh;
     }
 
-    .song-container {
-      border:black;
-      user-select: none;
-    }
-    .song-container-0 {
-      background-color: rgb(191, 190, 190);
-    }
-    .song-container-1 {
-      background-color: grey;
+    .playlist-table {
+      width: 100%;
     }
 </style>
