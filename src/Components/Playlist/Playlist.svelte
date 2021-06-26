@@ -1,44 +1,61 @@
 <script>
-import { prevent_default } from "svelte/internal";
+  import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
+  import Howler from "howler";
 
-    const onFileUploaded = (event) => {
-        console.log("onFileUploaded", event);
-    }
+  let songs = [
+  ];
+  let sound;
+
+  function handleFileUpload(files) {
+    const filesWithId = files.map((file, index) => { return {file, id: index }});
+    songs = songs.concat(filesWithId);
+  }
+
+  function handleSelectSong(event) {
+    const foundSong = songs.find(song => song.id === Number(event.target.id));
+    playSong(foundSong);
+  }
+
+  function playSong(song) {
+    sound?.stop();
+    sound = new Howler.Howl({
+      src: song.file.path,
+      html5: true
+    });
+
+    sound.play();
+  }
+
+
 </script>
 
 <main>
-    <label 
-        id="dropzone"
-        on:dragstart|preventDefault={() => {
-            console.log("start")
-        }}
-        on:drag|preventDefault={onFileUploaded}
-        on:dragenter="{() => document.getElementById("dropzone").classList.toggle("hoovering")}"
-    >
-        <input 
-            type="file" 
-            multiple=true 
-            on:input={onFileUploaded(getFilesFromInputEvent)} />
-        <h1>Drop your files here</h1>
-    </label>
+  <FileUpload class="file-upload" onFileUpload={handleFileUpload}>
+    {#each songs as song, i}
+      <div  id="{song.id}" class="song-container song-container-{i % 2}"
+            on:click={handleSelectSong}
+            draggable="true"
+      >
+        {song.file.name}
+      </div>
+    {/each}
+  </FileUpload>
+
 </main>
 
 <style>
-  .dropzone {
-    height: 300px;
-    background: #fdfdfd;
-    border-radius: 5px;
-    border: 2px dashed #ff3e00;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 300ms ease-out;
-  }
-/*   .dropzone.hoovering {
-    border: 2px solid #ff3e00;
-    background: rgba(255, 62, 0, 0.05);
-  } */
-  label:hover {
-    cursor: pointer;
-  }
+    main {
+      height: 90vh;
+    }
+
+    .song-container {
+      border:black;
+      user-select: none;
+    }
+    .song-container-0 {
+      background-color: rgb(191, 190, 190);
+    }
+    .song-container-1 {
+      background-color: grey;
+    }
 </style>
