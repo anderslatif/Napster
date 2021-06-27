@@ -1,32 +1,62 @@
-export function initializeHowl() {
+import Howler from "howler";
 
-}
+let sound;
+let currentPlaylist;
+let currentlyPlayingIndex = 0;
 
-export function playHowlerSong() {
-    
-}
+export function playSong(song, playlist, playlistIndex) { 
+  if (!song) return;
+  
+  currentPlaylist = playlist;
+  currentlyPlayingIndex = playlistIndex || currentlyPlayingIndex;
 
+  document.querySelectorAll(".isPlaying").forEach(selected => {
+    selected.classList.remove("isPlaying");
+  });
+  document.getElementById(song.id).classList.add("isPlaying");
 
+  sound?.stop();
 
-
-function playSong(song) {
-    sound?.stop();
-    sound = new Howler.Howl({
-      src: song.file.path,
-      html5: true,
-      onended: () => {
-        currentlyPlayingIndex += 1;
-        // todo see what happens if the playlist has been played through
-        playSong(songs[currentlyPlayingIndex]);
+  sound = new Howler.Howl({
+    src: song.file.path,
+    html5: true,
+    onend: () => {
+      currentlyPlayingIndex += 1;
+      if (currentlyPlayingIndex <= playlist.songs.length) {
+        playSong(playlist.songs[currentlyPlayingIndex], playlist);
       }
-    });
+    }
+  });
 
-/*     setInterval(() => {
+  /*setInterval(() => {
       if (sound.playing()) {
     let width = (sound.seek()/sound.duration())/100;
   }
-},300); */
+  },300); */
 
+  sound;
 
-sound.play();
+  return sound;
 }
+
+export function playOrPauseSong(song, playlist) {
+  if (!sound) {
+    playSong(song, playlist);
+    // if song is defined then it starts playing otherwise not 
+    return song || false;
+  }
+
+  if (sound.playing()) {
+    sound.pause();
+  } else {
+    sound.play();
+  }
+  
+  return sound.playing();
+}
+
+export function stopSong() {
+  sound?.stop();
+}
+
+

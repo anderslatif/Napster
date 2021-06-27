@@ -5,6 +5,7 @@
   import Song from "./SubComponents/Song.svelte";
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import { guid } from "../../utils/generalutils.js";
+  import { playlists } from "../../store.js";
 
   export let songs;
   export let playlistName;
@@ -25,7 +26,7 @@
       }
     });
     Promise.all(filesWithMetaData).then((filesReady) => {
-      songs = songs.concat(filesReady);
+      playlists.updatePlaylistSongs(playlistName, songs.concat(filesReady));
     });
   }
 

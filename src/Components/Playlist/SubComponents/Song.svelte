@@ -2,8 +2,8 @@
   import { findAfterElement } from "../../../utils/draggableutils";
   import { songs } from '../../../store.js';
 
-  export let playlistName;
   export let song;
+  export let playlistName;
   export let index;
 
   function handleClick(event) {
@@ -24,8 +24,7 @@
   }
 
   function handleDoubleClick(event) {
-    const songId = event.target.parentNode.id;
-    songs.playSong(songId, playlistName);
+    songs.playSong(song, playlistName);
   }
 
   function handleDragStart(event) {
@@ -89,6 +88,7 @@
         <td id="song-title">{song.title}</td>
         <td id="song-artist">Artist</td>
         <td id="song-album">Album</td>
+        <td id="song-length">Length</td>
   </tr>
 </main>
 
@@ -96,7 +96,6 @@
     .song-container {
       border:black;
       cursor: move;
-      user-select: none;
       color: white;
       font-size: 0.75em;
     }
@@ -120,6 +119,15 @@
     }
     
     #song-album {
-      width: 30vw;
+      width: 25vw;
+    }
+
+    #song-length {
+      width: 5vw;
+    }
+
+    .isPlaying {
+      text-decoration: underline;
+      
     }
 </style>

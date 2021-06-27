@@ -11,6 +11,8 @@
         }
     }
 
+    // https://github.com/Aveek-Saha/DuskPlayer/blob/master/src/App.svelte#L96
+
     function dropHandler(event) {
         event.preventDefault();
 
