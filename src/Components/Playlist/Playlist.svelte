@@ -46,9 +46,11 @@
   <table class="playlist-table">
     <PlaylistColumn />
     <FileUpload onFileUpload={handleFileUpload}>
-      {#each songs as song, i}
-          <Song song={song} index={i} />
-      {/each}
+      <div id="song-container">
+        {#each songs as song, i}
+            <Song song={song} index={i} />
+        {/each}
+      </div>
     </FileUpload>
   </table>
 

@@ -3,13 +3,17 @@
 
     function dropHandler(event) {
         event.preventDefault();
+
+        // handle not dropping files but drag and dropping songs already in playlist
+        if (!event.dataTransfer.files) return;
+
         // todo handle dropping folders
-        const files = event.dataTransfer.files.length
-        ? [...event.dataTransfer.files]
-        : event.dataTransfer.items
-            .filter(({ kind }) => kind === "file")
-            .map(({ getAsFile }) => getAsFile());
-        onFileUpload(files);
+        // const files = event.dataTransfer.files.length
+        // ? [...event.dataTransfer.files]
+        // : event.dataTransfer.items
+        //     .filter(({ kind }) => kind === "file")
+        //     .map(({ getAsFile }) => getAsFile());
+        // onFileUpload(files);
     }
 </script>
   

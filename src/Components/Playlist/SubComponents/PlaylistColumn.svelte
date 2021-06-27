@@ -8,7 +8,7 @@
 
 <style>
     .column {
-        color: white;
+        color: rgb(67, 67, 67);
     }
 
     #column-title {

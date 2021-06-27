@@ -33,7 +33,6 @@
             <div id="4" class="draggable" draggable="true">4</div>    
         </div>
 
-        // todo handle up arrow and down arrow key events in the playlist
 
         <script>
             const draggables = document.querySelectorAll(".draggable");
@@ -66,7 +65,7 @@
                     event.preventDefault();
 
 
-                    const afterElement = findAfterElememnt(container, event.clientY)
+                    const afterElement = findAfterElement(container, event.clientY)
                     const draggables = document.querySelectorAll(".selected");
                     const draggable = document.querySelector(".dragging");
                     
@@ -90,7 +89,7 @@
                 });
             });
             // todo select when dragging 
-            function findAfterElememnt(container, y) {
+            function findAfterElement(container, y) {
                 const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)")];
 
                 return draggableElements.reduce((accumulator, child) => {

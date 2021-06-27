@@ -4,6 +4,8 @@ const url = require('url')
 
 const isDev = require('electron-is-dev');
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
 // If in development use electron-reload to watch for
 // changes in the current directory
 if (isDev) {
