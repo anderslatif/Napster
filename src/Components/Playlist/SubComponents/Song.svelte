@@ -1,31 +1,31 @@
 <script>
-    import { findAfterElement } from "../../../utils/draggableutils";
+  import { findAfterElement } from "../../../utils/draggableutils";
+  import { songs } from '../../../store.js';
 
-    export let song;
-    export let index;
+  export let playlistName;
+  export let song;
+  export let index;
 
-    function handleClick(event) {
-      const rowNode = event.target.parentNode;
+  function handleClick(event) {
+    const rowNode = event.target.parentNode;
 
-      if (event.shiftKey) {
-        console.log("shift key pressed while clicking")
-      } else if (event.ctrlKey || event.metaKey) {
-        rowNode.classList.toggle("selected");
-      } else {
-        // deselect all selections
-        document.querySelectorAll(".selected").forEach(selected => {
-            selected.classList.toggle("selected");
-        });
-        // select the clicked item
-        rowNode.classList.toggle("selected");
-      }
+    if (event.shiftKey) {
+      console.log("shift key pressed while clicking")
+    } else if (event.ctrlKey || event.metaKey) {
+      rowNode.classList.toggle("selected");
+    } else {
+      // deselect all selections
+      document.querySelectorAll(".selected").forEach(selected => {
+          selected.classList.toggle("selected");
+      });
+      // select the clicked item
+      rowNode.classList.toggle("selected");
+    }
   }
 
-  function handleDoubleClick() {
-    // todo play song
-        // const foundIndex = songs.findIndex(song => song.id === Number(event.target.id));
-    // currentlyPlayingIndex = foundIndex;
-    // playSong(songs[foundIndex]);
+  function handleDoubleClick(event) {
+    const songId = event.target.parentNode.id;
+    songs.playSong(songId, playlistName);
   }
 
   function handleDragStart(event) {
@@ -35,11 +35,10 @@
     // deselect others if the dragged item is not selected yet another group is already selected
     if (!draggingRow.classList.contains("selected")) {
       document.querySelectorAll(".selected").forEach(selected => {
-        selected.classList.toggle("selected");
+        selected.classList.remove("selected");
       });
-      draggingRow.classList.toggle("selected");
     }
-
+    draggingRow.classList.add("selected");
   }
 
   function handleDragOver(event) {
@@ -48,7 +47,11 @@
     const draggables = document.querySelectorAll(".selected");
     const draggable = document.querySelector(".dragging");
 
-    
+    // not dragging a dom element but dropping a file
+    if (!draggable) {
+      return;
+    }
+
     if (draggables.length > 0) {
         draggables.forEach(drag => {
             if (!afterElement) {
@@ -67,7 +70,7 @@
   }
 
   function handleDragEnd(event) {
-    const draggingRow = event. target;
+    const draggingRow = event.target;
     draggingRow.classList.remove("dragging");
   }
 
@@ -95,6 +98,7 @@
       cursor: move;
       user-select: none;
       color: white;
+      font-size: 0.75em;
     }
     .song-container-0 {
       background-color: #3a3a3a;

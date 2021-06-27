@@ -42,7 +42,7 @@
                 
                 // todo reinitialize draggable to get the correct order
                 draggable.addEventListener("dragstart", () => {
-                    draggable.classList.add("dragging")
+                    draggable.classList.add("dragging");
 
                     // deselect others if the dragged item is not selected yet another group is already selected
                     if (!draggable.classList.contains("selected")) {
@@ -109,33 +109,7 @@
                 draggable.addEventListener("click", (event) => {
 
                     if (event.shiftKey) {
-                        // fixme this is definitely wrong
-                        // todo https://stackoverflow.com/questions/2959887/algorithm-for-shift-clicking-items-in-a-collection-to-select-them
-                        let foundFirstSelected = false;
-                        let foundLastSelected = false;
-                        // draggables maintains their original order which is wrong
-                        draggables.forEach(drag => {
-                            if (foundFirstSelected && !foundLastSelected) {
-                                console.log(drag, drag.classList, drag.classList.contains("selected"));
-                                if (drag.classList.contains("selected")) {
-                                    foundLastSelected = true;
-                                } else if (drag.id === event.target.id) {
-                                    foundLastSelected = true;
-                                } else {
-                                    drag.classList.toggle("selected");
-                                }
-                            } else {
-                                if (drag.classList.contains("selected")) {
-                                    foundFirstSelected = true;
-                                }
-                            }
-
-                        });
-                        if (!foundFirstSelected) {
-                            draggables.reverse().forEach(drag => {
-
-                            });
-                        }
+                    
                     } else if (event.ctrlKey || event.metaKey) {
                         event.target.classList.toggle("selected");
                     } else {

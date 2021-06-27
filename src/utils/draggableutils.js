@@ -1,8 +1,8 @@
 export function findAfterElement(container, y) {
     // get the elements not being dragged with :not so ass to calculate the closest element
-    const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)")];
+    const notDraggedElements = [...container.querySelectorAll(".draggable:not(.dragging)")];
 
-    return draggableElements.reduce((accumulator, child) => {
+    return notDraggedElements.reduce((accumulator, child) => {
         const box = child.getBoundingClientRect();
         // how far away the mouse (y) is from the center of the box 
         const offset = y - box.top - box.height / 2;

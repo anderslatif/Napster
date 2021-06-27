@@ -8,7 +8,7 @@
 <main>
 	<ControlBar />
 	{#each $playlists as playlist }
-		<Playlist playlistName={playlist.name} />
+		<Playlist playlistName={playlist.name} songs={playlist.songs} />
 	{/each}
 </main>
 
