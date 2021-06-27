@@ -1,10 +1,8 @@
-https://dev.to/isaachagoel/drag-and-drop-with-svelte-using-svelte-dnd-action-4554
+https://wavesurfer-js.org/example/spectrogram/index.html
 
-https://github.com/isaacHagoel/svelte-dnd-action/tree/master/src
-https://github.com/kyythane/svelte-reactive-dnd
 
+https://github.com/Aveek-Saha/DuskPlayer/blob/master/src/App.svelte
 
 TreeView : https://www.youtube.com/watch?v=8ZU_wOn9BWA
-Autocomplete : https://framework7.io/
 
 Design the database

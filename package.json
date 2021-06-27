@@ -1,5 +1,5 @@
 {
-  "name": "svelte-app",
+  "name": "Napster",
   "version": "1.0.0",
   "private": true,
   "main": "main.js",
@@ -26,6 +26,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "howler": "^2.2.1"
+    "howler": "^2.2.1",
+    "music-metadata": "^7.8.7",
+    "wavesurfer.js": "^5.1.0"
   }
 }

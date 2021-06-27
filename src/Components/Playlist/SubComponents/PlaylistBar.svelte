@@ -3,5 +3,5 @@
 </script>
 
 <main>
-    <div>{playlistName}</div>
+    <div>Playlist name: {playlistName}</div>
 </main>

@@ -1,13 +1,13 @@
 <script>
 	import Playlist from "./Components/Playlist/Playlist.svelte"
 	import ControlBar from "./Components/ControlBar/ControlBar.svelte"
-
-	const playlists = [{ name: "default" }];
+	import { playlists } from './store.js';
+	
 </script>
 
 <main>
 	<ControlBar />
-	{#each playlists as playlist }
+	{#each $playlists as playlist }
 		<Playlist playlistName={playlist.name} />
 	{/each}
 </main>

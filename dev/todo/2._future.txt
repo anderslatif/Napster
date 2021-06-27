@@ -14,7 +14,6 @@ Use API to Output Album info
 
 MaterialUI / Dark theme 
 
-https://wavesurfer-js.org/example/spectrogram/index.html
 
 Building a distribution
 https://blog.morethan.io/getting-started-with-electron-and-svelte-7387cae9fe4f?gi=11d643bb26f2
