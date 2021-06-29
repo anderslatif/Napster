@@ -4,9 +4,7 @@ import { playSong, playOrPauseSong, stopSong } from "./howler.js";
 function songHandler() {
     const songState = {
         currentPlaylist: "default",
-        isPlaying: false,
         sound: undefined,
-        durationString: undefined
     };
     const { subscribe, set, update } = writable(songState);
 
@@ -23,9 +21,7 @@ function songHandler() {
             update(songState => { 
                 return { 
                     ...songState, 
-                    isPlaying: true, 
                     sound,
-                    durationString: nextSong.metadata.common.durationString 
                 }; 
             });
         },
@@ -35,9 +31,9 @@ function songHandler() {
             const song = playlist.songs[0];
 
 
-            const isPlaying = playOrPauseSong(song, playlist);
+            playOrPauseSong(song, playlist);
 
-            update(songState => { return { ...songState, isPlaying } })
+            update(songState => { return { ...songState } })
         },
         stopSong: stopSong()
     }

@@ -4,11 +4,15 @@ let sound;
 let currentPlaylist;
 let currentlyPlayingIndex = 0;
 
+export function getSound() {
+  return sound;
+}
+
 export function playSong(song, playlist, playlistIndex) { 
   if (!song) return;
   
   currentPlaylist = playlist;
-  currentlyPlayingIndex = playlistIndex || currentlyPlayingIndex;
+  currentlyPlayingIndex = playlistIndex || playlistIndex === 0 ? playlistIndex : currentlyPlayingIndex;
 
   document.querySelectorAll(".isPlaying").forEach(selected => {
     selected.classList.remove("isPlaying");

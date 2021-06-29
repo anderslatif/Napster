@@ -106,7 +106,7 @@
       background-color: #3a3a3a;
     }
     .song-container-1 {
-      background-color: #282828;
+      background-color: #303030;
     }
 
     .selected {

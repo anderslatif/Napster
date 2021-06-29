@@ -1,14 +1,18 @@
 <script>
     import WaveSurfer from "./SubComponents/WaveSurfer.svelte";
     import { song } from "../../store.js";
+    import { getSound } from "../../howler.js";
     import { convertSecondsToTimeString } from "../../utils/songutils.js";
 
+    let sound = getSound();
+    let soundPlaying = false;
+
     let totalTime = 0;
+    let totalTimeString = "0:00";
     let currentTime = 0;
     let currentTimeString = "0:00";
 
     function handleProgressBarClick(event) {
-        const sound = $song.sound;
 
         if (sound) {
             const goToSeconds = Number(event.target.value);
@@ -20,12 +24,14 @@
     }
 
     setInterval(() => {
-        const sound = $song.sound;
-
-        if (sound && sound.playing()) {
+        sound = getSound();
+        soundPlaying = sound?.playing();
+        
+        if (soundPlaying) {
             currentTime = Math.floor(sound.seek());
             currentTimeString = convertSecondsToTimeString(currentTime);
             totalTime = Math.floor(sound.duration());
+            totalTimeString = convertSecondsToTimeString(totalTime);
         }
     }, 1000); // todo lower it when production ready
 
@@ -37,7 +43,7 @@
         <div id="progress-bar-container">
             <div id="label-container">
                 <label id="progress-bar-label-currentTime" class="progress-bar-label" for="progress-bar">{currentTimeString}</label>
-                <label id="progress-bar-label-totalTime" class="progress-bar-label"  for="progress-bar">{$song.durationString || "0:00"}</label>
+                <label id="progress-bar-label-totalTime" class="progress-bar-label"  for="progress-bar">{totalTimeString}</label>
             </div>
             <input type="range" id="progress-bar" 
                 min={0} max={totalTime} value={currentTime}
@@ -46,9 +52,9 @@
         </div>
     </div>
     <div id="control-button-container">
-        <button class="control-button {$song.isPlaying ? "control-button-paused" : "control-button-playing"}" 
+        <button class="control-button {soundPlaying ? "control-button-paused" : "control-button-playing"}" 
             on:click={() => song.playOrPauseSong()}>
-            { $song.isPlaying ? "❚❚" : "▶" }
+            { soundPlaying ? "❚❚" : "▶" }
         </button>
     </div>
 </main>
@@ -64,7 +70,7 @@
 
     #progress-bar-container{
         margin-right: 1em;
-        width: 85vw;
+        width: 80vw;
     }
 
     .progress-bar-label {
