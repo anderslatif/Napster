@@ -5,7 +5,8 @@ function songHandler() {
     const songState = {
         currentPlaylist: "default",
         isPlaying: false,
-        sound: undefined
+        sound: undefined,
+        durationString: undefined
     };
     const { subscribe, set, update } = writable(songState);
 
@@ -19,7 +20,14 @@ function songHandler() {
                     
             const sound = playSong(nextSong, playlist, playlistIndex);
 
-            update(songState => { return { ...songState, isPlaying: true, sound } })
+            update(songState => { 
+                return { 
+                    ...songState, 
+                    isPlaying: true, 
+                    sound,
+                    durationString: nextSong.metadata.common.durationString 
+                }; 
+            });
         },
         playOrPauseSong: (playlistName = "default") => {
 
@@ -71,7 +79,7 @@ export function getPlaylistByName(playlistName) {
     return $playlists.find(playlist => playlist.name === playlistName);
 }
 
-export const songs = songHandler();
+export const song = songHandler();
 export const playlists = playlistHandler();
 
 

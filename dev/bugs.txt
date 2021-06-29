@@ -1,0 +1,3 @@
+create a generic draggable component
+
+when drag and dropping push the new state to the store and see if the component rerenders (rows are colored correctly)

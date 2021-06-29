@@ -4,6 +4,7 @@
         <th id="column-artist" class="column">Artist</th>
         <th id="column-album" class="column">Album</th>
         <th id="column-length" class="column">Length</th>
+        <th id="column-year" class="column">Year</th>
     </tr>
 </main>
 
@@ -14,7 +15,7 @@
     }
 
     #column-title {
-      width: 50vw;
+      width: 40vw;
     }
 
     #column-artist {
@@ -22,10 +23,14 @@
     }
     
     #column-album {
-      width: 25vw;
+      width: 30vw;
     }
 
     #column-length {
+      width: 5vw;
+    }
+
+    #column-year {
       width: 5vw;
     }
 </style>

@@ -1,10 +1,12 @@
 <script>
   import { findAfterElement } from "../../../utils/draggableutils";
-  import { songs } from '../../../store.js';
-
+  import { song as sound } from '../../../store.js';
+    
   export let song;
   export let playlistName;
   export let index;
+  const { artist, album, year, durationString } = song.metadata.common;
+
 
   function handleClick(event) {
     const rowNode = event.target.parentNode;
@@ -24,7 +26,7 @@
   }
 
   function handleDoubleClick(event) {
-    songs.playSong(song, playlistName);
+    sound.playSong(song, playlistName);
   }
 
   function handleDragStart(event) {
@@ -86,9 +88,10 @@
         draggable="true"
     >
         <td id="song-title">{song.title}</td>
-        <td id="song-artist">Artist</td>
-        <td id="song-album">Album</td>
-        <td id="song-length">Length</td>
+        <td id="song-artist">{artist}</td>
+        <td id="song-album">{album}</td>
+        <td id="song-length">{durationString}</td>
+        <td id="song-year">{year}</td>
   </tr>
 </main>
 
@@ -111,7 +114,7 @@
     }
 
     #song-title {
-      width: 50vw;
+      width: 40vw;
     }
 
     #song-artist {
@@ -119,10 +122,14 @@
     }
     
     #song-album {
-      width: 25vw;
+      width: 30vw;
     }
 
     #song-length {
+      width: 5vw;
+    }
+
+    #song-year {
       width: 5vw;
     }
 

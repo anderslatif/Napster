@@ -1,2 +1,5 @@
 Create a mobile app
 http://photonkit.com/
+
+consider the following for greater security:
+https://www.electronjs.org/docs/api/context-bridge

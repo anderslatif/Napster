@@ -28,13 +28,7 @@ export function playSong(song, playlist, playlistIndex) {
     }
   });
 
-  /*setInterval(() => {
-      if (sound.playing()) {
-    let width = (sound.seek()/sound.duration())/100;
-  }
-  },300); */
-
-  sound;
+  sound.play();
 
   return sound;
 }

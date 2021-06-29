@@ -1,8 +1,8 @@
 <script>
 	import Playlist from "./Components/Playlist/Playlist.svelte"
 	import ControlBar from "./Components/ControlBar/ControlBar.svelte"
-	import { songs, playlists } from './store.js';
-	
+	import { song, playlists } from './store.js';
+
 	function handleKeydown(event) {
 		if (event.key === "backspace") {
 			// todo handle delete selected songs
@@ -10,7 +10,7 @@
 			// playlists.deleteSongs();
 		}
 		if (event.code === "Space") {
-			songs.playOrPauseSong();
+			song.playOrPauseSong();
 		}
 	}
 </script>
@@ -26,7 +26,7 @@
 
 <style>
 	main {
-		padding: 0;
+		padding: 0.8em;
 		margin: 0 auto;
 		user-select: none;
 	}

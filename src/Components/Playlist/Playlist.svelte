@@ -6,23 +6,34 @@
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import { guid } from "../../utils/generalutils.js";
   import { playlists } from "../../store.js";
+  import { convertSecondsToTimeString } from "../../utils/songutils.js";
+ 
+	const mm = require('music-metadata');
 
   export let songs;
   export let playlistName;
+
 
 
   async function handleFileUpload(files) {
     const filesWithMetaData = await files.map(async (file, index) => {
       const songTitle = getSongTitle(file.name);
 
-      // todo get metadata
+      const metadata = await mm.parseFile(file.path);
       
-      if (!songTitle) { /* todo handle invalid files uploaded */ }
+       
+      const { duration } = metadata.format;
+      const durationString = convertSecondsToTimeString(duration);
+      metadata.common.duration = duration;
+      metadata.common.durationString = durationString;
+      
+      if (!songTitle) { /* handle invalid files uploaded */ }
       return {
         id: guid(), 
-        file,
         title: songTitle,
         type: songTitle ? "audio" : "video",
+        file,
+        metadata
       }
     });
     Promise.all(filesWithMetaData).then((filesReady) => {

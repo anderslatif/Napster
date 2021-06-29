@@ -17,12 +17,16 @@ if (isDev) {
 function createWindow() {
     // Create the browser window with node integration
     const win = new BrowserWindow({
-        width: 800,
+        width: 1000,
         height: 600,
+        // icon: __dirname + "./public/napster_logo.jpg",
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            // enableRemoteModule: true,
+            // backgroundThrottling: false
         }
-    })
+    });
 
     win.loadURL(
         url.format({
@@ -46,5 +50,5 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
+    app.quit()
 })
