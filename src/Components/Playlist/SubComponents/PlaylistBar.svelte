@@ -2,9 +2,7 @@
     export let playlistName;
 </script>
 
-<main>
-    <div id="playlist-bar">Playlist name: {playlistName}</div>
-</main>
+<div id="playlist-bar">Playlist name: {playlistName}</div>
 
 <style>
     #playlist-bar {

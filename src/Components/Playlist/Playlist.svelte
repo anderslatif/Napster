@@ -2,11 +2,12 @@
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
   import { getSongTitle } from "../../utils/songutils.js";
   import PlaylistColumn from "./SubComponents/PlaylistColumn.svelte";
-  import Song from "./SubComponents/Song.svelte";
+  import Song from "../Song/Song.svelte";
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import { guid } from "../../utils/generalutils.js";
   import { playlists } from "../../store.js";
   import { convertSecondsToTimeString } from "../../utils/songutils.js";
+  import DragAndDropItem from "../../GenericComponents/DragAndDropItem/DragAndDropItem.svelte";
  
 	const mm = require('music-metadata');
 
@@ -41,31 +42,48 @@
     });
   }
 
+  function handleOrderChange(newIdList) {
+    const allPlaylists = $playlists;
+    const playlistIndex = allPlaylists.findIndex(playlist => playlist.name === playlistName);
+    allPlaylists[playlistIndex].songs.sort((a, b) => {
+      return newIdList.indexOf(a) - newIdList.indexOf(b);
+    });
+    console.log("new playlist", allPlaylists[playlistIndex].songs);
+
+  }
 
 </script>
 
-<main>
+<div class="playlist">
   <PlaylistBar playlistName={playlistName} />
   <table class="playlist-table">
-    <PlaylistColumn />
     <FileUpload onFileUpload={handleFileUpload}>
+      <PlaylistColumn />
       <div id="song-container">
         {#each songs as song, i}
-            <Song song={song} index={i} playlistName={playlistName} />
+          <DragAndDropItem id={song.id} index={i} surroundingDivId={"song-container"} onOrderChange={handleOrderChange}>
+            <Song song={song} playlistName={playlistName} />
+          </DragAndDropItem>
         {/each}
       </div>
     </FileUpload>
+
   </table>
+</div>
 
-
-</main>
 
 <style>
-    main {
-      height: 90vh;
-    }
+  .playlist {
+    height: 90vh;
+  }
 
-    .playlist-table {
-      width: 100%;
-    }
+  .playlist-table {
+    width: 100%;
+  }
+
+  #song-container {
+    height: 88vh;
+  }
+
+
 </style>

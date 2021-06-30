@@ -1,12 +1,10 @@
-<main>
-    <tr>
-        <th id="column-title" class="column">Title</th>
-        <th id="column-artist" class="column">Artist</th>
-        <th id="column-album" class="column">Album</th>
-        <th id="column-length" class="column">Length</th>
-        <th id="column-year" class="column">Year</th>
-    </tr>
-</main>
+<tr>
+    <th id="column-title" class="column">Title</th>
+    <th id="column-artist" class="column">Artist</th>
+    <th id="column-album" class="column">Album</th>
+    <th id="column-length" class="column">Length</th>
+    <th id="column-year" class="column">Year</th>
+</tr>
 
 <style>
     .column {

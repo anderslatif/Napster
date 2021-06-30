@@ -37,7 +37,7 @@
 
 </script>
 
-<main>
+<div id="control-bar">
     <div id="control-progress-container">
         <!--     <WaveSurfer id="wavesurfer-container" /> -->    
         <div id="progress-bar-container">
@@ -57,10 +57,10 @@
             { soundPlaying ? "❚❚" : "▶" }
         </button>
     </div>
-</main>
+</div>
 
 <style>
-    main {
+    #control-bar {
         height: 10vh;
         width: 100vw;
         display: flex;
@@ -109,10 +109,13 @@
     }
 
     @media (max-width: 640px) {
-		main {
+		#control-bar {
 			flex-wrap: nowrap;
             margin-bottom: 2em;
 		}
+        .control-button {
+            width: 100%;
+        }
 	}
 
 </style>

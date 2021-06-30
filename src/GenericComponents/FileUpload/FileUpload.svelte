@@ -33,19 +33,11 @@
         }
     }
 </script>
-  
-<main>
-    <div 
-        id="dropZone"
-        on:dragover|preventDefault={handleDragOver}
-        on:drop|preventDefault={dropHandler}
-    >
-        <slot></slot>
-    </div>
-</main>
 
-<style>
-    #dropZone {
-      min-height: 88vh;
-    }
-</style>
+<div 
+    id="dropZone"
+    on:dragover|preventDefault={handleDragOver}
+    on:drop|preventDefault={dropHandler}
+>
+    <slot></slot>
+</div>

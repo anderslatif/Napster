@@ -3,6 +3,8 @@ https://stackoverflow.com/a/60600475
 https://github.com/kripken/sql.js/
 
 
+scroll on mouse wheel
+
 
 Github Releases
 

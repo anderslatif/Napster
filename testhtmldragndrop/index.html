@@ -44,6 +44,8 @@
                 draggable.addEventListener("dragstart", () => {
                     draggable.classList.add("dragging");
 
+                    console.log(draggable.classList);
+
                     // deselect others if the dragged item is not selected yet another group is already selected
                     if (!draggable.classList.contains("selected")) {
                         document.querySelectorAll(".selected").forEach(selected => {

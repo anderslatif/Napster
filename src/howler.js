@@ -14,11 +14,6 @@ export function playSong(song, playlist, playlistIndex) {
   currentPlaylist = playlist;
   currentlyPlayingIndex = playlistIndex || playlistIndex === 0 ? playlistIndex : currentlyPlayingIndex;
 
-  document.querySelectorAll(".isPlaying").forEach(selected => {
-    selected.classList.remove("isPlaying");
-  });
-  document.getElementById(song.id).classList.add("isPlaying");
-
   sound?.stop();
 
   sound = new Howler.Howl({
