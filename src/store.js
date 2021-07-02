@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { playSong, playOrPauseSong, stopSong } from "./howler.js";
+import { playSong, playOrPauseSong, stopSong, updateCurrentPlaylist } from "./howler.js";
 
 function songHandler() {
     const songState = {
@@ -38,10 +38,6 @@ function songHandler() {
         stopSong: stopSong()
     }
 }
-// const foundIndex = songs.findIndex(song => song.id === Number(event.target.id));
-// console.log(foundIndex);
-// currentlyPlayingIndex = foundIndex;
-// playSong(songs[foundIndex]);
 
 function playlistHandler() {
     // todo remove fakeSongs .. used for debugging drag and drop
@@ -51,18 +47,39 @@ function playlistHandler() {
     return {
         subscribe,
         updatePlaylistSongs: (playlistName, newSongList) => {
+            const currentPlaylist = getCurrentPlaylist();
             update(playlists => {
-                
                 return playlists.map(playlist => {
                     if (playlist.name === playlistName) {
+                        if (playlist.name === currentPlaylist) {
+                            updateCurrentPlaylist(newSongList);
+                        }
                         return { ...playlist, songs: newSongList };
                     }
                     return playlist;
                 });
             });
         },
-        updatePlaylistName: (oldName, newName) => {}
+        updatePlaylistName: (oldName, newName) => {},
+        deleteSongFromPlaylist: (id, playlistName) => {
+            const deleteIndex = player.playlist.findIndex((song) => song.id == id);
+            // todo test this
+            if (deleteIndex != -1) {
+                playlist[playlistName].splice(deleteIndex, 1);
+                set(playlist);
+            }
+        }
     };
+}
+
+function getCurrentPlaylist() {
+    let $song;
+
+    const unsubscribe = song.subscribe(value => {
+        $song = value;
+    });
+    unsubscribe();
+    return $song.currentPlaylist;
 }
 
 export function getPlaylistByName(playlistName) {
@@ -74,6 +91,7 @@ export function getPlaylistByName(playlistName) {
     unsubscribe();
     return $playlists.find(playlist => playlist.name === playlistName);
 }
+
 
 export const song = songHandler();
 export const playlists = playlistHandler();

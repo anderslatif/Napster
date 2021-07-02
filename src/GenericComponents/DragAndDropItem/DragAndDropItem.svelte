@@ -59,11 +59,11 @@
         document.querySelectorAll(".dragging").forEach(drag => {
             drag.classList.remove("dragging");
         });
-        const listElements = document.getElementById(surroundingDivId).children;
+        const listElements = document.getElementById(surroundingDivId).childNodes;
         const orderedIds = [];
         
         for (let i = 0; i < listElements.length; i++) {
-            orderedIds.push([listElements[i].id]);
+            orderedIds.push(listElements[i].id);
         }
         onOrderChange(orderedIds);
     }

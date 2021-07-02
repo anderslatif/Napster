@@ -10,6 +10,11 @@ export function getSound() {
 
 export function playSong(song, playlist, playlistIndex) { 
   if (!song) return;
+
+  document.querySelectorAll(".isPlaying").forEach(selected => {
+    selected.classList.remove("isPlaying");
+  });
+  document.getElementById(song.id).classList.add("isPlaying");
   
   currentPlaylist = playlist;
   currentlyPlayingIndex = playlistIndex || playlistIndex === 0 ? playlistIndex : currentlyPlayingIndex;
@@ -52,4 +57,15 @@ export function stopSong() {
   sound?.stop();
 }
 
+// todo use this when the playlist songs order changes
+export function updateCurrentlyPlayingIndex(playlist) {
+  if (sound) {
+    const newIndex = playlist.findIndex(song => song.file.path === sound._src);
+    currentlyPlayingIndex = newIndex
+  }
+}
 
+export function updateCurrentPlaylist(newPlaylist) {
+  updateCurrentlyPlayingIndex(newPlaylist);
+  currentPlaylist = newPlaylist;
+}

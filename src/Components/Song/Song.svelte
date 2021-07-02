@@ -5,16 +5,15 @@
   export let playlistName;
   const { title, track, artist, album, year, durationString } = song.metadata.common;
 
-  function handleDoubleClick(event) {
-    document.querySelectorAll(".isPlaying").forEach(selected => {
-      selected.classList.remove("isPlaying");
-    });
-    event.target.parentNode.classList.add("isPlaying");
+  import { afterUpdate } from "svelte";
 
-
+  function handleDoubleClick() {
     sound.playSong(song, playlistName);
   }
 
+  afterUpdate(() => {
+    // console.log(song.id);
+  });
 
 </script>
 
@@ -23,8 +22,8 @@
   on:dblclick={handleDoubleClick}
 >
   <td id="song-track">{track?.no}</td>
-  <td id="song-title">{title}</td>
-  <td id="song-artist">{artist}</td>
+  <td id="song-title">{song.id}</td>
+  <td id="song-artist">{title}</td>
   <td id="song-album">{album}</td>
   <td id="song-length">{durationString}</td>
   <td id="song-year">{year}</td>

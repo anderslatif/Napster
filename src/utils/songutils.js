@@ -18,3 +18,9 @@ export function convertSecondsToTimeString(durationInSeconds) {
 
     return `${minutes}:${remainingSeconds.length === 2 ? remainingSeconds : "0"+remainingSeconds}`;
 }
+
+export function sortSongsByNewIdList(songs, newIdList) {
+    return songs.sort((a, b) => {
+        return newIdList.indexOf(a.id) - newIdList.indexOf(b.id);
+    });
+}

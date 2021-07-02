@@ -23,17 +23,22 @@
         }
     }
 
+    function handlePlayOrPauseSong() {
+        soundPlaying = !soundPlaying;
+        song.playOrPauseSong();
+    }
+
     setInterval(() => {
         sound = getSound();
         soundPlaying = sound?.playing();
-        
+
         if (soundPlaying) {
             currentTime = Math.floor(sound.seek());
             currentTimeString = convertSecondsToTimeString(currentTime);
             totalTime = Math.floor(sound.duration());
             totalTimeString = convertSecondsToTimeString(totalTime);
         }
-    }, 1000); // todo lower it when production ready
+    }, 500);
 
 </script>
 
@@ -53,7 +58,7 @@
     </div>
     <div id="control-button-container">
         <button class="control-button {soundPlaying ? "control-button-paused" : "control-button-playing"}" 
-            on:click={() => song.playOrPauseSong()}>
+            on:click={handlePlayOrPauseSong}>
             { soundPlaying ? "❚❚" : "▶" }
         </button>
     </div>

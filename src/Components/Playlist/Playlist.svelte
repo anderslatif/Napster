@@ -1,27 +1,25 @@
 <script>
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
-  import { getSongTitle } from "../../utils/songutils.js";
-  import PlaylistColumn from "./SubComponents/PlaylistColumn.svelte";
-  import Song from "../Song/Song.svelte";
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
-  import { guid } from "../../utils/generalutils.js";
-  import { playlists } from "../../store.js";
-  import { convertSecondsToTimeString } from "../../utils/songutils.js";
+  import PlaylistColumn from "./SubComponents/PlaylistColumn.svelte";
   import DragAndDropItem from "../../GenericComponents/DragAndDropItem/DragAndDropItem.svelte";
- 
+  import Song from "../Song/Song.svelte";
+
+  import { guid } from "../../utils/generalutils.js";
+  import { playlists, song } from "../../store.js";
+  import { getSongTitle, convertSecondsToTimeString, sortSongsByNewIdList } from "../../utils/songutils.js";
+  import { afterUpdate } from "svelte";
+
 	const mm = require('music-metadata');
 
   export let songs;
   export let playlistName;
-
-
 
   async function handleFileUpload(files) {
     const filesWithMetaData = await files.map(async (file, index) => {
       const songTitle = getSongTitle(file.name);
 
       const metadata = await mm.parseFile(file.path);
-      
        
       const { duration } = metadata.format;
       const durationString = convertSecondsToTimeString(duration);
@@ -43,14 +41,15 @@
   }
 
   function handleOrderChange(newIdList) {
-    const allPlaylists = $playlists;
-    const playlistIndex = allPlaylists.findIndex(playlist => playlist.name === playlistName);
-    allPlaylists[playlistIndex].songs.sort((a, b) => {
-      return newIdList.indexOf(a) - newIdList.indexOf(b);
-    });
-    console.log("new playlist", allPlaylists[playlistIndex].songs);
-
+    console.log(newIdList[0]);
+    const newSongList = sortSongsByNewIdList(songs, newIdList);
+    // console.log(newSongList[0].id);
+    playlists.updatePlaylistSongs(playlistName, newSongList);
   }
+
+  afterUpdate(() => {
+    console.log(songs);
+  });
 
 </script>
 
@@ -61,7 +60,7 @@
       <PlaylistColumn />
       <div id="song-container">
         {#each songs as song, i}
-          <DragAndDropItem id={song.id} index={i} surroundingDivId={"song-container"} onOrderChange={handleOrderChange}>
+          <DragAndDropItem id={song.id} index={i} surroundingDivId="song-container" onOrderChange={handleOrderChange}>
             <Song song={song} playlistName={playlistName} />
           </DragAndDropItem>
         {/each}
