@@ -57,7 +57,6 @@ export function stopSong() {
   sound?.stop();
 }
 
-// todo use this when the playlist songs order changes
 export function updateCurrentlyPlayingIndex(playlist) {
   if (sound) {
     const newIndex = playlist.findIndex(song => song.file.path === sound._src);

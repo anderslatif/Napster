@@ -6,9 +6,8 @@
   import Song from "../Song/Song.svelte";
 
   import { guid } from "../../utils/generalutils.js";
-  import { playlists, song } from "../../store.js";
+  import { playlists } from "../../store.js";
   import { getSongTitle, convertSecondsToTimeString, sortSongsByNewIdList } from "../../utils/songutils.js";
-  import { afterUpdate } from "svelte";
 
 	const mm = require('music-metadata');
 
@@ -25,7 +24,7 @@
       const durationString = convertSecondsToTimeString(duration);
       metadata.common.duration = duration;
       metadata.common.durationString = durationString;
-      
+
       if (!songTitle) { /* handle invalid files uploaded */ }
       return {
         id: guid(), 
@@ -41,15 +40,9 @@
   }
 
   function handleOrderChange(newIdList) {
-    console.log(newIdList[0]);
     const newSongList = sortSongsByNewIdList(songs, newIdList);
-    // console.log(newSongList[0].id);
     playlists.updatePlaylistSongs(playlistName, newSongList);
   }
-
-  afterUpdate(() => {
-    console.log(songs);
-  });
 
 </script>
 
@@ -59,7 +52,7 @@
     <FileUpload onFileUpload={handleFileUpload}>
       <PlaylistColumn />
       <div id="song-container">
-        {#each songs as song, i}
+        {#each songs as song, i (song.id)}
           <DragAndDropItem id={song.id} index={i} surroundingDivId="song-container" onOrderChange={handleOrderChange}>
             <Song song={song} playlistName={playlistName} />
           </DragAndDropItem>

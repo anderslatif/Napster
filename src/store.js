@@ -49,7 +49,7 @@ function playlistHandler() {
         updatePlaylistSongs: (playlistName, newSongList) => {
             const currentPlaylist = getCurrentPlaylist();
             update(playlists => {
-                return playlists.map(playlist => {
+                const test = playlists.map(playlist => {
                     if (playlist.name === playlistName) {
                         if (playlist.name === currentPlaylist) {
                             updateCurrentPlaylist(newSongList);
@@ -58,6 +58,7 @@ function playlistHandler() {
                     }
                     return playlist;
                 });
+                return test;
             });
         },
         updatePlaylistName: (oldName, newName) => {},
