@@ -18,7 +18,7 @@
     <script>
         function dropHandler(event) {
             event.preventDefault();
-            
+
             if (event.dataTransfer.items) {
                 const files = Object.keys(event.dataTransfer.items).map(key => {
                     const value = event.dataTransfer.items[key];
