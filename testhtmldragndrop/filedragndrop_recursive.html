@@ -25,21 +25,20 @@
 
         async function handleDrop(event) {
             event.preventDefault();
-            // files = [];
+            files = [];
             
             const dataTransferItems = Object.keys(event.dataTransfer.items);
 
             await dataTransferItems.forEach(async (key) => {
                 const item = event.dataTransfer.items[key];
                 const entry = item.webkitGetAsEntry();
-                
-                if (!entry) return;
-
                 if (entry.isFile) {
-                    files.push(entry.fullPath);
+                    // only item contains the absolute path¥
+                    console.log(item);
+                    files.push(item.getAsFile().path);
                 } else if (entry.isDirectory) {
                     const directoryReader = entry.createReader();
-                    await walkDirRecursively(entry.fullPath, directoryReader);
+                    await walkDirRecursively(item.getAsFile().path, directoryReader);
                 }
             });
             console.log(files);
