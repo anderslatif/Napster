@@ -7,3 +7,9 @@ export function guid() {
     // returns id of formxt 'xxxxxxxx'-'xxxx'-'xxxx'-'xxxx'-'xxxxxxxxxxxx'
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
+
+export function sortListByNewIdList(list, newIdList) {
+    return list.sort((a, b) => {
+        return newIdList.indexOf(a.id) - newIdList.indexOf(b.id);
+    });
+}

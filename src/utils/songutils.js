@@ -1,14 +1,23 @@
-function isValidSong(extension) {
-    const validExtensions = ["mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", 
-                "caf", "m4a", "m4b", "mp4", "weba", "webm", "dolby", "flac"];
+const mm = require('music-metadata');
+
+export function isSong(filePath) {
+    const fileNameSplit = filePath.split(".");
+    const extension = fileNameSplit.pop();
+
+    const validExtensions = ["mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf",
+                            "m4a", "m4b", "mp4", "weba", "webm", "dolby", "flac"];
     return validExtensions.includes(extension);
 }
 
-export function getSongTitle(fileName) {
-    const fileNameSplit = fileName.split(".");
-    const extension = fileNameSplit.pop();
-    if (!isValidSong(extension)) return false;
-    return fileNameSplit.join("");
+export async function getMetaData(filePath) {
+    const metadata = await mm.parseFile(filePath);
+       
+    const { duration } = metadata.format;
+    const durationString = convertSecondsToTimeString(duration);
+    metadata.common.duration = duration;
+    metadata.common.durationString = durationString;
+
+    return metadata;
 }
 
 export function convertSecondsToTimeString(durationInSeconds) {
@@ -19,8 +28,3 @@ export function convertSecondsToTimeString(durationInSeconds) {
     return `${minutes}:${remainingSeconds.length === 2 ? remainingSeconds : "0"+remainingSeconds}`;
 }
 
-export function sortSongsByNewIdList(songs, newIdList) {
-    return songs.sort((a, b) => {
-        return newIdList.indexOf(a.id) - newIdList.indexOf(b.id);
-    });
-}

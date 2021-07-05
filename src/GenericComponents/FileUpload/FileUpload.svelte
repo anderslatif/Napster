@@ -1,8 +1,11 @@
 <script>
     export let onFileUpload;
 
-    function handleDragOver(event) {
+    const nodePath = require("path");
 
+    let files = [];
+
+    function handleDragOver(event) {
         // if dropping files deselect existing selections
         if (event.dataTransfer.items.length > 0) {
             document.querySelectorAll(".selected").forEach(selected => {
@@ -11,26 +14,39 @@
         }
     }
 
-    // https://github.com/Aveek-Saha/DuskPlayer/blob/master/src/App.svelte#L96
+    async function dropHandler(event) {
+        files = [];
 
-    function dropHandler(event) {
-        event.preventDefault();
+        const dataTransferItems = Object.keys(event.dataTransfer.items);
 
-        if (event.dataTransfer.items) {
-                const files = Object.keys(event.dataTransfer.items).map(key => {
-                    const value = event.dataTransfer.items[key];
-                    if (value.kind === "file") {
-                        return value.getAsFile();
-                    }
-                });
-            if (files.length > 0) {
-                onFileUpload(files);
+        await dataTransferItems.forEach(async (key) => {
+            const item = event.dataTransfer.items[key];
+            const entry = item.webkitGetAsEntry();
+            if (entry.isFile) {
+                // only item contains the absolute path
+                files.push(item.getAsFile().path);
+            } else if (entry.isDirectory) {
+                const directoryReader = entry.createReader();
+                await walkDirRecursively(item.getAsFile().path, directoryReader);
             }
-        } else {
-            if (files.length > 0) {
-                onFileUpload(event.dataTransfer.files);
-            }
-        }
+        });
+        console.log(files.length);
+
+        onFileUpload(files);
+    }
+
+    async function walkDirRecursively(path, directoryReader) {
+
+        await directoryReader.readEntries(async (entries) => {
+            await entries.forEach(async (entry) => {
+                if (entry.isFile) {
+                    files.push(nodePath.join(path, entry.name));
+                } else if (entry.isDirectory) {
+                    const newDirectoryReader = entry.createReader();
+                    await walkDirRecursively(nodePath.join(path, entry.name), newDirectoryReader);
+                }
+            });
+        });
     }
 </script>
 
@@ -38,6 +54,7 @@
     id="dropZone"
     on:dragover|preventDefault={handleDragOver}
     on:drop|preventDefault={dropHandler}
+    webkitdirectory
 >
     <slot></slot>
 </div>

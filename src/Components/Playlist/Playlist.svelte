@@ -4,43 +4,40 @@
   import PlaylistColumn from "./SubComponents/PlaylistColumn.svelte";
   import DragAndDropItem from "../../GenericComponents/DragAndDropItem/DragAndDropItem.svelte";
   import Song from "../Song/Song.svelte";
-
-  import { guid } from "../../utils/generalutils.js";
   import { playlists } from "../../store.js";
-  import { getSongTitle, convertSecondsToTimeString, sortSongsByNewIdList } from "../../utils/songutils.js";
-
-	const mm = require('music-metadata');
+  import { isSong, getMetaData } from "../../utils/songutils.js";
+  import { guid } from '../../utils/generalutils.js';
 
   export let songs;
   export let playlistName;
 
-  async function handleFileUpload(files) {
-    const filesWithMetaData = await files.map(async (file, index) => {
-      const songTitle = getSongTitle(file.name);
+  async function handleFileUpload(filePaths) {
+    console.log(filePaths);
 
-      const metadata = await mm.parseFile(file.path);
-       
-      const { duration } = metadata.format;
-      const durationString = convertSecondsToTimeString(duration);
-      metadata.common.duration = duration;
-      metadata.common.durationString = durationString;
+    const playlistReadyFiles = filePaths.map(async (path) => {
+      const isAudio = isSong(path);
 
-      if (!songTitle) { /* handle invalid files uploaded */ }
-      return {
-        id: guid(), 
-        title: songTitle,
-        type: songTitle ? "audio" : "video",
-        file,
-        metadata
+      // console.log(path);
+
+      if (isAudio) {
+/*         const metadata = await getMetaData();
+
+        return {
+          id: guid(), 
+          type: "audio",
+          metadata
+        }; */
+
+      } else {
+        console.log(path);
       }
     });
-    Promise.all(filesWithMetaData).then((filesReady) => {
-      playlists.updatePlaylistSongs(playlistName, songs.concat(filesReady));
-    });
+
+    // playlists.updatePlaylistSongs(playlistName, songs.concat(playlistReadyFiles));
   }
 
   function handleOrderChange(newIdList) {
-    const newSongList = sortSongsByNewIdList(songs, newIdList);
+    const newSongList = sortListByNewIdList(songs, newIdList);
     playlists.updatePlaylistSongs(playlistName, newSongList);
   }
 
