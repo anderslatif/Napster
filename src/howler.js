@@ -22,7 +22,7 @@ export function playSong(song, playlist, playlistIndex) {
   sound?.stop();
 
   sound = new Howler.Howl({
-    src: song.file.path,
+    src: song.  path,
     html5: true,
     onend: () => {
       currentlyPlayingIndex += 1;

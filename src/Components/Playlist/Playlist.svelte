@@ -6,34 +6,32 @@
   import Song from "../Song/Song.svelte";
   import { playlists } from "../../store.js";
   import { isSong, getMetaData } from "../../utils/songutils.js";
-  import { guid } from '../../utils/generalutils.js';
+  import { guid, sortListByNewIdList } from '../../utils/generalutils.js';
 
   export let songs;
   export let playlistName;
 
   async function handleFileUpload(filePaths) {
-    console.log(filePaths);
 
-    const playlistReadyFiles = filePaths.map(async (path) => {
+    const playlistReadyFiles = await Promise.all(filePaths.map(async (path) => {
       const isAudio = isSong(path);
 
-      // console.log(path);
-
       if (isAudio) {
-/*         const metadata = await getMetaData();
+        const metadata = await getMetaData(path);
 
         return {
           id: guid(), 
           type: "audio",
+          path,
           metadata
-        }; */
+        };
 
       } else {
-        console.log(path);
+        // console.log(path);
       }
-    });
+    }));
 
-    // playlists.updatePlaylistSongs(playlistName, songs.concat(playlistReadyFiles));
+    playlists.updatePlaylistSongs(playlistName, songs.concat(playlistReadyFiles.filter(Boolean)));
   }
 
   function handleOrderChange(newIdList) {

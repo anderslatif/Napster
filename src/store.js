@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { playSong, playOrPauseSong, stopSong, updateCurrentPlaylist } from "./howler.js";
+import { getDB } from "./storage.js";
 
 function songHandler() {
     const songState = {
@@ -73,6 +74,9 @@ function playlistHandler() {
     };
 }
 
+
+
+
 function getCurrentPlaylist() {
     let $song;
 
@@ -96,8 +100,3 @@ export function getPlaylistByName(playlistName) {
 
 export const song = songHandler();
 export const playlists = playlistHandler();
-
-
-
-
-

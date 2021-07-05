@@ -1,6 +1,8 @@
 <script>
     export let onFileUpload;
 
+    import { sortListAlphabetically } from "../../utils/generalutils.js";
+
     const nodePath = require("path");
 
     let files = [];
@@ -17,9 +19,9 @@
     async function dropHandler(event) {
         files = [];
 
-        const dataTransferItems = Object.keys(event.dataTransfer.items);
+        const dataTransferItems = Object.keys(event.dataTransfer.files);
 
-        await dataTransferItems.forEach(async (key) => {
+        await Promise.all(dataTransferItems.map(async (key) => {
             const item = event.dataTransfer.items[key];
             const entry = item.webkitGetAsEntry();
             if (entry.isFile) {
@@ -29,22 +31,23 @@
                 const directoryReader = entry.createReader();
                 await walkDirRecursively(item.getAsFile().path, directoryReader);
             }
-        });
-        console.log(files.length);
-
+        }));
         onFileUpload(files);
     }
 
-    async function walkDirRecursively(path, directoryReader) {
-
-        await directoryReader.readEntries(async (entries) => {
-            await entries.forEach(async (entry) => {
-                if (entry.isFile) {
-                    files.push(nodePath.join(path, entry.name));
-                } else if (entry.isDirectory) {
-                    const newDirectoryReader = entry.createReader();
-                    await walkDirRecursively(nodePath.join(path, entry.name), newDirectoryReader);
-                }
+    function walkDirRecursively(path, directoryReader) {
+        return new Promise(async (resolve, reject) => {
+            await directoryReader.readEntries(async (entries) => {
+                // webkit does not respect the OS ordering of folders/files so an alphabetic sort is needed
+                await Promise.all(sortListAlphabetically(entries).map(async (entry) => {
+                    if (entry.isFile) {
+                        files.push(nodePath.join(path, entry.name));
+                    } else if (entry.isDirectory) {
+                        const newDirectoryReader = entry.createReader();
+                        await walkDirRecursively(nodePath.join(path, entry.name), newDirectoryReader);
+                    }
+                }));
+                resolve();
             });
         });
     }

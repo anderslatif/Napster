@@ -13,3 +13,7 @@ export function sortListByNewIdList(list, newIdList) {
         return newIdList.indexOf(a.id) - newIdList.indexOf(b.id);
     });
 }
+
+export function sortListAlphabetically(list) {
+    return list.sort((a, b) => a.name.localeCompare(b.name));
+}
