@@ -20,10 +20,13 @@
         files = [];
 
         const dataTransferItems = Object.keys(event.dataTransfer.files);
-
         await Promise.all(dataTransferItems.map(async (key) => {
             const item = event.dataTransfer.items[key];
+
+            if (item.kind !== "file") return;
+            
             const entry = item.webkitGetAsEntry();
+
             if (entry.isFile) {
                 // only item contains the absolute path
                 files.push(item.getAsFile().path);

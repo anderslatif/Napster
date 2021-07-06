@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import { playSong, playOrPauseSong, stopSong, updateCurrentPlaylist } from "./howler.js";
-import { getDB } from "./storage.js";
+import { insert as storageInsert, update as storageUpdate } from "./storage.js";
 
 function songHandler() {
     const songState = {
@@ -41,16 +41,23 @@ function songHandler() {
 }
 
 function playlistHandler() {
-    // todo remove fakeSongs .. used for debugging drag and drop
-    const loadedPlaylists = [{ name: "default", songs: [] }];
-    const { subscribe, set, update } = writable(loadedPlaylists);
+    const { subscribe, set, update } = writable([]);
 
     return {
         subscribe,
+        initializePlaylist: (newPlaylist) => {
+            storageInsert(newPlaylist);
+            set([newPlaylist]);
+        },
+        setPlaylist: (newPlaylist) => {
+            set(newPlaylist);
+        },
         updatePlaylistSongs: (playlistName, newSongList) => {
             const currentPlaylist = getCurrentPlaylist();
+            // storageUpdate({ playlist: playlistName }, { "$set": { songs: newSongList } });
+
             update(playlists => {
-                const test = playlists.map(playlist => {
+                const newPlaylists = playlists.map(playlist => {
                     if (playlist.name === playlistName) {
                         if (playlist.name === currentPlaylist) {
                             updateCurrentPlaylist(newSongList);
@@ -59,7 +66,7 @@ function playlistHandler() {
                     }
                     return playlist;
                 });
-                return test;
+                return newPlaylists;
             });
         },
         updatePlaylistName: (oldName, newName) => {},
@@ -73,7 +80,6 @@ function playlistHandler() {
         }
     };
 }
-
 
 
 

@@ -49,7 +49,7 @@
       <div id="song-container">
         {#each songs as song, i (song.id)}
           <DragAndDropItem id={song.id} index={i} surroundingDivId="song-container" onOrderChange={handleOrderChange}>
-            <Song song={song} playlistName={playlistName} />
+            <!-- <Song song={song} playlistName={playlistName} /> -->
           </DragAndDropItem>
         {/each}
       </div>
