@@ -14,18 +14,6 @@
 		}
 	}
 
-	// todo move into Svelte's main.js 
-	import { find, update } from "./storage.js";
-	(async () => {
-	    const loadedPlaylists = await find({ playlist: { "$exists": true } });
-		console.log(loadedPlaylists)
-    	if (loadedPlaylists.length === 0) {
-			playlists.initializePlaylist({ playlist: "default", songs: [] })
-		} else {
-			playlists.setPlaylist(loadedPlaylists);
-		}
-	})();
-
 </script>
 
 <main>

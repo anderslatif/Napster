@@ -49,12 +49,12 @@ function playlistHandler() {
             storageInsert(newPlaylist);
             set([newPlaylist]);
         },
-        setPlaylist: (newPlaylist) => {
+        setPlaylists: (newPlaylist) => {
             set(newPlaylist);
         },
         updatePlaylistSongs: (playlistName, newSongList) => {
             const currentPlaylist = getCurrentPlaylist();
-            // storageUpdate({ playlist: playlistName }, { "$set": { songs: newSongList } });
+            storageUpdate({ name: playlistName }, { $set: { songs: newSongList } });
 
             update(playlists => {
                 const newPlaylists = playlists.map(playlist => {

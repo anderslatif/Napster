@@ -35,6 +35,8 @@ export function insert(insertContent) {
 }
 
 export function update(searchQuery, updateContent) {
+    console.log(searchQuery);
+    console.log(updateContent);
     return new Promise((resolve, reject) => {
         db.update(searchQuery, updateContent, (error, data) => {
             if (error) {

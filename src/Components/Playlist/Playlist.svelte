@@ -18,6 +18,8 @@
 
       if (isAudio) {
         const metadata = await getMetaData(path);
+        // the key - ID3v2.3 - under native contains a period and causes problems for my database
+        delete metadata.native; 
 
         return {
           id: guid(), 
@@ -25,9 +27,6 @@
           path,
           metadata
         };
-
-      } else {
-        // console.log(path);
       }
     }));
 
