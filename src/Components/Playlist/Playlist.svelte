@@ -1,7 +1,7 @@
 <script>
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
-  import PlaylistColumn from "./SubComponents/PlaylistColumn.svelte";
+  import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import DragAndDropItem from "../../GenericComponents/DragAndDropItem/DragAndDropItem.svelte";
   import Song from "../Song/Song.svelte";
   import { playlists } from "../../store.js";
@@ -45,11 +45,11 @@
   <PlaylistBar playlistName={playlistName} />
   <table class="playlist-table">
     <FileUpload onFileUpload={handleFileUpload}>
-      <PlaylistColumn />
+      <PlaylistColumns />
       <div id="song-container">
         {#each songs as song, i (song.id)}
           <DragAndDropItem id={song.id} index={i} surroundingDivId="song-container" onOrderChange={handleOrderChange}>
-            <!-- <Song song={song} playlistName={playlistName} /> -->
+            <Song song={song} playlistName={playlistName} />
           </DragAndDropItem>
         {/each}
       </div>

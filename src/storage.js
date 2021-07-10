@@ -34,7 +34,7 @@ export function insert(insertContent) {
     });
 }
 
-export async function update(searchQuery, updateContent) {
+export function update(searchQuery, updateContent) {
     return new Promise((resolve, reject) => {
         db.update(searchQuery, updateContent, (error, data) => {
             if (error) {
