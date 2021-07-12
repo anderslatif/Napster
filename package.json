@@ -14,7 +14,7 @@
     "start-dev": "concurrently npm:svelte-dev npm:electron-dev",
     "start": "sirv public --no-clear",
     "pack": "electron-builder --dir",
-    "dist": "concurrently svelte-build electron-builder"
+    "dist": "npm run svelte-build && electron-builder"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
