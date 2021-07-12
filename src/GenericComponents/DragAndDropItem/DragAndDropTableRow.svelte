@@ -3,12 +3,12 @@
     export let id;
     export let surroundingDivId;
     export let onOrderChange; 
+    export let onDoubleClick;
 
     import { findAfterElement } from "../../utils/draggableutils";
  
-
     function handleClick(event) {
-        const itemNode = event.target.parentNode.parentNode;
+        const itemNode = event.target.parentNode;
 
         if (event.shiftKey) {
             console.log("shift key pressed while clicking")
@@ -66,7 +66,7 @@
 
 </script> 
 
-<div
+<tr
     id={id}
     class="draggable list-item list-item-container-{index % 2}"
     on:click={handleClick}
@@ -74,9 +74,10 @@
     on:dragover={handleDragOver}
     on:dragend={handleDragEnd}
     draggable="true"
+    on:dblclick={onDoubleClick}
 >
     <slot></slot>
-</div>
+</tr>
 
 
 <style>

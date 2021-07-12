@@ -16,7 +16,3 @@ export function findAfterElement(container, y) {
         }
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
-
-export function findNextElement(container, x) {
-    // todo implement sideways drag and drop
-}

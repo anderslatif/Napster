@@ -1,9 +1,18 @@
 <script>
-  import { song as sound } from '../../store.js';
-    
+  import { song as sound, playlists } from '../../store.js';
+  import DragAndDropTableRow from "../../GenericComponents/DragAndDropItem/DragAndDropTableRow.svelte";
+  import { sortListByNewIdList } from '../../utils/generalutils.js';
+
+  export let index;
   export let song;
+  export let songs;
   export let playlistName;
   const { title, track, artist, album, year, durationString } = song.metadata.common;
+
+  function handleOrderChange(newIdList) {
+    const newSongList = sortListByNewIdList(songs, newIdList);
+    playlists.updatePlaylistSongs(playlistName, newSongList);
+  }
 
   function handleDoubleClick() {
     sound.playSong(song, playlistName);
@@ -11,9 +20,10 @@
 
 </script>
 
-<tr  
-  id={song.id}
-  on:dblclick={handleDoubleClick}
+
+<DragAndDropTableRow 
+  id={song.id} index={index} surroundingDivId="song-container" onOrderChange={handleOrderChange}
+  onDoubleClick={handleDoubleClick}
 >
   <td id="song-track">{track?.no}</td>
   <td id="song-title">{title}</td>
@@ -21,35 +31,13 @@
   <td id="song-album">{album}</td>
   <td id="song-length">{durationString}</td>
   <td id="song-year">{year}</td>
-</tr>
+</DragAndDropTableRow>
 
 <style>
-  tr {
-    color: white;
-    font-size: 0.75em;
+  @media (max-width: 600px) {
+    td {
+      font-size: 0.8em;
+    }
   }
 
-  #song-track {
-    width: 2vw;
-  }
-
-  #song-title {
-    width: 35vw;
-  }
-
-  #song-artist {
-    width: 20vw;
-  }
-    
-  #song-album {
-    width: 20vw;
-  }
-
-  #song-length {
-    width: 6vw;
-  }
-
-  #song-year {
-    width: 6vw;
-  }
 </style>

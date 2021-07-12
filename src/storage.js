@@ -1,5 +1,13 @@
 const Datastore = require('nedb');
-const db = new Datastore({ filename: "data.db", autoload: true });
+
+const userDataPath = process.env.APP_DATA;
+
+const db = new Datastore({ 
+    filename: process.env.NODE_ENV === "dev" ? 
+                "data.db"
+                : userDataPath + "/data/napster.db",
+    autoload: true 
+});
 
 export function findOne(searchQuery) {
     return new Promise((resolve, reject) => {
@@ -35,8 +43,6 @@ export function insert(insertContent) {
 }
 
 export function update(searchQuery, updateContent) {
-    console.log(searchQuery);
-    console.log(updateContent);
     return new Promise((resolve, reject) => {
         db.update(searchQuery, updateContent, (error, data) => {
             if (error) {

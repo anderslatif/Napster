@@ -2,11 +2,11 @@
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
-  import DragAndDropItem from "../../GenericComponents/DragAndDropItem/DragAndDropItem.svelte";
   import Song from "../Song/Song.svelte";
   import { playlists } from "../../store.js";
   import { isSong, getMetaData } from "../../utils/songutils.js";
-  import { guid, sortListByNewIdList } from '../../utils/generalutils.js';
+  import { guid } from '../../utils/generalutils.js';
+  import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
 
   export let songs;
   export let playlistName;
@@ -33,25 +33,20 @@
     playlists.updatePlaylistSongs(playlistName, songs.concat(playlistReadyFiles.filter(Boolean)));
   }
 
-  function handleOrderChange(newIdList) {
-    const newSongList = sortListByNewIdList(songs, newIdList);
-    playlists.updatePlaylistSongs(playlistName, newSongList);
-  }
-
 </script>
 
 <div class="playlist">
   <PlaylistBar playlistName={playlistName} />
-  <table class="playlist-table">
+  <table id="playlist-table" class="playlist-table">
     <FileUpload onFileUpload={handleFileUpload}>
-      <PlaylistColumns />
-      <div id="song-container">
+      <ResizableTable tableId="playlist-table">
+        <PlaylistColumns />
+      </ResizableTable>
+      <tbody id="song-container">
         {#each songs as song, i (song.id)}
-          <DragAndDropItem id={song.id} index={i} surroundingDivId="song-container" onOrderChange={handleOrderChange}>
-            <Song song={song} playlistName={playlistName} />
-          </DragAndDropItem>
+          <Song index={i} song={song} songs={songs} playlistName={playlistName} />
         {/each}
-      </div>
+        </tbody>
     </FileUpload>
 
   </table>

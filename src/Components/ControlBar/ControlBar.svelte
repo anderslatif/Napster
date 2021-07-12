@@ -13,7 +13,6 @@
     let currentTimeString = "0:00";
 
     function handleProgressBarClick(event) {
-
         if (sound) {
             const goToSeconds = Number(event.target.value);
             currentTime = goToSeconds;
@@ -66,16 +65,15 @@
 
 <style>
     #control-bar {
-        height: 10vh;
         width: 100vw;
         display: flex;
-        flex-direction: row;
         flex-wrap: wrap;
+        margin-bottom: 1em;
     }
 
     #progress-bar-container{
-        margin-right: 1em;
-        width: 80vw;
+        width: 84vw;
+        padding-right: 2vw;
     }
 
     .progress-bar-label {
@@ -97,11 +95,14 @@
 
     #control-button-container {
         margin-right: 1em;
+        width: 10vw;
     }
 
+    
     .control-button {
         background-color: rgb(0, 0, 0, 0);
-        height: 2em;
+        width: 100%;
+        height: 100%;
         color: green;
     }
 
@@ -113,12 +114,16 @@
         background-color: rgb(0, 0, 0, 0);
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 600px) {
 		#control-bar {
-			flex-wrap: nowrap;
-            margin-bottom: 2em;
+            flex-direction: column-reverse;
+            margin-right: 2em;
+            width: 95vw;
 		}
-        .control-button {
+        #progress-bar-container {
+            width: 95vw;
+        }
+        #control-button-container {
             width: 100%;
         }
 	}
