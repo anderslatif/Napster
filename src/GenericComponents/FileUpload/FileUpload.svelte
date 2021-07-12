@@ -64,3 +64,9 @@
 >
     <slot></slot>
 </div>
+
+<style>
+    #dropZone {
+        height: 100%;
+    }
+</style>

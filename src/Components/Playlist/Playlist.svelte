@@ -60,11 +60,10 @@
 
   .playlist-table {
     width: 100%;
+    height: 100%;
   }
 
   #song-container {
     height: 88vh;
   }
-
-
 </style>

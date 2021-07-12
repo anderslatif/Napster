@@ -4,6 +4,8 @@ todo.txt
 
 .DS_Store
 
+data.db
+
 # Logs
 logs
 *.log

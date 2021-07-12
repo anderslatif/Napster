@@ -1,6 +1,6 @@
 <script>
   import { song as sound, playlists } from '../../store.js';
-  import DragAndDropTableRow from "../../GenericComponents/DragAndDropItem/DragAndDropTableRow.svelte";
+  import DragAndDropTableRow from "../../GenericComponents/DragAndDropTableRow/DragAndDropTableRow.svelte";
   import { sortListByNewIdList } from '../../utils/generalutils.js';
 
   export let index;

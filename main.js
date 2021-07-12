@@ -4,22 +4,18 @@ const url = require('url')
 
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+process.env['APP_DATA'] = (app || require("electron").remote.app).getPath("userData");
 
-let isDev = false;
-try {
-    isDev = require('electron-is-dev');
-
-    // If in development use electron-reload to watch for
-    // changes in the current directory
-    if (isDev) {
-        require('electron-reload')(__dirname, {
-            electron: require(`${__dirname}/node_modules/electron`),
-            ignored: [/node_modules|[\/\\]\./, /data.db/]
-        });
-    }
-} catch {
-    isDev = false;
+let isDev = process.env.NODE_ENV === "dev";
+// If in development use electron-reload to watch for
+// changes in the current directory
+if (isDev) {
+    require('electron-reload')(__dirname, {
+        electron: require(`${__dirname}/node_modules/electron`),
+        ignored: [/node_modules|[\/\\]\./, /data.db/]
+    });
 }
+
 
 const dockMenu = Menu.buildFromTemplate([
     {
@@ -32,9 +28,13 @@ const menu = new Menu();
 menu.append(new MenuItem({
     label: "Napster",
     submenu: [{
-        role: "window",
+        label: "New Window",
         accelerator: process.platform === 'darwin' ? 'Cmd+N' : 'CTRL+N',
         click: createWindow
+    }, 
+    {
+        label: "Quit",
+        role: "close",
     }]
 }));
 Menu.setApplicationMenu(menu);
@@ -61,7 +61,7 @@ function createWindow() {
     )
 
     // Open the DevTools only if app is in development
-    if (isDev)
+    if (isDev || true)
         win.webContents.openDevTools()
 }
 

@@ -7,10 +7,8 @@
         // Query the table
         const table = document.getElementById(tableId);
 
-
         // Query all headers
         const columns = table.querySelectorAll('th');
-
 
         const createResizableColumn = (column, resizer) => {
             // Track the current position of mouse
@@ -68,9 +66,6 @@
         });
         
     });
-
-       
-
 
 </script>
 
