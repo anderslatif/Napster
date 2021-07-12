@@ -1,5 +1,5 @@
 <script>
-  import { song as sound, playlists } from '../../store.js';
+  import { song as sound, playlist } from '../../store.js';
   import DragAndDropTableRow from "../../GenericComponents/DragAndDropTableRow/DragAndDropTableRow.svelte";
   import { sortListByNewIdList } from '../../utils/generalutils.js';
 
@@ -11,7 +11,7 @@
 
   function handleOrderChange(newIdList) {
     const newSongList = sortListByNewIdList(songs, newIdList);
-    playlists.updatePlaylistSongs(playlistName, newSongList);
+    playlist.updatePlaylistSongs(playlistName, newSongList);
   }
 
   function handleDoubleClick() {

@@ -1,4 +1,4 @@
-import { song, playlists } from '../store.js';
+import { song, playlist } from '../store.js';
 import { highlightAll } from './domSelector.js';
 
 const pressedKeys = {};
@@ -23,8 +23,7 @@ function keyHandler() {
         const selectedIds = [...document.querySelectorAll(".selected")].map(element => element.id);
 
         if (selectedIds.length > 0) {
-            // fixme should retrieve the playlistName and not hardcode default
-            playlists.deletePlaylistSongs(selectedIds, "default");           
+            playlist.deletePlaylistSongs(selectedIds);           
         }
     }
 

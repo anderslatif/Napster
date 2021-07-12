@@ -3,13 +3,12 @@
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import Song from "../Song/Song.svelte";
-  import { playlists } from "../../store.js";
+  import { playlist as storePlaylist } from "../../store.js";
   import { isSong, getMetaData } from "../../utils/songutils.js";
   import { guid } from '../../utils/generalutils.js';
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
 
-  export let songs;
-  export let playlistName;
+  export let playlist;
 
   async function handleFileUpload(filePaths) {
 
@@ -29,22 +28,22 @@
         };
       }
     }));
-
-    playlists.updatePlaylistSongs(playlistName, songs.concat(playlistReadyFiles.filter(Boolean)));
+    console.log((playlist.songs.concat(playlistReadyFiles.filter(Boolean))));
+    storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
   }
 
 </script>
 
 <div class="playlist">
-  <PlaylistBar playlistName={playlistName} />
+  <PlaylistBar playlistName={playlist.name} />
   <table id="playlist-table" class="playlist-table">
     <FileUpload onFileUpload={handleFileUpload}>
       <ResizableTable tableId="playlist-table">
         <PlaylistColumns />
       </ResizableTable>
       <tbody id="song-container">
-        {#each songs as song, i (song.id)}
-          <Song index={i} song={song} songs={songs} playlistName={playlistName} />
+        {#each playlist.songs as song, i (song.id)}
+          <Song index={i} song={song} songs={playlist.songs} playlistName={playlist.playlistName} />
         {/each}
         </tbody>
     </FileUpload>
