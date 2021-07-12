@@ -1,4 +1,5 @@
 import Howler from "howler";
+import { changeIsPlaying } from "./utils/domSelector.js";
 
 let sound;
 let currentPlaylist;
@@ -11,10 +12,7 @@ export function getSound() {
 export function playSong(song, playlist, playlistIndex) { 
   if (!song) return;
 
-  document.querySelectorAll(".isPlaying").forEach(selected => {
-    selected.classList.remove("isPlaying");
-  });
-  document.getElementById(song.id).classList.add("isPlaying");
+  changeIsPlaying(song.id);
   
   currentPlaylist = playlist;
   currentlyPlayingIndex = playlistIndex || playlistIndex === 0 ? playlistIndex : currentlyPlayingIndex;

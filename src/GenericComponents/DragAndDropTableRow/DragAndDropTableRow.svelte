@@ -88,7 +88,7 @@
     }
 
     .list-item-container-0 {
-      background-color: #3a3a3a;
+      background-color: #474747;
     }
 
     .list-item-container-1 {

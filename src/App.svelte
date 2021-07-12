@@ -2,17 +2,7 @@
 	import Playlist from "./Components/Playlist/Playlist.svelte"
 	import ControlBar from "./Components/ControlBar/ControlBar.svelte"
 	import { song, playlists } from './store.js';
-
-	function handleKeydown(event) {
-		if (event.key === "backspace") {
-			// todo handle delete selected songs
-			// document.querySelectorAll("selected");
-			// playlists.deleteSongs();
-		}
-		if (event.code === "Space") {
-			song.playOrPauseSong();
-		}
-	}
+	import { keyDown, keyUp } from "./utils/keyHandler.js";
 
 </script>
 
@@ -23,7 +13,10 @@
 	{/each}
 </main>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window 
+	on:keydown={keyDown} 
+	on:keyup={keyUp} 
+/>
 
 <style>
 	main {

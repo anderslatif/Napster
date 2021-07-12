@@ -56,14 +56,17 @@
 <style>
   .playlist {
     height: 90vh;
+    overflow-y: auto;
+  }
+
+  .playlist::-webkit-scrollbar {
+    display: none;
   }
 
   .playlist-table {
     width: 100%;
     height: 100%;
-  }
-
-  #song-container {
-    height: 88vh;
+    margin-bottom: 2.5em;
+    overflow-y: auto;
   }
 </style>

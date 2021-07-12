@@ -70,13 +70,19 @@ function playlistHandler() {
             });
         },
         updatePlaylistName: (oldName, newName) => {},
-        deleteSongFromPlaylist: (id, playlistName) => {
-            const deleteIndex = player.playlist.findIndex((song) => song.id == id);
-            // todo test this
-            if (deleteIndex != -1) {
-                playlist[playlistName].splice(deleteIndex, 1);
-                set(playlist);
-            }
+        deletePlaylistSongs: (ids, playlistName) => {
+
+            update(playlists => {
+                return playlists.map(playlist => {
+                    if (playlist.name === playlistName) {
+                        const newSongList = playlist.songs.filter(song => !ids.includes(song.id));
+                        storageUpdate({ name: playlistName }, { $set: { songs: newSongList } });
+                        
+                        return { ...playlist, songs: newSongList };
+                    }
+                    return playlist;
+                })
+            })
         }
     };
 }
