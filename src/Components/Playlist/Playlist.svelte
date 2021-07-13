@@ -28,7 +28,6 @@
         };
       }
     }));
-    console.log((playlist.songs.concat(playlistReadyFiles.filter(Boolean))));
     storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
   }
 

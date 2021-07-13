@@ -10,11 +10,21 @@ export function keyDown(event) {
 
 export function keyUp(event) {
     pressedKeys[event.code] = false;
+
+    if (event.key === "Meta") {
+        // Macs modify the behavior with the Meta key and won't fire on keyUp for other keys pressed down simultanously. 
+        Object.keys(pressedKeys).forEach(keyCode => {
+            if (pressedKeys[keyCode]) {
+                setTimeout(() => pressedKeys[keyCode] = false, 500);
+            }
+        });
+    }
+
 }
 
 
 function keyHandler() {
-
+    
     if (pressedKeys.Space) {
         song.playOrPauseSong();
     }
