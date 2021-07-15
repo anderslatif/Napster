@@ -1,8 +1,23 @@
-window.api.receive("fromMain", (data) => {
-	console.log(`Received ${data} from main process`);
-});
-window.api.send("toMain", "some data");
+import { playlist } from "../store.js";
 
-            // receive initializePlaylist and call the store like this:
-            // playlist.initializePlaylist();
+window.api.send("toMain", "Rerendered"); 
+
+window.api.receive("initializePlaylist", (initializedPlaylist) => {
+	playlist.initializePlaylist(initializedPlaylist);
+});
+
+
+export function getMetaData(path) {
+    return new Promise((resolve, reject) => {
+        window.api.send("toMainMetadata", path);
+
+        const metadataCallback = (metadata) => {
+            resolve(metadata);
+            window.api.ipcRendererRemoveListener("fromMainMetadata", metadataCallback)
+        };
+
+        window.api.receive("fromMainMetadata", metadataCallback);
+    });
+
+}
 

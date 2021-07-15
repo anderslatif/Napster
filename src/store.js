@@ -46,6 +46,7 @@ function playlistHandler() {
     return {
         subscribe,
         initializePlaylist: (newPlaylist) => {
+
             updatePlaylistSongs(newPlaylist.songs);
             thisWindowsPlaylistId = newPlaylist._id;
             set(newPlaylist);

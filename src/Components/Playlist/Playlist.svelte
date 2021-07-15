@@ -7,18 +7,17 @@
   import { isSong } from "../../utils/songutils.js";
   import { guid } from '../../utils/generalutils.js';
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
+  import { getMetaData } from "../../utils/ipcRendererHandler.js";
 
   export let playlist;
 
   async function handleFileUpload(filePaths) {
 
-    console.log(filePaths);
-
     const playlistReadyFiles = await Promise.all(filePaths.map(async (path) => {
       const isAudio = isSong(path);
 
       if (isAudio) {
-       /*  const metadata = await getMetaData(path);
+        const metadata = await getMetaData(path);
         // the key - ID3v2.3 - under native contains a period and causes problems for my database
         delete metadata.native; 
         delete metadata.quality;
@@ -28,10 +27,10 @@
           type: "audio",
           path,
           metadata
-        }; */
+        };
       }
     }));
-    // storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
+    storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
   }
 
 </script>

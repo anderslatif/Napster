@@ -1,17 +1,17 @@
 const { ipcMain } = require("electron");
-
+const { getMetaData } = require("./metadata.js");
 
 // electron.remote.getCurrentWindow()
 
 function init(window, playlist) {
     ipcMain.on("toMain", (event, args) => {
-        window.webContents.send("fromMain", "test");
+        window.webContents.send("initializePlaylist", playlist);
     });
 
-    setInterval(() => {
-        window.webContents.send("initializePlaylist", playlist);
-    }, 2000);
-    
+    ipcMain.on("toMainMetadata", async (event, path) => {
+        const metadata = await getMetaData(path);
+        window.webContents.send("fromMainMetadata", metadata);
+    });
 }
 
 module.exports = {
