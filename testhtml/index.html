@@ -3,42 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./index.css">
-    <link rel="stylesheet" href="./table.css">
+    <style>
+        .selected {
+            background: lightBlue
+        }
+    </style>
     <title>Document</title>
 </head>
 <body>
-
-    <div id="control-bar">
-        <div id="range-container">
-            <input type="range" id="range">
-        </div>
-        <div id="control-button-group">
-            <div id="play-button-container">
-                <button id="play-button">▶</button>            
-            </div>
-        </div>
-    </div>
-    <div id="playlist">
-        <table id="table">
-            <thead>
-                <tr>
-                    <th id="column-no" style="width: 5vw">Track No.</th>
-                    <th id="column-title" style="width: 35vw">Title</th>
-                    <th id="column-artist" style="width: 20vw">Artist</th>
-                    <th id="column-album" style="width: 30vw">Album</th>
-                    <th id="column-length" style="width: 5vw">Length</th>
-                    <th id="column-year" style="width: 5vw">Year</th>
-                </tr>
-            </thead>
-            <tbody id="table-data"></tbody></tbody>
-        </table>
-    </div>
+    <table id="table">
+        <thead>
+            <tr>
+                <th id="column-no" style="width: 5vw">Track No.</th>
+                <th id="column-title" style="width: 35vw">Title</th>
+                <th id="column-artist" style="width: 20vw">Artist</th>
+                <th id="column-album" style="width: 30vw">Album</th>
+                <th id="column-length" style="width: 5vw">Length</th>
+                <th id="column-year" style="width: 5vw">Year</th>
+            </tr>
+        </thead>
+        <tbody id="table-data"></tbody></tbody>
+    </table>
 
     <script>
         const tableDataElement = document.getElementById("table-data");
 
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 20; i++) {
             const tableRow = document.createElement("TR");
 
             tableRow.innerHTML = `<tr>
@@ -52,67 +42,20 @@
             tableDataElement.append(tableRow);
         }
 
-        // Query the table
-        const table = document.getElementById('table');
+        document.querySelectorAll("tr").forEach(tableRow => {
+            tableRow.addEventListener("click", (event) => {
+                if (event.metaKey) {
+                    tableRow.classList.add("selected");
+                } else if (event.shiftKey) {
 
-        // Query all headers
-        const columns = table.querySelectorAll('th');
-
-
-        const createResizableColumn = (column, resizer) => {
-            // Track the current position of mouse
-            let x = 0;
-            let w = 0;
-
-            const mouseDownHandler = (event) => {
-                resizer.classList.add('resizing');
-
-                // Get the current mouse position
-                x = event.clientX;
-
-                // Calculate the current width of column
-                const styles = window.getComputedStyle(column);
-                w = parseInt(styles.width);
-
-                // Attach listeners for document's events
-                document.addEventListener('mousemove', mouseMoveHandler);
-                document.addEventListener('mouseup', mouseUpHandler);
-            };
-
-            const mouseMoveHandler = (event) => {
-                // Determine how far the mouse has been moved
-                const dx = event.clientX - x;
-
-
-                // Update the width of column
-                column.style.width = `${w + dx}px`;
-            };
-
-            // When user releases the mouse, remove the existing event listeners
-            const mouseUpHandler = () => {
-                resizer.classList.remove('resizing')
-                
-                document.removeEventListener('mousemove', mouseMoveHandler);
-                document.removeEventListener('mouseup', mouseUpHandler);
-            };
-
-            resizer.addEventListener('mousedown', mouseDownHandler);
-        };
-
-        [...columns].forEach((column) => {
-            // Create a resizer element
-            const resizer = document.createElement('div');
-            resizer.classList.add('resizer');
-
-            // Set the height
-            resizer.style.height = `${table.offsetHeight}px`;
-
-            // Add a resizer element to the column
-            column.appendChild(resizer);
-
-            // Will be implemented in the next section
-            createResizableColumn(column, resizer);
-        });
+                } else {
+                    document.querySelectorAll(".selected").forEach(selectedRow => {
+                        selectedRow.classList.remove("selected");
+                    });
+                    tableRow.classList.add("selected");
+                }
+            });
+        });;
     </script>
 </body>
 </html>
