@@ -3,8 +3,6 @@
 
     import { sortListAlphabetically } from "../../utils/generalutils.js";
 
-    const nodePath = require("path");
-
     let files = [];
 
     function handleDragOver(event) {
@@ -44,10 +42,10 @@
                 // webkit does not respect the OS ordering of folders/files so an alphabetic sort is needed
                 await Promise.all(sortListAlphabetically(entries).map(async (entry) => {
                     if (entry.isFile) {
-                        files.push(nodePath.join(path, entry.name));
+                        files.push(`${path}/${entry.name}`);
                     } else if (entry.isDirectory) {
                         const newDirectoryReader = entry.createReader();
-                        await walkDirRecursively(nodePath.join(path, entry.name), newDirectoryReader);
+                        await walkDirRecursively(`${path}/${entry.name}`, newDirectoryReader);
                     }
                 }));
                 resolve();

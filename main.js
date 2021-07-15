@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron')
 const path = require('path')
 const initialize = require("./electron_processes/initialize.js");
-const eventHandler = require("./electron_processes/eventHandler.js");
+const eventHandler = require("./electron_processes/ipcMainHandler.js");
 const storage = require("./electron_processes/storage.js");
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -39,7 +39,7 @@ menu.append(new MenuItem({
 }));
 Menu.setApplicationMenu(menu);
 
-app.whenReady().then(() => {
+app.on("ready", () => {
     // database call here and loop through each playlist and create a 
     initialize.initializeWindowsWithPlaylists(storage);
     if (process.platform === 'darwin') {

@@ -1,6 +1,7 @@
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, ipcMain } = require("electron");
 const url = require("url");
 const path = require("path");
+const ipcMainHandler = require("./ipcMainHandler.js");
 
 function createWindow({ title }) {
     // Create the browser window with node integration
@@ -9,9 +10,9 @@ function createWindow({ title }) {
         width: 1000,
         height: 600,
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            // enableRemoteModule: true,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            preload: path.join(__dirname, "preload.js")
             // backgroundThrottling: false
         }
     });
@@ -35,15 +36,10 @@ async function initializeWindowsWithPlaylists(storage) {
             };
             const window = createWindow(windowOptions);
 
-            // send to the renderer process so that it can call the method below:
-            // playlist.initializePlaylist();
+            ipcMainHandler.init(window, playlist);
 
-                // https://stackoverflow.com/questions/43486438/electron-ipc-sending-data-between-windows#43486549
-                // todo change to setTimeout
-            setInterval(() => {
-                window.webContents.send("initializePlaylist", playlist);
-            }, 2000);
         });
+
     
 }
 

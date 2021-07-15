@@ -4,7 +4,7 @@
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import Song from "../Song/Song.svelte";
   import { playlist as storePlaylist } from "../../store.js";
-  import { isSong, getMetaData } from "../../utils/songutils.js";
+  import { isSong } from "../../utils/songutils.js";
   import { guid } from '../../utils/generalutils.js';
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
 
@@ -12,11 +12,13 @@
 
   async function handleFileUpload(filePaths) {
 
+    console.log(filePaths);
+
     const playlistReadyFiles = await Promise.all(filePaths.map(async (path) => {
       const isAudio = isSong(path);
 
       if (isAudio) {
-        const metadata = await getMetaData(path);
+       /*  const metadata = await getMetaData(path);
         // the key - ID3v2.3 - under native contains a period and causes problems for my database
         delete metadata.native; 
         delete metadata.quality;
@@ -26,10 +28,10 @@
           type: "audio",
           path,
           metadata
-        };
+        }; */
       }
     }));
-    storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
+    // storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
   }
 
 </script>
@@ -43,7 +45,7 @@
       </ResizableTable>
       <tbody id="song-container">
         {#each playlist.songs as song, i (song.id)}
-          <Song index={i} song={song} songs={playlist.songs} playlistName={playlist.playlistName} />
+          <Song index={i} song={song} songs={playlist.songs} playlistName={playlist.name} />
         {/each}
         </tbody>
     </FileUpload>

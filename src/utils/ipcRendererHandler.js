@@ -1,6 +1,8 @@
-const ipcRenderer = require("electron").ipcRenderer;
+window.api.receive("fromMain", (data) => {
+	console.log(`Received ${data} from main process`);
+});
+window.api.send("toMain", "some data");
 
-// ipcRenderer.on('initializePlaylist', (event, data) => {
-//     console.log(data);
-// });
+            // receive initializePlaylist and call the store like this:
+            // playlist.initializePlaylist();
 
