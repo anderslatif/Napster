@@ -1,17 +1,10 @@
 import App from './App.svelte';
+// import ipcRendererHandler from "./utils/ipcRendererHandler.js";
 
-import { playlist } from './store.js';
-import { find } from "./storage.js";
-
-// load the playlist from the database when the app starts
-(async () => {
-	const loadedPlaylists = await find();
-	if (loadedPlaylists.length === 0) {
-		playlist.initializePlaylist();
-	} else {
-		playlist.setPlaylists(loadedPlaylists[0]);
-	}
-})();
+// const ipcRenderer = require("electron").ipcRenderer;
+// ipcRenderer.on('initializePlaylist', (event, data) => {
+//     console.log(data);
+// });
 
 const app = new App({
 	target: document.body,

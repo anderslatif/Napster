@@ -2,7 +2,7 @@ import Howler from "howler";
 import { changeIsPlaying } from "./utils/domSelector.js";
 
 let sound;
-let currentPlaylist;
+let playlistSongs;
 let currentlyPlayingIndex = 0;
 
 export function getSound() {
@@ -14,13 +14,13 @@ export function playSong(song, playlist, playlistIndex) {
 
   changeIsPlaying(song.id);
   
-  currentPlaylist = playlist;
+  playlistSongs = playlist.songs;
   currentlyPlayingIndex = playlistIndex || playlistIndex === 0 ? playlistIndex : currentlyPlayingIndex;
 
   sound?.stop();
 
   sound = new Howler.Howl({
-    src: song.  path,
+    src: song.path,
     html5: true,
     onend: () => {
       currentlyPlayingIndex += 1;
@@ -51,8 +51,13 @@ export function playOrPauseSong(song, playlist) {
   return sound.playing();
 }
 
+
 export function stopSong() {
   sound?.stop();
+}
+
+export function updatePlaylistSongs(songs) {
+  playlistSongs = songs;
 }
 
 export function updateCurrentlyPlayingIndex(playlist) {
@@ -64,5 +69,5 @@ export function updateCurrentlyPlayingIndex(playlist) {
 
 export function updateCurrentPlaylist(newPlaylist) {
   updateCurrentlyPlayingIndex(newPlaylist);
-  currentPlaylist = newPlaylist;
+  playlistSongs = newPlaylist.songs;
 }

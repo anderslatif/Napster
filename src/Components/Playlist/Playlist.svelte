@@ -19,6 +19,7 @@
         const metadata = await getMetaData(path);
         // the key - ID3v2.3 - under native contains a period and causes problems for my database
         delete metadata.native; 
+        delete metadata.quality;
 
         return {
           id: guid(), 

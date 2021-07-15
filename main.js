@@ -1,15 +1,15 @@
-const { app, BrowserWindow, Menu, MenuItem } = require('electron')
+const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron')
 const path = require('path')
-const url = require('url')
-
+const initialize = require("./electron_processes/initialize.js");
+const eventHandler = require("./electron_processes/eventHandler.js");
+const storage = require("./electron_processes/storage.js");
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 process.env['APP_DATA'] = (app || require("electron").remote.app).getPath("userData");
 
-let isDev = process.env.NODE_ENV === "dev";
 // If in development use electron-reload to watch for
 // changes in the current directory
-if (isDev) {
+if (process.env.NODE_ENV === "dev") {
     require('electron-reload')(__dirname, {
         electron: require(`${__dirname}/node_modules/electron`),
         ignored: [/node_modules|[\/\\]\./, /data.db/]
@@ -20,7 +20,7 @@ if (isDev) {
 const dockMenu = Menu.buildFromTemplate([
     {
         label: "New Window",
-        click: createWindow
+        click: initialize.createWindow
     }
 ]);
 
@@ -30,7 +30,7 @@ menu.append(new MenuItem({
     submenu: [{
         label: "New Window",
         accelerator: process.platform === 'darwin' ? 'Cmd+N' : 'CTRL+N',
-        click: createWindow
+        click: initialize.createWindow
     }, 
     {
         label: "Quit",
@@ -39,39 +39,20 @@ menu.append(new MenuItem({
 }));
 Menu.setApplicationMenu(menu);
 
-function createWindow() {
-    // Create the browser window with node integration
-    const win = new BrowserWindow({
-        width: 1000,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            // enableRemoteModule: true,
-            // backgroundThrottling: false
-        }
-    });
-
-    win.loadURL(
-        url.format({
-            pathname: path.join(__dirname, 'public/index.html'),
-            protocol: 'file:',
-            slashes: true
-        })
-    )
-
-    // Open the DevTools only if app is in development
-    if (isDev || true)
-        win.webContents.openDevTools()
-}
-
 app.whenReady().then(() => {
-    createWindow();
+    // database call here and loop through each playlist and create a 
+    initialize.initializeWindowsWithPlaylists(storage);
     if (process.platform === 'darwin') {
-        app.dock.setMenu(dockMenu)
+        app.dock.setMenu(dockMenu);
+        
+        globalShortcut.register('Command+Q', () => {
+            app.quit();
+        });
     }
     app.on('activate', function () {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        // On macOS it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (BrowserWindow.getAllWindows().length === 0) initialize.createWindow()
     });
 })
 

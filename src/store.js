@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
-import { playSong, playOrPauseSong, stopSong, updateCurrentPlaylist } from "./howler.js";
-import { insert as storageInsert, update as storageUpdate } from "./storage.js";
+import { updatePlaylistSongs, playSong, playOrPauseSong, stopSong, updateCurrentPlaylist } from "./howler.js";
 
 let thisWindowsPlaylistId;
 
@@ -33,7 +32,6 @@ function songHandler() {
             const playlist = getPlaylistByName(playlistName);
             const song = playlist.songs[0];
 
-
             playOrPauseSong(song, playlist);
 
             update(songState => { return { ...songState } })
@@ -43,22 +41,17 @@ function songHandler() {
 }
 
 function playlistHandler() {
-    const { subscribe, set, update } = writable({ songs: [] });
+    const { subscribe, set, update } = writable({ name: "", songs: [] });
 
     return {
         subscribe,
-        initializePlaylist: async () => {
-            const newPlaylist = { name: "default", songs: [] };
-            set(newPlaylist);
-            const insertedPlaylist = await storageInsert(newPlaylist);
-            thisWindowsPlaylistId = insertedPlaylist._id;
-        },
-        setPlaylists: (newPlaylist) => {
+        initializePlaylist: (newPlaylist) => {
+            updatePlaylistSongs(newPlaylist.songs);
             thisWindowsPlaylistId = newPlaylist._id;
             set(newPlaylist);
         },
         updatePlaylistSongs: (newSongList) => {
-            storageUpdate({ _id: thisWindowsPlaylistId }, { $set: { songs: newSongList } });
+            // assignment storageUpdate({ _id: thisWindowsPlaylistId }, { $set: { songs: newSongList } });
 
             update(playlist => {
                 updateCurrentPlaylist(newSongList);
@@ -68,13 +61,12 @@ function playlistHandler() {
         updatePlaylistName: (oldName, newName) => {},
         deletePlaylistSongs: (ids) => {
             
-
             update(playlist => {
                 const newSongList = playlist.songs.filter(song => !ids.includes(song.id));
-                storageUpdate({ _id: thisWindowsPlaylistId }, { $set: { songs: newSongList } });
+                // assignment storageUpdate({ _id: thisWindowsPlaylistId }, { $set: { songs: newSongList } });
 
                 return { ...playlist, songs: newSongList }; 
-            })
+            });
         }
     };
 }
@@ -82,13 +74,13 @@ function playlistHandler() {
 
 
 export function getPlaylistByName(playlistName) {
-    let $playlists;
+    let $playlist;
 
-    const unsubscribe = playlists.subscribe(value => {
-        $playlists = value;
+    const unsubscribe = playlist.subscribe(value => {
+        $playlist = value;
     });
     unsubscribe();
-    return $playlists.find(playlist => playlist.name === playlistName);
+    return $playlist;
 }
 
 

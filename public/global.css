@@ -92,7 +92,7 @@ table th {
 }
 
 .resizer:hover, .resizing {
-	border-right: 2px solid blue;
+	border-right: 2px solid rgb(14, 14, 56);
 }
 
 /* song stylings */
