@@ -1,3 +1,5 @@
-create a generic draggable component
+handle failure to play a sound after the file has been moved 
 
-when drag and dropping push the new state to the store and see if the component rerenders (rows are colored correctly)
+hitting space to play / pause not working properly
+
+handle undefined / NAN and null when it comes to metadata

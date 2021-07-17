@@ -1,13 +1,2 @@
-https://wavesurfer-js.org/example/spectrogram/index.html
 
-
-https://github.com/Aveek-Saha/DuskPlayer/blob/master/src/App.svelte
-
-TreeView : https://www.youtube.com/watch?v=8ZU_wOn9BWA
-
-Design the database
-
-Package: 
-https://www.electronjs.org/docs/tutorial/quick-start#package-and-distribute-your-application
-https://www.electronjs.org/docs/tutorial/macos-dock
-
+Github Releases
