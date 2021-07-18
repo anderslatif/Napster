@@ -56,6 +56,10 @@ export function stopSong() {
   sound?.stop();
 }
 
+export function skipSong(changeInSeconds) {
+    sound?.seek(sound.seek() + changeInSeconds);
+}
+
 export function updatePlaylistSongs(songs) {
   playlistSongs = songs;
 }

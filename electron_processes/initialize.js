@@ -20,7 +20,7 @@ function createWindow({ title }) {
     window.loadFile(path.join(__dirname, '/../public/index.html'));
 
     // Open the DevTools only if app is in development
-    if (process.env.NODE_ENV === "dev") window.webContents.openDevTools()
+    if (process.env.NODE_ENV === "dev") window.webContents.openDevTools();
 
     return window;
 }

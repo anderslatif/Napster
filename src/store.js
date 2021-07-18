@@ -59,6 +59,11 @@ function playlistHandler() {
                 return { ...playlist, songs: newSongList };
             });
         },
+        addPlaylistSongs: (newSongList) => {
+            update(playlist => {
+                return { ...playlist, songs: playlist.songs.concat(newSongList) };
+            });
+        },
         updatePlaylistName: (oldName, newName) => {},
         deletePlaylistSongs: (ids) => {
             

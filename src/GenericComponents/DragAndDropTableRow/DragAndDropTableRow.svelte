@@ -60,7 +60,7 @@
         });
         const listElements = document.getElementById(surroundingDivId).childNodes;
         const orderedIds = [...listElements].map(element => element.id);
-        onOrderChange(orderedIds);
+        onOrderChange(orderedIds.filter(Boolean));
     }
 
     function findAfterElement(container, y) {

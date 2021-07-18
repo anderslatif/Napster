@@ -5,13 +5,12 @@
 
   export let index;
   export let song;
-  export let songs;
   export let playlistName;
   const { title, track, artist, album, year, durationString } = song.metadata.common;
 
   function handleOrderChange(newIdList) {
-    const newSongList = sortListByNewIdList(songs, newIdList);
-    playlist.updatePlaylistSongs(playlistName, newSongList);
+    const newSongList = sortListByNewIdList($playlist.songs, newIdList);
+    playlist.updatePlaylistSongs(newSongList);
   }
 
   function handleDoubleClick() {
@@ -25,12 +24,12 @@
   id={song.id} index={index} surroundingDivId="song-container" onOrderChange={handleOrderChange}
   onDoubleClick={handleDoubleClick}
 >
-  <td id="song-track">{track?.no}</td>
-  <td id="song-title">{title}</td>
-  <td id="song-artist">{artist}</td>
-  <td id="song-album">{album}</td>
-  <td id="song-length">{durationString}</td>
-  <td id="song-year">{year}</td>
+  <td id="song-track">{track?.no || ""}</td>
+  <td id="song-title">{title || ""}</td>
+  <td id="song-artist">{artist || ""}</td>
+  <td id="song-album">{album || ""}</td>
+  <td id="song-length">{durationString || ""}</td>
+  <td id="song-year">{year || ""}</td>
 </DragAndDropTableRow>
 
 <style>

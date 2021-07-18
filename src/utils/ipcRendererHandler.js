@@ -1,13 +1,18 @@
 import { playlist } from "../store.js";
 
-window.api.send("toMain", "Rerendered"); 
+window.electron.send("toMain", "Rerendered"); 
 
-window.api.receive("initializePlaylist", (initializedPlaylist) => {
+window.electron.receive("initializePlaylist", (initializedPlaylist) => {
 	playlist.initializePlaylist(initializedPlaylist);
 });
 
+window.electron.receive("fromMainPlaylistFromDroppedFilePaths", (playlistReadyDroppedFiles) => {
+    playlist.addPlaylistSongs(playlistReadyDroppedFiles);
+});
 
-export function getMetaData(path) {
+
+
+/* export function getMetaData(path) {
     return new Promise((resolve, reject) => {
         window.api.send("toMainMetadata", path);
 
@@ -18,6 +23,5 @@ export function getMetaData(path) {
 
         window.api.receive("fromMainMetadata", metadataCallback);
     });
-
 }
-
+ */

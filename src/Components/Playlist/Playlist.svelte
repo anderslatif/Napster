@@ -3,48 +3,21 @@
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import Song from "../Song/Song.svelte";
-  import { playlist as storePlaylist } from "../../store.js";
-  import { isSong } from "../../utils/songutils.js";
-  import { guid } from '../../utils/generalutils.js';
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
-  import { getMetaData } from "../../utils/ipcRendererHandler.js";
-
-  export let playlist;
-
-  async function handleFileUpload(filePaths) {
-
-    const playlistReadyFiles = await Promise.all(filePaths.map(async (path) => {
-      const isAudio = isSong(path);
-
-      if (isAudio) {
-        const metadata = await getMetaData(path);
-        // the key - ID3v2.3 - under native contains a period and causes problems for my database
-        delete metadata.native; 
-        delete metadata.quality;
-
-        return {
-          id: guid(), 
-          type: "audio",
-          path,
-          metadata
-        };
-      }
-    }));
-    storePlaylist.updatePlaylistSongs(playlist.songs.concat(playlistReadyFiles.filter(Boolean)));
-  }
+	import { playlist } from '../../store.js';
 
 </script>
 
 <div class="playlist">
-  <PlaylistBar playlistName={playlist.name} />
+  <PlaylistBar playlistName={$playlist.name} />
   <table id="playlist-table" class="playlist-table">
-    <FileUpload onFileUpload={handleFileUpload}>
+    <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", filePaths)}>
       <ResizableTable tableId="playlist-table">
         <PlaylistColumns />
       </ResizableTable>
       <tbody id="song-container">
-        {#each playlist.songs as song, i (song.id)}
-          <Song index={i} song={song} songs={playlist.songs} playlistName={playlist.name} />
+        {#each $playlist.songs as song, i (song.id)}
+          <Song index={i} song={song} playlistName={playlist.name} />
         {/each}
         </tbody>
     </FileUpload>
@@ -55,7 +28,7 @@
 
 <style>
   .playlist {
-    height: 90vh;
+    height: 85vh;
     overflow-y: auto;
   }
 

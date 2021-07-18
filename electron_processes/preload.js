@@ -1,16 +1,16 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld(
-    "api", {
+    "electron", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["toMain", "toMainMetadata"];
+            let validChannels = ["toMain", "toMainDroppedFilePaths"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
         },
         receive: (channel, func) => {
-            let validChannels = ["fromMain", "initializePlaylist", "fromMainMetadata"];
+            let validChannels = ["fromMain", "initializePlaylist", "fromMainPlaylistFromDroppedFilePaths"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
                 ipcRenderer.on(channel, (event, ...args) => func(...args));

@@ -17,5 +17,7 @@ export function highlightAll() {
 }
 
 export function deselctAll() {
-
+    ocument.querySelectorAll(".selected").forEach(songElement => {
+        songElement.classList.remove("selected");
+    });
 }
