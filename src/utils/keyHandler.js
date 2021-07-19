@@ -49,17 +49,23 @@ function keyHandler() {
     }
 
     if (pressedKeys.ArrowLeft) {
-        if (pressedKeys.shiftLeft || pressedKeys.shiftRight) {
+        if (pressedKeys.ShiftLeft || pressedKeys.ShiftRight) {
             skipSong(-1);
-        } else {
-            skipSong(5);
+        } else if (pressedKeys.MetaLeft || pressedKeys.MetaRight) {
+            skipSong(-10);
+        }
+        else {
+            skipSong(-5);
         }
     }
 
     if (pressedKeys.ArrowRight) {
-        if (pressedKeys.shiftLeft || pressedKeys.shiftRight) {
-            skipSong(-1);
-        } else {
+        if (pressedKeys.ShiftLeft || pressedKeys.ShiftRight) {
+            skipSong(1);
+        } else if (pressedKeys.MetaLeft || pressedKeys.MetaRight) {
+            skipSong(10);
+        }
+        else {
             skipSong(5);
         }
     }

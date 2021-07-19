@@ -100,3 +100,15 @@ tr {
 	color: white;
 	font-size: 0.75em;
 }
+
+/* Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+	display: none;
+}
+
+/* sticky table header */
+table th {
+	position: sticky;
+	top: 0;
+	background-color: #333;
+}

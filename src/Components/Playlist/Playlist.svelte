@@ -32,10 +32,6 @@
     overflow-y: auto;
   }
 
-  .playlist::-webkit-scrollbar {
-    display: none;
-  }
-
   .playlist-table {
     width: 100%;
     height: 100%;

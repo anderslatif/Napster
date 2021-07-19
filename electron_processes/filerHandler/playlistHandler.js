@@ -2,7 +2,7 @@ const { getMetaData, isSong } = require("./songUtils.js");
 const { guid } = require("./generalUtils.js");
 
 async function playlistHandler(filePaths) {
-    const playlistReadyFiles = await Promise.all(filePaths.filter(Boolean).map(async (path) => {
+    const playlistReadyFiles = await Promise.all(filePaths.map(async (path) => {
         const isAudio = isSong(path);
   
         if (isAudio) {
@@ -19,7 +19,7 @@ async function playlistHandler(filePaths) {
           };
         }
       }));
-      return playlistReadyFiles;
+      return playlistReadyFiles.filter(Boolean);
 }
 
 module.exports = {

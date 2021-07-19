@@ -44,6 +44,8 @@
         const afterElement = findAfterElement(container, event.clientY);
         const draggables = document.querySelectorAll(".dragging");
 
+        // todo try to color afterElement and see if this can be used for file drag and drop
+
 
         draggables.forEach(drag => {
             if (!afterElement) {
