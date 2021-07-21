@@ -1,12 +1,11 @@
 const { BrowserWindow, ipcMain } = require("electron");
-const url = require("url");
 const path = require("path");
 const ipcMainHandler = require("./ipcMainHandler.js");
 
-function createWindow({ title }) {
+function createWindow(options) {
     // Create the browser window with node integration
     const window = new BrowserWindow({
-        title,
+        title: options?.title,
         width: 1000,
         height: 600,
         webPreferences: {
@@ -29,18 +28,25 @@ async function initializeWindowsWithPlaylists(storage) {
     // load the playlist from the database when the app starts
     const playlists = await storage.find();
     
+    if (playlists.length === 0) {
+
+        storage.insert({ name: "Napster", songs: [] });
+        createWindow({ title: "Napster" }); 
+
+    } else {
+
         playlists.map((playlist) => {
 
             const windowOptions = {
-                title: playlist.name
+                title: playlist.name 
             };
             const window = createWindow(windowOptions);
-
+    
             ipcMainHandler.init(window, playlist);
-
+            
         });
 
-    
+    } 
 }
 
 module.exports = {

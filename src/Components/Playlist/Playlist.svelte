@@ -8,20 +8,22 @@
 
   let lastClickedTableRowId;
   let selectedIds = [];
+
 </script>
 
 <div class="playlist">
   <PlaylistBar playlistName={$playlist.name} />
   <table id="playlist-table" class="playlist-table">
-    <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", filePaths)}>
+    <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", { _id: $playlist._id, filePaths })}>
       <ResizableTable tableId="playlist-table">
         <PlaylistColumns />
       </ResizableTable>
       <tbody id="song-container">
         {#each $playlist.songs as song, i (song.id)}
-          <Song index={i} song={song} playlistName={playlist.name} 
-          lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}
-          selectedIds={selectedIds} updateSelectedIds={newIdList => selectedIds = newIdList}
+          <Song 
+            index={i} song={song} playlistName={playlist.name} 
+            lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}
+            selectedIds={selectedIds} updateSelectedIds={newIdList => selectedIds = newIdList}  
           />
         {/each}
         </tbody>

@@ -69,7 +69,6 @@ function playlistHandler() {
             
             update(playlist => {
                 const newSongList = playlist.songs.filter(song => !ids.includes(song.id));
-                // assignment storageUpdate({ _id: thisWindowsPlaylistId }, { $set: { songs: newSongList } });
 
                 return { ...playlist, songs: newSongList }; 
             });

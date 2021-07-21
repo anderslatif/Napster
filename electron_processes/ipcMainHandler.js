@@ -1,5 +1,6 @@
 const { ipcMain } = require("electron");
 const { playlistHandler } = require("./filerHandler/playlistHandler.js");
+const storage = require("./storage.js");
 
 // electron.remote.getCurrentWindow()
 
@@ -9,8 +10,12 @@ function init(window, playlist) {
         window.webContents.send("initializePlaylist", playlist);
     });
 
-    ipcMain.on("toMainDroppedFilePaths", async (event, filePaths) => {
+    ipcMain.on("toMainDroppedFilePaths", async (event, { _id, filePaths }) => {
         const playlist = await playlistHandler(filePaths);
+
+        const currentPlaylist = await storage.findOne({ _id }, { $concatArrays: { songs: playlist } });
+        storage.update({ _id }, { $set: { songs:  currentPlaylist.songs.concat(playlist) } });
+
         window.webContents.send("fromMainPlaylistFromDroppedFilePaths", playlist);
     });
 }
