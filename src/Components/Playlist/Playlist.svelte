@@ -6,6 +6,7 @@
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
 	import { playlist } from '../../store.js';
 
+  let lastClickedTableRowId;
 </script>
 
 <div class="playlist">
@@ -17,11 +18,10 @@
       </ResizableTable>
       <tbody id="song-container">
         {#each $playlist.songs as song, i (song.id)}
-          <Song index={i} song={song} playlistName={playlist.name} />
+          <Song index={i} song={song} playlistName={playlist.name} lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}/>
         {/each}
         </tbody>
     </FileUpload>
-
   </table>
 </div>
 

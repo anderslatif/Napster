@@ -4,22 +4,54 @@
     export let surroundingDivId;
     export let onOrderChange; 
     export let onDoubleClick;
+    export let lastClickedTableRowId;
+    export let changeLastClickedTableRowId;
 
- 
     function handleClick(event) {
-        const itemNode = event.target.parentNode;
+        const tableRow = event.target.parentNode;
+        const tableRowId = Number(tableRow.dataset.index);
 
-        if (event.shiftKey) {
-            console.log("shift key pressed while clicking")
-        } else if (event.ctrlKey || event.metaKey) {
-            itemNode.classList.toggle("selected");
+        if (event.metaKey || event.ctrlKey) {
+            if (tableRow.classList.contains("selected")) {
+                tableRow.classList.remove("selected");
+            } else {
+                tableRow.classList.add("selected");
+                changeLastClickedTableRowId(tableRowId);
+            }
+        } else if (event.shiftKey) {
+            const selectedRows = document.querySelectorAll(".selected");
+            const clickedRowId = tableRowId;
+
+            if (selectedRows.length === 0) {
+                const firstIndex = 0;
+                selectInRange(firstIndex, clickedRowId);
+            } else if (selectedRows.length === 1) {
+                const selectedRowId = Number(selectedRows[0].dataset.index);
+
+                if (selectedRowId < clickedRowId) {
+                    selectInRange(selectedRowId, clickedRowId);
+                } else if (selectedRowId > clickedRowId) {
+                    selectInRange(clickedRowId, selectedRowId);
+                }
+            } else {
+                if (lastClickedTableRowId < clickedRowId) {
+                    selectInRange(lastClickedTableRowId, clickedRowId);
+                } else {
+                    selectInRange(clickedRowId, lastClickedTableRowId);
+                }
+            }
         } else {
-            // deselect all selections
-            document.querySelectorAll(".selected").forEach(selected => {
-                selected.classList.toggle("selected");
+            document.querySelectorAll(".selected").forEach(selectedRow => {
+                selectedRow.classList.remove("selected");
             });
-            // select the clicked item
-            itemNode.classList.toggle("selected");
+            tableRow.classList.add("selected");
+            changeLastClickedTableRowId(tableRowId);
+        }
+    }
+
+    function selectInRange(min, max) {
+        for (let i = min; i <= max; i++) {
+            document.querySelector(`[data-index~="${i}"]`).classList.add("selected");
         }
     }
 
@@ -43,9 +75,6 @@
 
         const afterElement = findAfterElement(container, event.clientY);
         const draggables = document.querySelectorAll(".dragging");
-
-        // todo try to color afterElement and see if this can be used for file drag and drop
-
 
         draggables.forEach(drag => {
             if (!afterElement) {
@@ -90,6 +119,7 @@
 <tr
     id={id}
     class="draggable list-item list-item-container-{index % 2}"
+    data-index={index}
     on:click={handleClick}
     on:dragstart={handleDragStart}
     on:dragover={handleDragOver}

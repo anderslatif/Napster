@@ -2,10 +2,11 @@
   import { song as sound, playlist } from '../../store.js';
   import DragAndDropTableRow from "../../GenericComponents/DragAndDropTableRow/DragAndDropTableRow.svelte";
   import { sortListByNewIdList } from '../../utils/generalutils.js';
-
+  
   export let index;
   export let song;
   export let playlistName;
+
   const { title, track, artist, album, year, durationString } = song.metadata.common;
 
   function handleOrderChange(newIdList) {
@@ -17,12 +18,19 @@
     sound.playSong(song, playlistName);
   }
 
+  export let lastClickedTableRowId;
+  export let changeLastClickedTableRowId;
+
 </script>
 
 
 <DragAndDropTableRow 
-  id={song.id} index={index} surroundingDivId="song-container" onOrderChange={handleOrderChange}
+  id={song.id} index={index} 
+  surroundingDivId="song-container" 
+  onOrderChange={handleOrderChange}
   onDoubleClick={handleDoubleClick}
+  lastClickedTableRowId={lastClickedTableRowId}
+  changeLastClickedTableRowId={changeLastClickedTableRowId}
 >
   <td id="song-track">{track?.no || ""}</td>
   <td id="song-title">{title || ""}</td>
