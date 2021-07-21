@@ -7,6 +7,7 @@
 	import { playlist } from '../../store.js';
 
   let lastClickedTableRowId;
+  let selectedIds = [];
 </script>
 
 <div class="playlist">
@@ -18,7 +19,10 @@
       </ResizableTable>
       <tbody id="song-container">
         {#each $playlist.songs as song, i (song.id)}
-          <Song index={i} song={song} playlistName={playlist.name} lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}/>
+          <Song index={i} song={song} playlistName={playlist.name} 
+          lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}
+          selectedIds={selectedIds} updateSelectedIds={newIdList => selectedIds = newIdList}
+          />
         {/each}
         </tbody>
     </FileUpload>

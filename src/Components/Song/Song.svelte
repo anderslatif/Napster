@@ -7,6 +7,11 @@
   export let song;
   export let playlistName;
 
+  export let lastClickedTableRowId;
+  export let changeLastClickedTableRowId;
+  export let selectedIds;
+  export let updateSelectedIds;
+
   const { title, track, artist, album, year, durationString } = song.metadata.common;
 
   function handleOrderChange(newIdList) {
@@ -18,9 +23,6 @@
     sound.playSong(song, playlistName);
   }
 
-  export let lastClickedTableRowId;
-  export let changeLastClickedTableRowId;
-
 </script>
 
 
@@ -31,6 +33,8 @@
   onDoubleClick={handleDoubleClick}
   lastClickedTableRowId={lastClickedTableRowId}
   changeLastClickedTableRowId={changeLastClickedTableRowId}
+  updateSelectedIds={updateSelectedIds}
+  selected={selectedIds.includes(song.id)}
 >
   <td id="song-track">{track?.no || ""}</td>
   <td id="song-title">{title || ""}</td>

@@ -6,6 +6,10 @@
     export let onDoubleClick;
     export let lastClickedTableRowId;
     export let changeLastClickedTableRowId;
+    export let updateSelectedIds;
+    export let selected;
+
+    let selectedIds;
 
     function handleClick(event) {
         const tableRow = event.target.parentNode;
@@ -66,8 +70,12 @@
         }
         draggingRow.classList.add("selected");
 
+        selectedIds = [];
         const selected = document.querySelectorAll(".selected");
-        selected.forEach(element => element.classList.add("dragging"));
+        selected.forEach(element => {
+            element.classList.add("dragging");
+            selectedIds.push(element.id);
+        });
     }
 
     function handleDragOver(event) {
@@ -75,6 +83,8 @@
 
         const afterElement = findAfterElement(container, event.clientY);
         const draggables = document.querySelectorAll(".dragging");
+
+        // console.log("afterElement", afterElement);
 
         draggables.forEach(drag => {
             if (!afterElement) {
@@ -85,7 +95,8 @@
         });
     }
 
-    function handleDragEnd(event) {
+    function handleDragEnd() {
+        updateSelectedIds(selectedIds);
         document.querySelectorAll(".dragging").forEach(drag => {
             drag.classList.remove("dragging");
         });
@@ -118,7 +129,7 @@
 
 <tr
     id={id}
-    class="draggable list-item list-item-container-{index % 2}"
+    class="draggable list-item list-item-container-{index % 2} {selected ? "selected" : ""}"
     data-index={index}
     on:click={handleClick}
     on:dragstart={handleDragStart}

@@ -1,5 +1,3 @@
 handle failure to play a sound after the file has been moved 
 
-hitting space to play / pause not working properly
-
-handle undefined / NAN and null when it comes to metadata
+fix issues with hitting space
