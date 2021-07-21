@@ -4,7 +4,7 @@ contextBridge.exposeInMainWorld(
     "electron", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["toMain", "toMainDroppedFilePaths"];
+            let validChannels = ["toMain", "toMainDroppedFilePaths", "toMainSetSongList"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }

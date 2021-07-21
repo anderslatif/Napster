@@ -52,10 +52,10 @@ function playlistHandler() {
             set(newPlaylist);
         },
         updatePlaylistSongs: (newSongList) => {
-            // assignment storageUpdate({ _id: thisWindowsPlaylistId }, { $set: { songs: newSongList } });
-
             update(playlist => {
                 updateCurrentPlaylist(newSongList);
+                window.electron.send("toMainSetSongList", { _id: playlist._id, newSongList }); 
+                
                 return { ...playlist, songs: newSongList };
             });
         },
@@ -69,6 +69,7 @@ function playlistHandler() {
             
             update(playlist => {
                 const newSongList = playlist.songs.filter(song => !ids.includes(song.id));
+                window.electron.send("toMainSetSongList", { _id: playlist._id, newSongList }); 
 
                 return { ...playlist, songs: newSongList }; 
             });

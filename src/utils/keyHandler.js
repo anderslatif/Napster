@@ -30,7 +30,7 @@ function keyHandler() {
         song.playOrPauseSong();
     }
 
-    if (pressedKeys.Backspace) {
+    if (pressedKeys.Backspace || pressedKeys.Delete) {
         const selectedIds = [...document.querySelectorAll(".selected")].map(element => element.id);
 
         if (selectedIds.length > 0) {

@@ -18,6 +18,10 @@ function init(window, playlist) {
 
         window.webContents.send("fromMainPlaylistFromDroppedFilePaths", playlist);
     });
+
+    ipcMain.on("toMainSetSongList", (event, { _id, newSongList }) => {
+        storage.update({ _id }, { $set: { songs: newSongList } });
+    });
 }
 
 module.exports = {
