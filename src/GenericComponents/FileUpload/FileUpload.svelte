@@ -5,7 +5,7 @@
 
     let files = [];
 
-    function handleDragOver(event) {
+    function handleDragOver(event) {        
         // if dropping files deselect existing selections
         if (event.dataTransfer.items.length > 0) {
             document.querySelectorAll(".selected").forEach(selected => {

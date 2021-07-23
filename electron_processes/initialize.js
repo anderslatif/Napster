@@ -34,13 +34,15 @@ async function createWindow(options) {
         if (isQuitting) return;
 
         if (openWindows.length > 1) {
-            console.log();
+            ipcMainHandler.removeWindowById(options.playlist._id);
             storage.removeOne({ _id: options.playlist._id });  
         } 
     });
 
     // Open the DevTools only if app is in development
     if (process.env.NODE_ENV === "dev") window.webContents.openDevTools();
+
+    ipcMainHandler.addWindow({ window, _id: options.playlist._id });
 
     return window;
 }

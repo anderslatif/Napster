@@ -64,7 +64,12 @@ function playlistHandler() {
                 return { ...playlist, songs: playlist.songs.concat(newSongList) };
             });
         },
-        updatePlaylistName: (oldName, newName) => {},
+        updatePlaylistName: (newName) => {
+            update(playlist => {
+                window.electron.send("toMainChangePlaylistName", { _id: playlist._id, name: newName });
+                return { ...playlist, name: newName};
+            })
+        },
         deletePlaylistSongs: (ids) => {
             
             update(playlist => {
