@@ -53,9 +53,21 @@ function update(searchQuery, updateContent) {
     });
 }
 
+function removeOne(searchQuery) {
+    return new Promise((resolve, reject) => {
+        db.remove(searchQuery, { multi: false }, (error, data) => {
+            if (error) {
+                console.log(error);
+            }
+            resolve(data);
+        });
+    });
+}
+
 module.exports = {
     findOne, 
     find,
     insert,
-    update
+    update,
+    removeOne
 };

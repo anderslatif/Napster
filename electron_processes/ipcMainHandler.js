@@ -1,8 +1,6 @@
-const { ipcMain } = require("electron");
+const { BrowserWindow, ipcMain } = require("electron");
 const { playlistHandler } = require("./filerHandler/playlistHandler.js");
-const storage = require("./storage.js");
-
-// electron.remote.getCurrentWindow()
+const storage = require("./db/storage.js");
 
 function init(window, playlist) {
     ipcMain.on("toMain", (event, args) => {

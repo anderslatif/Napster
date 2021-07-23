@@ -40,7 +40,11 @@
   "build": {
     "appId": "com.andl.napster",
     "mac": {
-      "icon": "public/napster_icon.png"
+      "icon": "public/napster_icon.png",
+      "fileAssociations": [{
+        "ext": ["mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf",
+          "m4a", "m4b", "mp4", "weba", "webm", "dolby", "flac"]
+      }]
     },
     "files": [
       "!data.db",

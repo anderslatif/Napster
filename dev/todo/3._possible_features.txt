@@ -1,3 +1,5 @@
+allow dropping file(s) in the middle of the playlist
+
 wavesurfer 
 https://wavesurfer-js.org/example/spectrogram/index.html
 
@@ -5,4 +7,3 @@ click + "O" to open in location
 
 view lyrics
 
-Export/Import the database option
