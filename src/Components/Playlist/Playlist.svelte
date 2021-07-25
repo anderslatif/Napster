@@ -4,7 +4,8 @@
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import Song from "../Song/Song.svelte";
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
-	import { playlist } from '../../store.js';
+
+  export let playlist;
 
   let lastClickedTableRowId;
   let selectedIds = [];
@@ -12,16 +13,16 @@
 </script>
 
 <div class="playlist">
-  <PlaylistBar playlistName={$playlist.name} />
+  <PlaylistBar playlistName={playlist.name} />
   <table id="playlist-table" class="playlist-table">
-    <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", { _id: $playlist._id, filePaths })}>
+    <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", { _id: playlist._id, filePaths })}>
       <ResizableTable tableId="playlist-table">
         <PlaylistColumns />
       </ResizableTable>
       <tbody id="song-container">
-        {#each $playlist.songs as song, i (song.id)}
+        {#each playlist.items as item, i (item.id)}
           <Song 
-            index={i} song={song} playlistName={playlist.name} 
+            index={i} song={item} playlistName={playlist.name} 
             lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}
             selectedIds={selectedIds} updateSelectedIds={newIdList => selectedIds = newIdList}  
           />

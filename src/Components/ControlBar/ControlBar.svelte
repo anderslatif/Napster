@@ -1,7 +1,6 @@
 <script>
-    import WaveSurfer from "./SubComponents/WaveSurfer.svelte";
-    import { song } from "../../store.js";
-    import { getSound } from "../../howler.js";
+    import { playlist } from "../../store.js";
+    import { getSound } from "../../playlist/howler.js";
     import { convertSecondsToTimeString } from "../../utils/songutils.js";
 
     let sound = getSound();
@@ -43,7 +42,6 @@
 
 <div id="control-bar">
     <div id="control-progress-container">
-        <!--     <WaveSurfer id="wavesurfer-container" /> -->    
         <div id="progress-bar-container">
             <div id="label-container">
                 <label id="progress-bar-label-currentTime" class="progress-bar-label" for="progress-bar">{currentTimeString}</label>

@@ -1,18 +1,38 @@
 import { writable } from "svelte/store";
-import { updatePlaylistSongs, playSong, playOrPauseSong, stopSong, updateCurrentPlaylist } from "./howler.js";
+import Playlist from "./playlist/Playlist.js";
 
 let thisWindowsPlaylistId;
 
-function songHandler() {
-    const songState = {
-        currentPlaylist: "default",
-        sound: undefined,
-    };
-    const { subscribe, set, update } = writable(songState);
+function playlistHandler() {
+    const { subscribe, set, update } = writable(new Playlist());
 
     return {
         subscribe,
-        playSong: (song, playlistName = "default") => {
+        setItems: (items) => {
+            update(playlist => {
+                return { ...playlist, items };
+            });
+        },
+        playItem: (item) => {
+            update(playlist => {
+                playlist.playItem(item);
+                return playlist;
+            });
+
+        },
+        playNext: (item) => {
+            update(playlist => {
+                const newCurrentIndex = playlist.playNext();
+                // todo test update the current index below 
+                playlist.currentIndex = newCurrentIndex;
+                return playlist;
+            });
+        },
+        playOrPauseItem: () => {},
+        changePlaylist: (playlist) => {
+            set(new Playlist(playlist._id, playlist.items));
+        },
+        /* playSong: (song, playlistName = "default") => {
 
             const playlist = getPlaylistByName(playlistName);
             const playlistIndex = playlist.songs.findIndex(playlistSong => playlistSong.id === song?.id);
@@ -35,19 +55,22 @@ function songHandler() {
             playOrPauseSong(song, playlist);
 
             update(songState => { return { ...songState } })
-        },
-        stopSong: stopSong()
+        }, */
+        deleteSongs: (songs) => {
+            // calls set items maybe I can just reuse setItems above?
+
+        }
     }
 }
 
-function playlistHandler() {
-    const { subscribe, set, update } = writable({ name: "", songs: [] });
+function playlistsHandler() {
+    const { subscribe, set, update } = writable([]);
 
     return {
         subscribe,
-        initializePlaylist: (newPlaylist) => {
+         initializePlaylists: (newPlaylist) => {
 
-            updatePlaylistSongs(newPlaylist.songs);
+            // updatePlaylistSongs(newPlaylist.songs);
             thisWindowsPlaylistId = newPlaylist._id;
             set(newPlaylist);
         },
@@ -95,5 +118,5 @@ export function getPlaylistByName(playlistName) {
 }
 
 
-export const song = songHandler();
 export const playlist = playlistHandler();
+export const playlists = playlistsHandler();

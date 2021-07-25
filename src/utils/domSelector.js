@@ -1,4 +1,3 @@
-
 export function changeIsPlaying(songId) {
     document.querySelectorAll(".isPlaying").forEach(selected => {
         selected.classList.remove("isPlaying");

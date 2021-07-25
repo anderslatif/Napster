@@ -1,6 +1,6 @@
-import { song, playlist } from '../store.js';
+import { playlist, playlists } from '../store.js';
 import { deselctAll, highlightAll } from './domSelector.js';
-import { skipSong } from "../howler.js";
+import { skipSong } from "../playlist/howler.js";
 
 const pressedKeys = {};
 
@@ -34,7 +34,7 @@ function keyHandler() {
         const selectedIds = [...document.querySelectorAll(".selected")].map(element => element.id);
 
         if (selectedIds.length > 0) {
-            playlist.deletePlaylistSongs(selectedIds);           
+            playlists.deletePlaylistSongs(selectedIds);
         }
     }
 

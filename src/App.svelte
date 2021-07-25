@@ -2,12 +2,15 @@
 	import Playlist from "./Components/Playlist/Playlist.svelte"
 	import ControlBar from "./Components/ControlBar/ControlBar.svelte"
 	import { keyDown, keyUp } from "./utils/keyHandler.js";
+	import { playlists } from "./store.js";
 
 </script>
 
 <main>
 	<ControlBar />
-	<Playlist />
+	{#each $playlists as playlist (playlist.id)}
+		<Playlist playlist={playlist} />
+	{/each}
 </main>
 
 <svelte:window 

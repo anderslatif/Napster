@@ -1,5 +1,5 @@
 <script>
-  import { song as sound, playlist } from '../../store.js';
+  import { playlist, playlists } from '../../store.js';
   import DragAndDropTableRow from "../../GenericComponents/DragAndDropTableRow/DragAndDropTableRow.svelte";
   import { sortListByNewIdList } from '../../utils/generalutils.js';
   
@@ -20,7 +20,7 @@
   }
 
   function handleDoubleClick() {
-    sound.playSong(song, playlistName);
+    playlist.playItem(song, playlistName);
   }
 
 </script>

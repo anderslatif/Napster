@@ -1,32 +1,25 @@
 import Howler from "howler";
-import { changeIsPlaying } from "./utils/domSelector.js";
+import { changeIsPlaying } from "../utils/domSelector.js";
+// import { playlist } from "../store.js";
 
 let sound;
-let playlistSongs;
-let currentlyPlayingIndex = 0;
 
 export function getSound() {
   return sound;
 }
 
-export function playSong(song, playlist, playlistIndex) { 
+export function playSong(song, playlist) { 
   if (!song) return;
 
   changeIsPlaying(song.id);
   
-  playlistSongs = playlist.songs;
-  currentlyPlayingIndex = playlistIndex || playlistIndex === 0 ? playlistIndex : currentlyPlayingIndex;
-
   sound?.stop();
 
   sound = new Howler.Howl({
     src: song.path,
     html5: true,
     onend: () => {
-      currentlyPlayingIndex += 1;
-      if (currentlyPlayingIndex <= playlist.songs.length) {
-        playSong(playlist.songs[currentlyPlayingIndex], playlist);
-      }
+      playlist.playNext();
     }
   });
 
@@ -60,6 +53,7 @@ export function skipSong(changeInSeconds) {
     sound?.seek(sound.seek() + changeInSeconds);
 }
 
+// fixme move the logic below to Playlist
 export function updatePlaylistSongs(songs) {
   playlistSongs = songs;
 }

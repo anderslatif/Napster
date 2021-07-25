@@ -14,26 +14,14 @@ if (process.env.NODE_ENV === "dev") {
     });
 }
 
-const dockMenu = Menu.buildFromTemplate([
-    {
-        label: "New Window",
-        click: () => initialize.createWindow({ newWindow: true })
-    }
-]);
-
 const menu = new Menu();
 menu.append(new MenuItem({
     label: "Napster",
-    submenu: [{
-        label: "New Window",
-        accelerator: process.platform === 'darwin' ? 'Cmd+N' : 'CTRL+N',
-        click: () => initialize.createWindow({ newWindow: true })
-    }, 
+    submenu: [
     {
         label: "Quit",
         accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'CTRL+Q',
         click: () => {
-            initialize.quit();
             app.quit()
         }
     }]
@@ -45,7 +33,6 @@ app.on("ready", () => {
     initialize.initializeWindowsWithPlaylists();
 
     if (process.platform === 'darwin') {
-        app.dock.setMenu(dockMenu);
     }
     app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the
