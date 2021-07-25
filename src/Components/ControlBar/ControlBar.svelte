@@ -1,6 +1,5 @@
 <script>
-    import { playlist } from "../../store.js";
-    import { getSound } from "../../playlist/howler.js";
+    import { getSound, playOrPauseSong } from "../../playlist/howler.js";
     import { convertSecondsToTimeString } from "../../utils/songutils.js";
 
     let sound = getSound();
@@ -23,7 +22,7 @@
 
     function handlePlayOrPauseSong() {
         soundPlaying = !soundPlaying;
-        song.playOrPauseSong();
+        playOrPauseSong();
     }
 
     setInterval(() => {

@@ -1,6 +1,6 @@
 import { playlist, playlists } from '../store.js';
 import { deselctAll, highlightAll } from './domSelector.js';
-import { skipSong } from "../playlist/howler.js";
+import { skipSong, playOrPauseSong } from "../playlist/howler.js";
 
 const pressedKeys = {};
 
@@ -27,7 +27,7 @@ export function keyUp(event) {
 function keyHandler() {
     
     if (pressedKeys.Space) {
-        song.playOrPauseSong();
+        playOrPauseSong();
     }
 
     if (pressedKeys.Backspace || pressedKeys.Delete) {

@@ -8,7 +8,7 @@ export function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-export function sortListByNewIdList(list, newIdList) {
+export function sortListByIdList(list, newIdList) {
     return list.sort((a, b) => {
         return newIdList.indexOf(a.id) - newIdList.indexOf(b.id);
     });

@@ -1,6 +1,6 @@
 import { getSound, playSong } from "./howler.js";
 
-export default class Playlist {
+class Playlist {
     playlistId;
     items;
     currentItem;  
@@ -8,24 +8,15 @@ export default class Playlist {
 
     currentIsAudio = true;
 
-    sound;
-
-    constructor(playlistId, items) {
-        this.playlistId = playlistId;
-        this.items = items;
-    }
-
     playItem(item) {
         const foundIndex = this.items.findIndex(listItem => listItem.id === item.id);
         this.currentIndex = foundIndex;
 
+        this.currentItem = item;
+
         if (item.type === "audio") {
             playSong(item, this);
         }
-    }
-
-    playOrPauseItem() {
-    
     }
 
     playNext() {
@@ -35,14 +26,34 @@ export default class Playlist {
 
 
         const nextItem = this.items[this.currentIndex];
+        this.currentItem = nextItem;
+
         if (nextItem.type === "audio") {
             playSong(nextItem, this);
         }
     }
 
-    changePlaylist(items) {
-        this.currentIndex = 0;
+    setItems(items) {
         this.items = items;
-        if (items.length > 0) this.currentIndex = items[this.currentIndex];
+        
+        // recalculcate
+        if (this.currentItem) {
+            const newIndex = this.items.findIndex(item => item.id === this.currentItem.id);
+            this.currentIndex = newIndex;
+        }
+        return this;
+    }
+
+    changePlaylist(playlist) {
+        this.currentIndex = 0;
+        this.playlistId = playlist._id;
+        this.items = playlist.items;
+        if (playlist.items.length > 0) this.currentIndex = this.items[this.currentIndex];
+
+        return this;
     }
 }
+
+const playlist = new Playlist();
+
+export default playlist;

@@ -4,14 +4,12 @@ import Playlist from "./playlist/Playlist.js";
 let thisWindowsPlaylistId;
 
 function playlistHandler() {
-    const { subscribe, set, update } = writable(new Playlist());
+    const { subscribe, set, update } = writable(Playlist);
 
     return {
         subscribe,
         setItems: (items) => {
-            update(playlist => {
-                return { ...playlist, items };
-            });
+            update(playlist => playlist.setItems(items));
         },
         playItem: (item) => {
             update(playlist => {
@@ -28,37 +26,8 @@ function playlistHandler() {
                 return playlist;
             });
         },
-        playOrPauseItem: () => {},
-        changePlaylist: (playlist) => {
-            set(new Playlist(playlist._id, playlist.items));
-        },
-        /* playSong: (song, playlistName = "default") => {
-
-            const playlist = getPlaylistByName(playlistName);
-            const playlistIndex = playlist.songs.findIndex(playlistSong => playlistSong.id === song?.id);
-            const nextSong = song || playlist.songs[0];
-                    
-            const sound = playSong(nextSong, playlist, playlistIndex);
-
-            update(songState => { 
-                return { 
-                    ...songState, 
-                    sound,
-                }; 
-            });
-        },
-        playOrPauseSong: (playlistName = "default") => {
-
-            const playlist = getPlaylistByName(playlistName);
-            const song = playlist.songs[0];
-
-            playOrPauseSong(song, playlist);
-
-            update(songState => { return { ...songState } })
-        }, */
-        deleteSongs: (songs) => {
-            // calls set items maybe I can just reuse setItems above?
-
+        changePlaylist: (newPlaylist) => {
+            update(playlist => playlist.changePlaylist(newPlaylist));
         }
     }
 }

@@ -42,6 +42,5 @@ app.on("ready", () => {
 })
 
 app.on('window-all-closed', function () {
-    initialize.quit();
     app.quit()
 });
