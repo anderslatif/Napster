@@ -1,8 +1,8 @@
 const mm = require('music-metadata');
 
-async function getMetaData(filePath) {
+async function getMusicMetaData(filePath) {
     const metadata = await mm.parseFile(filePath);
-       
+        
     const { duration } = metadata.format;
     const durationString = convertSecondsToTimeString(duration);
     metadata.common.duration = duration;
@@ -11,13 +11,10 @@ async function getMetaData(filePath) {
     return metadata;
 }
 
-function isSong(filePath) {
-    const fileNameSplit = filePath.split(".");
-    const extension = fileNameSplit.pop();
-
+function isAudio(extension) {
     const validExtensions = ["mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf",
                             "m4a", "m4b", "mp4", "weba", "webm", "dolby", "flac"];
-    return validExtensions.includes(extension);
+    return validExtensions.includes(extension.toLowerCase());
 }
 
 function convertSecondsToTimeString(durationInSeconds) {
@@ -31,6 +28,6 @@ function convertSecondsToTimeString(durationInSeconds) {
 
 
 module.exports = {
-    getMetaData,
-    isSong
+    getMusicMetaData,
+    isAudio
 };

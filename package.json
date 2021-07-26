@@ -32,19 +32,38 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "ffmpeg": "^0.0.4",
     "howler": "^2.2.1",
     "music-metadata": "^7.8.8",
     "nedb": "^1.8.0",
+    "video.js": "^7.13.3",
     "wavesurfer.js": "^5.1.0"
   },
   "build": {
     "appId": "com.andl.napster",
     "mac": {
       "icon": "public/napster_icon.png",
-      "fileAssociations": [{
-        "ext": ["mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf",
-          "m4a", "m4b", "mp4", "weba", "webm", "dolby", "flac"]
-      }]
+      "fileAssociations": [
+        {
+          "ext": [
+            "mp3",
+            "mpeg",
+            "opus",
+            "ogg",
+            "oga",
+            "wav",
+            "aac",
+            "caf",
+            "m4a",
+            "m4b",
+            "mp4",
+            "weba",
+            "webm",
+            "dolby",
+            "flac"
+          ]
+        }
+      ]
     },
     "files": [
       "!data.db",

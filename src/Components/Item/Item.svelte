@@ -12,8 +12,7 @@
   export let selectedIds;
   export let updateSelectedIds;
 
-  // fixme figure out how meta data is represented for videos and find a common way to show them
-  const { title, track, artist, album, year, durationString } = item.metadata.common;
+  const { title, track, artist, album, year, durationString } = item.metadata;
 
   function handleOrderChange(newIdList) {
     const newItemList = sortListByIdList($playlist.items, newIdList);
