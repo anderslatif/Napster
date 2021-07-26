@@ -4,7 +4,7 @@
   import { sortListByIdList } from '../../utils/generalutils.js';
   
   export let index;
-  export let song;
+  export let item;
   export let playlistName;
 
   export let lastClickedTableRowId;
@@ -12,7 +12,8 @@
   export let selectedIds;
   export let updateSelectedIds;
 
-  const { title, track, artist, album, year, durationString } = song.metadata.common;
+  // fixme figure out how meta data is represented for videos and find a common way to show them
+  const { title, track, artist, album, year, durationString } = item.metadata.common;
 
   function handleOrderChange(newIdList) {
     const newItemList = sortListByIdList($playlist.items, newIdList);
@@ -22,21 +23,21 @@
   }
 
   function handleDoubleClick() {
-    playlist.playItem(song, playlistName);
+    playlist.playItem(item, playlistName);
   }
 
 </script>
 
 
 <DragAndDropTableRow 
-  id={song.id} index={index} 
-  surroundingDivId="song-container" 
+  id={item.id} index={index} 
+  surroundingDivId="item-container" 
   onOrderChange={handleOrderChange}
   onDoubleClick={handleDoubleClick}
   lastClickedTableRowId={lastClickedTableRowId}
   changeLastClickedTableRowId={changeLastClickedTableRowId}
   updateSelectedIds={updateSelectedIds}
-  selected={selectedIds.includes(song.id)}
+  selected={selectedIds.includes(item.id)}
 >
   <td id="track">{track?.no || ""}</td>
   <td id="title">{title || ""}</td>

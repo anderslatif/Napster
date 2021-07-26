@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld(
             }
         },
         receive: (channel, func) => {
-            let validChannels = ["fromMain", "initializePlaylists", "fromMainFromDroppedFilePaths"];
+            let validChannels = ["fromMain", "initializePlaylists", "fromMainDroppedFilePaths"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
                 ipcRenderer.on(channel, (event, ...args) => func(...args));

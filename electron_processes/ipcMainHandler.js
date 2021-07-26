@@ -12,14 +12,14 @@ function init(window, playlists) {
     ipcMain.on("toMainDroppedFilePaths", async (event, { _id, filePaths }) => {
         const playlist = await playlistHandler(filePaths);
 
-        const currentPlaylist = await storage.findOne({ _id }, { $concatArrays: { items: playlist } });
+        const currentPlaylist = await storage.findOne({ _id });
         storage.update({ _id }, { $set: { items:  currentPlaylist.items.concat(playlist) } });
 
-        window.webContents.send("fromMainPlaylistFromDroppedFilePaths", playlist);
+        window.webContents.send("fromMainDroppedFilePaths", { _id, playlistReadyDroppedFiles: playlist });
     });
 
-    ipcMain.on("toMainSetSongList", (event, { _id, newSongList }) => {
-        storage.update({ _id }, { $set: { items: newSongList } });
+    ipcMain.on("toMainSetSongList", (event, { _id, newItemList }) => {
+        storage.update({ _id }, { $set: { items: newItemList } });
     });
 
     ipcMain.on("toMainChangePlaylistName", (event, { _id, name }) => {

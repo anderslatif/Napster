@@ -2,7 +2,7 @@
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
   import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
-  import Song from "../Song/Song.svelte";
+  import Item from "../Item/Item.svelte";
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
 
   export let playlist;
@@ -19,10 +19,10 @@
       <ResizableTable tableId="playlist-table">
         <PlaylistColumns />
       </ResizableTable>
-      <tbody id="song-container">
+      <tbody id="item-container">
         {#each playlist.items as item, i (item.id)}
-          <Song 
-            index={i} song={item} playlistName={playlist.name} 
+          <Item 
+            index={i} item={item} playlistName={playlist.name} 
             lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}
             selectedIds={selectedIds} updateSelectedIds={newIdList => selectedIds = newIdList}  
           />

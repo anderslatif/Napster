@@ -34,7 +34,7 @@ function keyHandler() {
         const selectedIds = [...document.querySelectorAll(".selected")].map(element => element.id);
 
         if (selectedIds.length > 0) {
-            playlists.deletePlaylistSongs(selectedIds);
+            playlists.deletePlaylistItems(selectedIds);
         }
     }
 

@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import Playlist from "./playlist/Playlist.js";
 
-let thisWindowsPlaylistId;
+let currentPlaylistId;
 
 function playlistHandler() {
     const { subscribe, set, update } = writable(Playlist);
@@ -9,25 +9,21 @@ function playlistHandler() {
     return {
         subscribe,
         setItems: (items) => {
-            update(playlist => playlist.setItems(items));
+            update(Playlist => Playlist.setItems(items));
         },
         playItem: (item) => {
-            update(playlist => {
-                playlist.playItem(item);
-                return playlist;
+            update(Playlist => {
+                Playlist.playItem(item);
+                return Playlist;
             });
 
         },
-        playNext: (item) => {
-            update(playlist => {
-                const newCurrentIndex = playlist.playNext();
-                // todo test update the current index below 
-                playlist.currentIndex = newCurrentIndex;
-                return playlist;
-            });
+        playNext: () => {
+            update(Playlist => Playlist.playNext());
         },
         changePlaylist: (newPlaylist) => {
-            update(playlist => playlist.changePlaylist(newPlaylist));
+            currentPlaylistId = newPlaylist._id;
+            update(Playlist => Playlist.changePlaylist(newPlaylist));
         }
     }
 }
@@ -37,39 +33,57 @@ function playlistsHandler() {
 
     return {
         subscribe,
-         initializePlaylists: (newPlaylist) => {
+         initializePlaylists: (playlists) => {
+            set(playlists);
+        },
+        addPlaylistItems: (playlistId, newItems) => {
+            update(playlists => {
+                return playlists.map(playlist => {
+                    if (playlist._id === playlistId) {
 
-            // updatePlaylistSongs(newPlaylist.songs);
-            thisWindowsPlaylistId = newPlaylist._id;
-            set(newPlaylist);
-        },
-        updatePlaylistSongs: (newSongList) => {
-            update(playlist => {
-                updateCurrentPlaylist(newSongList);
-                window.electron.send("toMainSetSongList", { _id: playlist._id, newSongList }); 
-                
-                return { ...playlist, songs: newSongList };
+                        const updatedItems = playlist.items.concat(newItems);
+                        if (currentPlaylistId === playlistId) {
+                            playlistHandler().setItems(updatedItems);
+                        }
+                        return { ...playlist, items: updatedItems };
+                    }
+                    return playlist;
+                });
             });
         },
-        addPlaylistSongs: (newSongList) => {
-            update(playlist => {
-                return { ...playlist, songs: playlist.songs.concat(newSongList) };
-            });
-        },
-        updatePlaylistName: (newName) => {
-            update(playlist => {
-                window.electron.send("toMainChangePlaylistName", { _id: playlist._id, name: newName });
-                return { ...playlist, name: newName};
-            })
-        },
-        deletePlaylistSongs: (ids) => {
-            
-            update(playlist => {
-                const newSongList = playlist.songs.filter(song => !ids.includes(song.id));
-                window.electron.send("toMainSetSongList", { _id: playlist._id, newSongList }); 
+        deletePlaylistItems: (ids) => {
+            update(playlists => {
+                return playlists.map(playlist => {
+                    if (playlist._id === currentPlaylistId) {
+                        const newItemList = playlist.items.filter(item => !ids.includes(item.id));
+                    
+                        // update the current playlist 
+                        playlistHandler().setItems(newItemList);
+                        // update the database
+                        window.electron.send("toMainSetSongList", { _id: playlist._id, newItemList }); 
 
-                return { ...playlist, songs: newSongList }; 
+                        return { ...playlist, items: newItemList }; 
+                    }
+                    return playlist;
+                });
             });
+        },
+        updatePlaylistName: (playlistId, newName) => {
+            update(playlists => {
+                return playlists.map(playlist => {
+                    if (playlist._id === playlistId) {
+                        window.electron.send("toMainChangePlaylistName", { _id: playlist._id, name: newName });
+                        return { ...playlist, name: newName };
+                    }
+                    return playlist;
+                });
+            });
+        },
+        createPlaylist(name) {
+
+        },
+        deletePlaylist(playlistId) {
+
         }
     };
 }

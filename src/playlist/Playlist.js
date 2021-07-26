@@ -31,6 +31,7 @@ class Playlist {
         if (nextItem.type === "audio") {
             playSong(nextItem, this);
         }
+        return this;
     }
 
     setItems(items) {

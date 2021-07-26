@@ -7,7 +7,7 @@ window.electron.receive("initializePlaylists", (initializedPlaylists) => {
 	playlists.initializePlaylists(initializedPlaylists);
 });
 
-window.electron.receive("fromMainFromDroppedFilePaths", (playlistReadyDroppedFiles) => {
-    playlist.addPlaylistSongs(playlistReadyDroppedFiles);
+window.electron.receive("fromMainDroppedFilePaths", ({ _id, playlistReadyDroppedFiles }) => {
+    playlists.addPlaylistItems(_id, playlistReadyDroppedFiles);
 });
 
