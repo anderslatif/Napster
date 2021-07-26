@@ -29,5 +29,6 @@ function convertSecondsToTimeString(durationInSeconds) {
 
 module.exports = {
     getMusicMetaData,
-    isAudio
+    isAudio,
+    convertSecondsToTimeString
 };

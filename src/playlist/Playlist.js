@@ -12,11 +12,9 @@ class Playlist {
         const foundIndex = this.items.findIndex(listItem => listItem.id === item.id);
         this.currentIndex = foundIndex;
 
-        this.currentItem = item;
+        this.play(item);
 
-        if (item.type === "audio") {
-            playSong(item, this);
-        }
+        return this;
     }
 
     playNext() {
@@ -24,14 +22,21 @@ class Playlist {
 
         if (this.currentIndex >= this.items.length) return;
 
-
         const nextItem = this.items[this.currentIndex];
-        this.currentItem = nextItem;
+        this.play(nextItem);
 
-        if (nextItem.type === "audio") {
-            playSong(nextItem, this);
-        }
         return this;
+    }
+
+    play(item) {
+        this.currentItem = item;
+
+        if (item.type === "audio") {
+            this.currentIsAudio = true;
+            playSong(item, this);
+        } else if (item.type === "video") {
+            this.currentIsAudio = false;
+        }
     }
 
     setItems(items) {

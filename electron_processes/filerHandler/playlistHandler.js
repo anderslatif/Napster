@@ -1,4 +1,4 @@
-const { getMusicMetaData, isAudio } = require("./songUtils.js");
+const { getMusicMetaData, isAudio, convertSecondsToTimeString } = require("./songUtils.js");
 const { getffmpegMetaData, isVideo, getTitle } = require("./videoUtils.js");
 const { guid } = require("./generalUtils.js");
 
@@ -10,6 +10,7 @@ async function playlistHandler(filePaths) {
 
       if (isAudio(extension)) {
         const metadata = await getMusicMetaData(path);
+        const { title, track, artist, album, year }  = metadata.common;
 
         const { duration } = metadata.format;
         const durationString = convertSecondsToTimeString(duration);
@@ -32,8 +33,6 @@ async function playlistHandler(filePaths) {
         const parsedVideo = await getffmpegMetaData(path);
         const { filename, title, track, artist, album, duration }  = parsedVideo.metadata;
 
-
-
         return {
           id: guid(),
           type: "video",
@@ -44,7 +43,7 @@ async function playlistHandler(filePaths) {
             artist,
             album,
             duration: duration.seconds,
-            durationString: duration.raw
+            durationString: duration.raw.substr(0, duration.raw.length-3) // removes .00 (miliseconds)
           }
         };
       }

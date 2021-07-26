@@ -13,10 +13,11 @@ function playlistHandler() {
         },
         playItem: (item) => {
             update(Playlist => {
-                Playlist.playItem(item);
-                return Playlist;
+                // todo convert back to a one-liner
+                const newPlaylist = Playlist.playItem(item);
+                console.log(newPlaylist);
+                return newPlaylist;
             });
-
         },
         playNext: () => {
             update(Playlist => Playlist.playNext());
