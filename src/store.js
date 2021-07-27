@@ -12,12 +12,7 @@ function playlistHandler() {
             update(Playlist => Playlist.setItems(items));
         },
         playItem: (item) => {
-            update(Playlist => {
-                // todo convert back to a one-liner
-                const newPlaylist = Playlist.playItem(item);
-                console.log(newPlaylist);
-                return newPlaylist;
-            });
+            update(Playlist => Playlist.playItem(item));
         },
         playNext: () => {
             update(Playlist => Playlist.playNext());

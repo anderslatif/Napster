@@ -1,18 +1,26 @@
 <script>
 	import Playlist from "./Components/Playlist/Playlist.svelte"
+	import Video from "./Components/Video/Video.svelte";
 	import ControlBar from "./Components/ControlBar/ControlBar.svelte"
 	import { keyDown, keyUp } from "./utils/keyHandler.js";
 	import { playlist, playlists } from "./store.js";
+
+	import { afterUpdate } from "svelte";
+	let currentIsAudio = $playlist.currentIsAudio;
+	afterUpdate(() => {
+		currentIsAudio = $playlist.currentIsAudio;
+	});
 
 </script>
 
 <main>
 	<ControlBar />
 	{#each $playlists as playlist (playlist.id)}
-		{#if true}
+		{#if currentIsAudio}
 		<Playlist playlist={playlist} />
 		{:else}
 			<h1 style="color: white;">Video</h1>
+			<Video />
 		{/if}
 	{/each}
 </main>
