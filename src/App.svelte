@@ -5,24 +5,19 @@
 	import { keyDown, keyUp } from "./utils/keyHandler.js";
 	import { playlist, playlists } from "./store.js";
 
-	import { afterUpdate } from "svelte";
-	let currentIsAudio = $playlist.currentIsAudio;
-	afterUpdate(() => {
-		currentIsAudio = $playlist.currentIsAudio;
-	});
-
 </script>
 
 <main>
-	<ControlBar />
-	{#each $playlists as playlist (playlist.id)}
-		{#if currentIsAudio}
-		<Playlist playlist={playlist} />
-		{:else}
-			<h1 style="color: white;">Video</h1>
-			<Video />
-		{/if}
-	{/each}
+	{#if $playlist.currentIsAudio}
+		<div id="wrapper">
+			<ControlBar />
+			{#each $playlists as playlist (playlist.id)}
+				<Playlist playlist={playlist} />
+			{/each}
+		</div>
+	{:else}
+		<Video videoFile={$playlist.currentItem} />
+	{/if}
 </main>
 
 <svelte:window 
@@ -32,9 +27,12 @@
 
 <style>
 	main {
-		padding: 0.8em;
 		margin: 0 auto;
 		user-select: none;
+	}
+
+	#wrapper {
+		padding: 0.8em;
 	}
 
 	@media (min-width: 640px) {

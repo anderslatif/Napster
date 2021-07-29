@@ -2,11 +2,14 @@
     export let videoFile;
 
     import { playlist } from "../../store.js";
+    import { getSound } from "../../playlist/howler.js";
     import { onMount } from "svelte";
 
     onMount(() => {
+        getSound()?.stop();
+
         document.getElementById("video").addEventListener("ended", () => {
-            $playlist.playNext();
+            playlist.playNext();
         });
     });
 

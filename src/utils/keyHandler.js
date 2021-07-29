@@ -1,5 +1,5 @@
 import { playlist, playlists } from '../store.js';
-import { deselctAll, highlightAll } from './domSelector.js';
+import { deselectAll, highlightAll } from './domSelector.js';
 import { skipSong, playOrPauseSong } from "../playlist/howler.js";
 
 const pressedKeys = {};
@@ -45,7 +45,7 @@ function keyHandler() {
     }
 
     if (pressedKeys.Escape) {
-        deselctAll();
+        deselectAll();
     }
 
     if (pressedKeys.ArrowLeft) {

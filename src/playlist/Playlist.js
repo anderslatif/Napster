@@ -1,4 +1,4 @@
-import { getSound, playSong } from "./howler.js";
+import { playSong } from "./howler.js";
 
 class Playlist {
     playlistId;
@@ -20,7 +20,12 @@ class Playlist {
     playNext() {
         this.currentIndex += 1;
 
-        if (this.currentIndex >= this.items.length) return;
+        if (this.currentIndex >= this.items.length) {
+            // in case a video is the last item in the playlist return to playlist view 
+            // by setting currentIsAudio to true
+            this.currentIsAudio = true;
+            return this;
+        }
 
         const nextItem = this.items[this.currentIndex];
         this.play(nextItem);
@@ -42,7 +47,7 @@ class Playlist {
     setItems(items) {
         this.items = items;
         
-        // recalculcate
+        // recalculcate the currentIndex
         if (this.currentItem) {
             const newIndex = this.items.findIndex(item => item.id === this.currentItem.id);
             this.currentIndex = newIndex;

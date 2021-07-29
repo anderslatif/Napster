@@ -11,12 +11,11 @@ export function playSong(song, playlist) {
   if (!song) return;
 
   changeIsPlaying(song.id);
-  
+
   sound?.stop();
 
   sound = new Howler.Howl({
     src: song.path,
-    html5: true,
     onend: () => {
       playlist.playNext();
     }

@@ -1,12 +1,13 @@
-export function changeIsPlaying(songId) {
+export function changeIsPlaying(itemId) {
     document.querySelectorAll(".isPlaying").forEach(selected => {
         selected.classList.remove("isPlaying");
       });
-      document.getElementById(songId).classList.add("isPlaying");
-}
-
-export function highlightOne() {
-
+      if (document.getElementById("item-container")) {
+        document.getElementById(itemId).classList.add("isPlaying");
+      } else {
+          // in case it goes from a video player to the playlist view - give it time to change
+          setTimeout(() => document.getElementById(itemId).classList.add("isPlaying"), 100);
+      }
 }
 
 export function highlightAll() {
@@ -15,7 +16,7 @@ export function highlightAll() {
     });
 }
 
-export function deselctAll() {
+export function deselectAll() {
     document.querySelectorAll(".selected").forEach(songElement => {
         songElement.classList.remove("selected");
     });

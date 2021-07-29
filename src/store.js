@@ -17,6 +17,12 @@ function playlistHandler() {
         playNext: () => {
             update(Playlist => Playlist.playNext());
         },
+        stop: () => {
+            update(Playlist => {
+                Playlist.currentIsAudio = true;
+                return Playlist;
+            });
+        },
         changePlaylist: (newPlaylist) => {
             currentPlaylistId = newPlaylist._id;
             update(Playlist => Playlist.changePlaylist(newPlaylist));
