@@ -1,4 +1,6 @@
 <script>
+    export let onCloseTab;
+    
     import { getContext } from "svelte";
     import { TABS } from "./Tabs.svelte";
 
@@ -11,6 +13,7 @@
 <button class:selected={$selectedTab === tab} on:click="{() => selectTab(tab)}">
 	<slot></slot>
 </button>
+<button class:selected={$selectedTab === tab} on:click={() => onCloseTab(tab)}>x</button>
 
 <style>
 	button {
@@ -24,6 +27,6 @@
 	
 	.selected {
 		border-bottom: 2px solid teal;
-		color: #333;
+		color: blue;
 	}
 </style>

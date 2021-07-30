@@ -8,7 +8,7 @@
 
     const tabs = [];
     const views = [];
-    const selectedTab = writiable(null);
+    const selectedTab = writable(null);
     const selectedView = writable(null);
 
     setContext(TABS, {
@@ -38,7 +38,7 @@
         selectTab: tab => {
             const index = tabs.indexOf(tab);
             selectedTab.set(tab);
-            selectedPanel.set(panels[i]);
+            selectedView.set(views[index]);
         },
 
         selectedTab,

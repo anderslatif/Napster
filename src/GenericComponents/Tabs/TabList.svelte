@@ -1,5 +1,10 @@
+<script>
+    export let onNewTab;
+</script>
+
 <div class="tab-list">
     <slot></slot>
+    <button on:click={onNewTab}>+</button>
 </div>
 
 <style>
