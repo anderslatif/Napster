@@ -28,14 +28,19 @@
         width: 100vw;
 		height: 100vh;
         background-color:  black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     video {
         width: 100%;
         height: auto;
+        max-width: 100vw;
+        max-height: 100vh;
         object-fit: contain;
         position: fixed;
-        bottom: 0;
+        /* bottom: 0; */
     }
 
 </style>
