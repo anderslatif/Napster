@@ -28,7 +28,8 @@ async function createWindow(playlists) {
     return window;
 }
 
-async function initializeWindowsWithPlaylists() {
+async function initializeWindowsWithPlaylists(files) {
+    console.log("FILES in initialize", files);
     // load the playlist from the database when the app starts
     let playlists = await storage.find();
     

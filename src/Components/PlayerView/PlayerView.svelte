@@ -6,47 +6,27 @@
 	import { playlists } from "../../store.js";
 
     function handleNewTab() {
-        console.log("new tab");
-    }
-
-    function handleCloseTab() {
-        console.log("close tab")
+        window.electron.send("toMainCreatePlaylist"); 
     }
 </script>
 
-<Tabs>
-    <TabList onNewTab={handleNewTab}>
-        <Tab onCloseTab={handleCloseTab}>One</Tab>
-        <Tab onCloseTab={handleCloseTab}>Two</Tab>
-        <Tab onCloseTab={handleCloseTab}>Three</Tab>
-    </TabList>
-
-    <TabView>
-        <h1>First</h1>
-    </TabView>
-
-    <TabView>
-        <h1>Second</h1>
-    </TabView>
-
-    <TabView>
-        <h1>Third</h1>
-    </TabView>
-</Tabs>
-
-<!-- <div id="wrapper">
+<div id="wrapper">
     <ControlBar />
-    {#each $playlists as playlist (playlist.id)}
-        <Playlist playlist={playlist} />
-    {/each}
-</div> -->
+    <Tabs>
+        <TabList onNewTab={handleNewTab}>
+            {#each $playlists as playlist (playlist._id)}
+                <Tab onCloseTab={() => playlists.deletePlaylist(playlist._id)}>{playlist.name}</Tab>
+            {/each} 
+        </TabList>
+
+        {#each $playlists as playlist (playlist._id)}
+            <TabView>
+                <Playlist playlist={playlist} />
+            </TabView>
+        {/each}
+    </Tabs>
+</div>
 
 <style>
-    h1 {
-        color: white;
-    }
 
-/*     #wrapper {
-		padding: 0.8em;
-	} */
 </style>

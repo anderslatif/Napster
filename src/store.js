@@ -81,11 +81,16 @@ function playlistsHandler() {
                 });
             });
         },
-        createPlaylist(name) {
-
+        createPlaylist: (playlist) => {
+            update(playlists => {
+                playlists.push(playlist);
+                console.log(playlists);
+                return playlists;
+            })
         },
-        deletePlaylist(playlistId) {
-
+        deletePlaylist: (playlistId) => {
+            window.electron.send("toMainDeletePlaylist", { _id: playlistId });
+            update(playlists => playlists.filter(playlist => playlist._id !== playlistId));
         }
     };
 }

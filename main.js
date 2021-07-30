@@ -4,6 +4,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 process.env['APP_DATA'] = (app || require("electron").remote.app).getPath("userData");
 
 const initialize = require("./electron_processes/initialize.js");
+const { handleNewPaths } = require("./electron_processes/ipcMainHandler.js");
 
 // If in development use electron-reload to watch for
 // changes in the current directory
@@ -29,6 +30,12 @@ menu.append(new MenuItem({
 Menu.setApplicationMenu(menu);
 
 app.on("ready", () => {
+    const files = []
+    app.on("open-file", (event, path) => {
+        console.log("OPEN FILE???");
+        files.push(path);
+    });    
+
     // database call here and loop through each playlist and create a 
     initialize.initializeWindowsWithPlaylists();
 
@@ -37,10 +44,12 @@ app.on("ready", () => {
     app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
-        if (BrowserWindow.getAllWindows().length === 0) initialize.createWindow()
+        if (BrowserWindow.getAllWindows().length === 0) initialize.createWindow(files)
     });
-})
+});
 
-app.on('window-all-closed', function () {
-    app.quit()
+
+
+app.on('window-all-closed', () => {
+    app.quit();
 });

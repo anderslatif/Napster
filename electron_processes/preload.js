@@ -4,13 +4,13 @@ contextBridge.exposeInMainWorld(
     "electron", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["toMain", "toMainDroppedFilePaths", "toMainSetSongList", "toMainChangePlaylistName"];
+            let validChannels = ["toMain", "toMainDroppedFilePaths", "toMainSetSongList", "toMainChangePlaylistName", "toMainCreatePlaylist", "toMainDeletePlaylist"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
         },
         receive: (channel, func) => {
-            let validChannels = ["fromMain", "initializePlaylists", "fromMainDroppedFilePaths"];
+            let validChannels = ["fromMain", "initializePlaylists", "fromMainDroppedFilePaths", "newPlaylist"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
                 ipcRenderer.on(channel, (event, ...args) => func(...args));

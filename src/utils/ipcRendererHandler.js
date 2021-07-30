@@ -11,3 +11,6 @@ window.electron.receive("fromMainDroppedFilePaths", ({ _id, playlistReadyDropped
     playlists.addPlaylistItems(_id, playlistReadyDroppedFiles);
 });
 
+window.electron.receive("newPlaylist", playlist => {
+    playlists.createPlaylist(playlist);
+});
