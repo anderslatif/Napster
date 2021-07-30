@@ -6,7 +6,7 @@ export function changeIsPlaying(itemId) {
         document.getElementById(itemId).classList.add("isPlaying");
       } else {
           // in case it goes from a video player to the playlist view - give it time to change
-          setTimeout(() => document.getElementById(itemId).classList.add("isPlaying"), 100);
+          setTimeout(() => document.getElementById(itemId)?.classList.add("isPlaying"), 100);
       }
 }
 

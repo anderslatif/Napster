@@ -1,6 +1,5 @@
 <script>
   import FileUpload from "../../GenericComponents/FileUpload/FileUpload.svelte";
-  import PlaylistBar from "./SubComponents/PlaylistBar.svelte";
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import Item from "../Item/Item.svelte";
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
@@ -13,7 +12,6 @@
 </script>
 
 <div class="playlist">
-  <PlaylistBar playlistName={playlist.name} />
   <table id="playlist-table" class="playlist-table">
     <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", { _id: playlist._id, filePaths })}>
       <ResizableTable tableId="playlist-table">

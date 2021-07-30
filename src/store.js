@@ -84,7 +84,6 @@ function playlistsHandler() {
         createPlaylist: (playlist) => {
             update(playlists => {
                 playlists.push(playlist);
-                console.log(playlists);
                 return playlists;
             })
         },
