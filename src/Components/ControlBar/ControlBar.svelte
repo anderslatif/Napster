@@ -66,11 +66,13 @@
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 1em;
+        justify-content: center;
+        align-items: center;
     }
 
     #progress-bar-container{
-        width: 84vw;
-        padding-right: 2vw;
+        width: 85vw;
+        padding: 1vw;
     }
 
     .progress-bar-label {
@@ -91,8 +93,8 @@
     }
 
     #control-button-container {
-        margin-right: 1em;
-        width: 10vw;
+        width: 13vw;
+        height: 10vh;
     }
 
     
@@ -114,7 +116,6 @@
     @media (max-width: 600px) {
 		#control-bar {
             flex-direction: column-reverse;
-            margin-right: 2em;
             width: 95vw;
 		}
         #progress-bar-container {
@@ -122,6 +123,7 @@
         }
         #control-button-container {
             width: 100%;
+            height: 5vh;
         }
 	}
 

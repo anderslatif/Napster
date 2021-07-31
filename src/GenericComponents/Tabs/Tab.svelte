@@ -29,6 +29,6 @@
 	
 	.selected-tab {
 		border-bottom: 3px solid teal;
-		color: blue;
+		color: dodgerblue;
 	}
 </style>

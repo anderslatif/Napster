@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import Playlist from "./playlist/Playlist.js";
+import { changeIsPlaying } from "./utils/domSelector";
 
 let currentPlaylistId;
 
@@ -9,10 +10,19 @@ function playlistHandler() {
     return {
         subscribe,
         setItems: (items) => {
-            update(Playlist => Playlist.setItems(items));
+            update(Playlist => {
+                // the need for a timeout is because the items also get set in playlists which rerenders the entire view
+                setTimeout(() => changeIsPlaying(Playlist.currentItem?.id), 20);
+                return Playlist.setItems(items)
+            });
         },
-        playItem: (item) => {
-            update(Playlist => Playlist.playItem(item));
+        playItem: (item, playlist) => {
+            update(Playlist => {
+                if (Playlist.playlistId !== playlist._id) {
+                    playlistHandler().changePlaylist(playlist);
+                }
+                return Playlist.playItem(item)
+            });
         },
         playNext: () => {
             update(Playlist => Playlist.playNext());
@@ -22,6 +32,15 @@ function playlistHandler() {
                 Playlist.currentIsAudio = true;
                 return Playlist;
             });
+        },
+        stopIfPlaying: (ids) => {
+            update(Playlist => {
+                if (ids.includes(Playlist.currentItem?.id)) {
+                    Playlist.stop();
+                }
+                
+                return Playlist;
+            })
         },
         changePlaylist: (newPlaylist) => {
             currentPlaylistId = newPlaylist._id;
@@ -53,10 +72,21 @@ function playlistsHandler() {
                 });
             });
         },
+        setPlaylistItems: (playlistId, items) => {
+            update(playlists => {
+                return playlists.map(playlist => {
+                    if (playlist._id === playlistId) {
+                        window.electron.send("toMainSetSongList", { _id: playlist._id, newItemList: items });
+                        playlist.items = items;
+                    }
+                    return playlist;
+                });
+            })
+        },
         deletePlaylistItems: (ids) => {
             update(playlists => {
                 return playlists.map(playlist => {
-                    if (playlist._id === currentPlaylistId) {
+                    if (playlist.items.some(item => ids.includes(item.id))) { 
                         const newItemList = playlist.items.filter(item => !ids.includes(item.id));
                     
                         // update the current playlist 

@@ -13,7 +13,7 @@ async function getMusicMetaData(filePath) {
 
 function isAudio(extension) {
     const validExtensions = ["mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf",
-                            "m4a", "m4b", "mp4", "weba", "webm", "dolby", "flac"];
+                            "m4a", "m4b", /* "mp4",  */"weba", "webm", "dolby", "flac"];
     return validExtensions.includes(extension.toLowerCase());
 }
 

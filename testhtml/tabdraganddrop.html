@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .draggable {
+            /* not necessary */
+            background-color: #333;
+            padding: 1rem;
+            color: white;
+            border: 1px solid white;
+            width: 8vw;
+
+            /* necessary */
+            cursor: move;
+        }
+
+        .draggable.dragging {
+            opacity: .5
+        }
+
+        .selected {
+            background-color: blue;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <div class="container">
+            <div id="1" class="draggable" draggable="true">1</div>
+            <div id="2" class="draggable" draggable="true">2</div>    
+            <div id="3" class="draggable" draggable="true">3</div>    
+            <div id="4" class="draggable" draggable="true">4</div>    
+            <div id="5" class="draggable" draggable="true">5</div>    
+            <div id="6" class="draggable" draggable="true">6</div>    
+            <div id="7" class="draggable" draggable="true">7</div>    
+        </div>
+
+
+        <script>
+            const draggables = document.querySelectorAll(".draggable");
+            const containers = document.querySelectorAll(".container");
+
+            draggables.forEach(draggable => {
+                
+                // todo reinitialize draggable to get the correct order
+                draggable.addEventListener("dragstart", () => {
+                    draggable.classList.add("dragging");
+
+                    console.log(draggable.classList);
+
+                    // deselect others if the dragged item is not selected yet another group is already selected
+                    if (!draggable.classList.contains("selected")) {
+                        document.querySelectorAll(".selected").forEach(selected => {
+                            selected.classList.toggle("selected");  
+                        });
+                    }
+
+                });
+
+                draggable.addEventListener("dragend", () => {
+                    draggable.classList.remove("dragging");
+                });
+
+
+            });
+
+            containers.forEach(container => {
+                container.addEventListener("dragover", (event) => {
+                    event.preventDefault();
+
+
+                    const afterElement = findNextElement(container, event.clientX); // todo changed
+                    const draggables = document.querySelectorAll(".selected");
+                    const draggable = document.querySelector(".dragging");
+                    
+                    
+                    if (draggables.length > 0) {
+                        draggables.forEach(drag => {
+                            if (!afterElement) {
+                                container.appendChild(drag);
+                            } else {
+                                container.insertBefore(drag, afterElement);
+                            }
+                        })
+                    } else {
+                        if (!afterElement) {
+                            container.appendChild(draggable);
+                        }  else {
+                            container.insertBefore(draggable , afterElement);
+                        }
+                    }
+
+                });
+            });
+
+            function findNextElement(container, x) { // todo changed
+                const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)")];
+
+                return draggableElements.reduce((accumulator, child) => {
+                    const box = child.getBoundingClientRect();
+                    console.log(box);
+                    const offset = x - box.right - box.width / 2;// todo changed
+
+                    if (offset < 0 && offset > accumulator.offset) {
+                        return { offset: offset, element: child }
+                    } else {
+                        return accumulator;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener("click", (event) => {
+
+                    if (event.shiftKey) {
+                    
+                    } else if (event.ctrlKey || event.metaKey) {
+                        event.target.classList.toggle("selected");
+                    } else {
+                        // deselct all selections
+                        document.querySelectorAll(".selected").forEach(selected => {
+                            selected.classList.toggle("selected");
+                        });
+                        // select the clicked item
+                        event.target.classList.toggle("selected");
+                    }
+ 
+                });
+            });
+
+            // https://www.youtube.com/watch?v=jfYWwQrtzzY
+        </script>
+</body>
+</html>

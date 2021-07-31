@@ -16,6 +16,7 @@ export function playSong(song, playlist) {
 
   sound = new Howler.Howl({
     src: song.path,
+    html5: true,
     onend: () => {
       playlist.playNext();
     }

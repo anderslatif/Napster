@@ -1,11 +1,11 @@
 <script>
-  import { playlist, playlists } from '../../store.js';
+  import { playlist as playlistStore, playlists } from '../../store.js';
   import DragAndDropTableRow from "../../GenericComponents/DragAndDropTableRow/DragAndDropTableRow.svelte";
   import { sortListByIdList } from '../../utils/generalutils.js';
   
   export let index;
   export let item;
-  export let playlistName;
+  export let playlist;
 
   export let lastClickedTableRowId;
   export let changeLastClickedTableRowId;
@@ -15,16 +15,14 @@
   const { title, track, artist, album, year, durationString } = item.metadata;
 
   function handleOrderChange(newIdList) {
-    const newItemList = sortListByIdList($playlist.items, newIdList);
-    // fixme below call both playlist and playlists and the DB!!!
-    // todo consider where to call domSelector.changeIsPlaying 
-    playlist.setItems(newItemList);
+    const newItemList = sortListByIdList(playlist.items, newIdList);
+    playlists.setPlaylistItems(playlist._id, newItemList);
+    playlistStore.setItems(newItemList);
   }
 
   function handleDoubleClick() {
-    playlist.playItem(item, playlistName);
+    playlistStore.playItem(item, playlist);
   }
-
 </script>
 
 

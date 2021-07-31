@@ -38,7 +38,7 @@ async function playlistHandler(filePaths) {
           type: "video",
           path,
           metadata: {
-            title: title || getTitle(filename, extension),
+            title: title || getTitle(path, extension),
             track,
             artist,
             album,

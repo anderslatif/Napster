@@ -24,10 +24,4 @@
 		margin: 0 auto;
 		user-select: none;
 	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>

@@ -5,17 +5,16 @@
     import ControlBar from "../ControlBar/ControlBar.svelte";
 	import { playlists } from "../../store.js";
 
-    function handleNewTab() {
-        window.electron.send("toMainCreatePlaylist"); 
-    }
 </script>
 
 <div id="wrapper">
     <ControlBar />
     <Tabs>
-        <TabList onNewTab={handleNewTab}>
+        <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist")}>
             {#each $playlists as playlist (playlist._id)}
-                <Tab onCloseTab={() => playlists.deletePlaylist(playlist._id)}>
+                <Tab 
+                    onCloseTab={() => playlists.deletePlaylist(playlist._id)}
+                >
                     <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
                 </Tab>
             {/each} 
@@ -28,7 +27,3 @@
         {/each}
     </Tabs>
 </div>
-
-<style>
-
-</style>
