@@ -12,7 +12,7 @@ function playlistHandler() {
         setItems: (items) => {
             update(Playlist => {
                 // the need for a timeout is because the items also get set in playlists which rerenders the entire view
-                setTimeout(() => changeIsPlaying(Playlist.currentItem?.id), 20);
+                setTimeout(() => changeIsPlaying(Playlist.currentItem?.id), 10);
                 return Playlist.setItems(items)
             });
         },

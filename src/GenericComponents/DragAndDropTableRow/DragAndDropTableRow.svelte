@@ -129,7 +129,8 @@
 
 <tr
     id={id}
-    class="draggable list-item list-item-container-{index % 2} {selected ? "selected" : ""}"
+    class="draggable list-item list-item-container-{index % 2}"
+    class:selected={selected}
     data-index={index}
     on:click={handleClick}
     on:dragstart={handleDragStart}

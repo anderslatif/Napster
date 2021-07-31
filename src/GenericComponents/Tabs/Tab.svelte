@@ -1,5 +1,6 @@
 <script>
     export let onCloseTab;
+	export let onTabSelect;
     import { getContext } from "svelte";
     import { TABS } from "./Tabs.svelte";
 
@@ -9,7 +10,10 @@
     registerTab(tab);
 </script>
 
-<button class:selected-tab={$selectedTab === tab} on:click="{() => selectTab(tab)}">
+<button class:selected-tab={$selectedTab === tab} on:click="{() => {
+		onTabSelect();
+		selectTab(tab)}
+	}">
 	<slot></slot>
 </button>
 <button class:selected-tab={$selectedTab === tab} on:click={() => onCloseTab(tab)}>x</button>
