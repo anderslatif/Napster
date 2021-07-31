@@ -1,14 +1,11 @@
 <script>
-    export let id;
+    export let onElementsDropped;
 
-    function handleDrop(event) {
-        console.log(event.target, id);
-    }
 </script>
 
 <div
     on:dragover|preventDefault
-    on:drop={handleDrop}
+    on:drop={onElementsDropped}
 >
     <slot></slot>
 </div>

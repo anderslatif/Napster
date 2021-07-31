@@ -139,3 +139,4 @@ export function getPlaylistByName(playlistName) {
 
 export const playlist = playlistHandler();
 export const playlists = playlistsHandler();
+export const selectedIdsStore = writable([]);

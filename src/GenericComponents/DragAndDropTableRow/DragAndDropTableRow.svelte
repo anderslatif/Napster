@@ -9,6 +9,8 @@
     export let updateSelectedIds;
     export let selected;
 
+    import { selectedIdsStore } from "../../store.js";
+
     let selectedIds;
 
     function handleClick(event) {
@@ -76,6 +78,7 @@
             element.classList.add("dragging");
             selectedIds.push(element.id);
         });
+        selectedIdsStore.set(selectedIds);
     }
 
     function handleDragOver(event) {

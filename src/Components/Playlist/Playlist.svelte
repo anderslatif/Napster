@@ -19,7 +19,7 @@
       </ResizableTable>
       <tbody id="item-container">
         {#each playlist.items as item, i (item.id)}
-          <Item 
+          <Item
             index={i} item={item} playlist={playlist} 
             lastClickedTableRowId={lastClickedTableRowId} changeLastClickedTableRowId={(newClickedId) => lastClickedTableRowId = newClickedId}
             selectedIds={selectedIds} updateSelectedIds={newIdList => selectedIds = newIdList}  
