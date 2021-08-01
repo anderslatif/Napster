@@ -5,6 +5,7 @@
 <script>
     import { setContext, onDestroy } from "svelte";
     import { writable } from "svelte/store";
+    import { selectedTabPlaylistIndex } from "../../store.js"
 
     const tabs = [];
     const views = [];
@@ -15,6 +16,16 @@
 
         registerTab: tab => {
             tabs.push(tab);
+            // todo it's here and in registerView that rely on the set tab
+            /* todo psuedocode:
+            if selectedtab from store
+                then set as selected tab from store
+            else 
+                        selectedTab.update(current => current || tab);
+            and repeat in register view 
+             */
+
+             // todo like in register view
             selectedTab.update(current => current || tab);
 
             onDestroy(() => {

@@ -7,10 +7,10 @@
 	import { playlist as playlistStore, playlists, selectedIdsStore } from "../../store.js";
     import { changeIsPlaying } from '../../utils/domSelector.js';
 
-    let currentlySelectedTab;
+    let currentlySelectedTabId;
 
     function handleTabSelect(playlistId) {
-        currentlySelectedTab = playlistId;
+        currentlySelectedTabId = playlistId;
         // restyle the playing track when a tab i select
         if ($playlistStore.playlistId === playlistId && $playlistStore.currentItem) {
             // give it time to change view
@@ -19,19 +19,23 @@
     }
 
     function handleElementsDroppedOnTab(droppedOnPlaylistId) {
-/*         const draggedFromPlaylist = $playlists.find(playlist => playlist._id === currentlySelectedTab);
+        //  fixme Problem 1: default selected tab is undefined (line 10)
+        /*  fixme Problem 2: the selected tab needs to be saved in a store cause when it changes from video view to PlayerView 
+            it needs to be aware of what playlist to return to
+            this also means that Tabs.svelte needs to take this store into consideration
+        */
+        const draggedFromPlaylist = $playlists.find(playlist => playlist._id === currentlySelectedTabId);
         const droppedOnPlaylist = $playlists.find(playlist => playlist._id === droppedOnPlaylistId);
 
         const draggedIds = $selectedIdsStore;
         const draggedItems = draggedFromPlaylist.items.filter(item => draggedIds.includes(item.id));
         const newItems = draggedFromPlaylist.items.filter(item => !draggedIds.includes(item.id));
         
-        console.log(draggedFromPlaylistId, newItems);
         playlists.setPlaylistItems(draggedFromPlaylist._id, newItems);
         playlists.setPlaylistItems(droppedOnPlaylistId, droppedOnPlaylist.items.concat(draggedItems));
 
         // ignore the reordering that also saves to the store
-        setTimeout(() => playlistStore.setItems(newItems), 10); */
+        setTimeout(() => playlistStore.setItems(newItems), 10);
     }
 </script>
 

@@ -9,7 +9,6 @@ class Playlist {
     currentIsAudio = true;
 
     playItem(item) {
-        // fixme pass the playlist id (or whole object) if the playlist is not the same then change playlist
         const foundIndex = this.items.findIndex(listItem => listItem.id === item.id);
         this.currentIndex = foundIndex;
 
