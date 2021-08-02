@@ -39,6 +39,7 @@
   },
   "build": {
     "appId": "com.andl.napster",
+    "productName": "Napster",
     "mac": {
       "icon": "public/napster_icon.png",
       "fileAssociations": [

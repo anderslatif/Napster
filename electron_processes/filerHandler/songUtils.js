@@ -25,10 +25,19 @@ function convertSecondsToTimeString(durationInSeconds) {
     return `${minutes}:${remainingSeconds.length === 2 ? remainingSeconds : "0"+remainingSeconds}`;
 }
 
+function tryToGetTitleFromFilename(filename) {
+    try {
+        return filename.split(".")[1].substring(1, filename.length)
+    } catch {
+        return ""
+    }
+}
+
 
 
 module.exports = {
     getMusicMetaData,
     isAudio,
-    convertSecondsToTimeString
+    convertSecondsToTimeString,
+    tryToGetTitleFromFilename
 };

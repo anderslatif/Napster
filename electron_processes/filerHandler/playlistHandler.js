@@ -1,6 +1,6 @@
-const { getMusicMetaData, isAudio, convertSecondsToTimeString } = require("./songUtils.js");
-const { getffmpegMetaData, isVideo, getTitle } = require("./videoUtils.js");
-const { guid } = require("./generalUtils.js");
+const { getMusicMetaData, isAudio, convertSecondsToTimeString, tryToGetTitleFromFilename } = require("./songUtils.js");
+const { getffmpegMetaData, isVideo } = require("./videoUtils.js");
+const { guid, getFileName } = require("./generalUtils.js");
 
 async function playlistHandler(filePaths) {
     const playlistReadyFiles = await Promise.all(filePaths.map( async (path) => {
@@ -20,8 +20,8 @@ async function playlistHandler(filePaths) {
           type: "audio",
           path,
           metadata: {
-            title,
-            track,
+            title: title || tryToGetTitleFromFilename(getFileName(path, extension)),
+            track: track || parseInt(getFileName(path, extension)),
             artist,
             album,
             year,
@@ -38,7 +38,7 @@ async function playlistHandler(filePaths) {
           type: "video",
           path,
           metadata: {
-            title: title || getTitle(path, extension),
+            title: title || getFileName(path, extension),
             track,
             artist,
             album,

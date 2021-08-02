@@ -1,4 +1,3 @@
-const path = require("path");
 const ffmpeg = require('ffmpeg');
 
 async function getffmpegMetaData(filePath) {
@@ -14,13 +13,8 @@ function isVideo(extension) {
     return validExtensions.includes(extension.toLowerCase());
 }
 
-function getTitle(absolutePath, extension) {
-    // the second parameter removes the '.extension' from the returned value
-    return path.basename(absolutePath, `.${extension}`) || path.win32.basename(absolutePath, `.${extension}`);
-}
 
 module.exports = {
     getffmpegMetaData,
     isVideo,
-    getTitle
 };
