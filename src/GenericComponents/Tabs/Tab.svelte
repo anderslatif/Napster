@@ -1,10 +1,12 @@
 <script>
     export let onCloseTab;
 	export let onTabSelect;
+	export let id;
+
     import { getContext } from "svelte";
     import { TABS } from "./Tabs.svelte";
 
-    const tab = {};
+    const tab = { id };
     const { registerTab, selectTab, selectedTab } = getContext(TABS);
 
     registerTab(tab);

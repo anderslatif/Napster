@@ -1,8 +1,10 @@
 <script>
+    export let id;
+
     import { getContext } from "svelte";
     import { TABS } from  "./Tabs.svelte";
 
-    const view = {};
+    const view = { id };
     const { registerView, selectedView } = getContext(TABS);
 
     registerView(view);

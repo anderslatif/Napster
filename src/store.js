@@ -54,7 +54,8 @@ function playlistsHandler() {
 
     return {
         subscribe,
-         initializePlaylists: (playlists) => {
+        initializePlaylists: (playlists) => {
+            selectedTabPlaylistId.set(playlists[0]?._id);
             set(playlists);
         },
         addPlaylistItems: (playlistId, newItems) => {
@@ -140,4 +141,4 @@ export function getPlaylistByName(playlistName) {
 export const playlist = playlistHandler();
 export const playlists = playlistsHandler();
 export const selectedIdsStore = writable([]);
-export const selectedTabPlaylistIndex = writable(0);
+export const selectedTabPlaylistId = writable();

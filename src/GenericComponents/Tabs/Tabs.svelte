@@ -3,9 +3,10 @@
 </script>
 
 <script>
+    export let selectedTabId;
+
     import { setContext, onDestroy } from "svelte";
     import { writable } from "svelte/store";
-    import { selectedTabPlaylistIndex } from "../../store.js"
 
     const tabs = [];
     const views = [];
@@ -16,17 +17,12 @@
 
         registerTab: tab => {
             tabs.push(tab);
-            // todo it's here and in registerView that rely on the set tab
-            /* todo psuedocode:
-            if selectedtab from store
-                then set as selected tab from store
-            else 
-                        selectedTab.update(current => current || tab);
-            and repeat in register view 
-             */
-
-             // todo like in register view
-            selectedTab.update(current => current || tab);
+            selectedTab.update(current => {
+                if (tab?.id === selectedTabId) {
+                    return tab;
+                }
+                return current || tab
+            });
 
             onDestroy(() => {
                 const index = tabs.indexOf(tab);
@@ -37,12 +33,17 @@
 
         registerView: view => {
             views.push(view);
-            selectedView.update(current => current || view);
+            selectedView.update(current => {
+                if (view?.id === selectedTabId) {
+                    return view;
+                }
+                return current || view
+            });
 
             onDestroy(() => {
                 const index = views.indexOf(view);
                 views.splice(index, 1);
-                selectedView.update(current => current === view ? (views[index] || views[views.length -1]) : current);
+                selectedView.update(current => current === view ? (views[index] || views[views.length-1]) : current);
             });
         },
 

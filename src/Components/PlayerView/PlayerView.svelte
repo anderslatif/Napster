@@ -3,14 +3,14 @@
     import EditableField from "../../GenericComponents/EditableField/EditableField.svelte";
 	import Playlist from "../Playlist/Playlist.svelte"
     import ControlBar from "../ControlBar/ControlBar.svelte";
+    import MetaDrawer from "../MetaDrawer/MetaDrawer.svelte";
     import ElementDropHandler from "../../GenericComponents/ElementDropHandler/ElementDropHandler.svelte"
-	import { playlist as playlistStore, playlists, selectedIdsStore } from "../../store.js";
+	import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
     import { changeIsPlaying } from '../../utils/domSelector.js';
 
-    let currentlySelectedTabId;
 
     function handleTabSelect(playlistId) {
-        currentlySelectedTabId = playlistId;
+        selectedTabPlaylistId.set(playlistId);
         // restyle the playing track when a tab i select
         if ($playlistStore.playlistId === playlistId && $playlistStore.currentItem) {
             // give it time to change view
@@ -19,12 +19,7 @@
     }
 
     function handleElementsDroppedOnTab(droppedOnPlaylistId) {
-        //  fixme Problem 1: default selected tab is undefined (line 10)
-        /*  fixme Problem 2: the selected tab needs to be saved in a store cause when it changes from video view to PlayerView 
-            it needs to be aware of what playlist to return to
-            this also means that Tabs.svelte needs to take this store into consideration
-        */
-        const draggedFromPlaylist = $playlists.find(playlist => playlist._id === currentlySelectedTabId);
+        const draggedFromPlaylist = $playlists.find(playlist => playlist._id === $selectedTabPlaylistId);
         const droppedOnPlaylist = $playlists.find(playlist => playlist._id === droppedOnPlaylistId);
 
         const draggedIds = $selectedIdsStore;
@@ -39,26 +34,54 @@
     }
 </script>
 
-<div id="wrapper">
-    <ControlBar />
-    <Tabs>
-        <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist")}>
-            {#each $playlists as playlist (playlist._id)}
-                <Tab 
-                    onCloseTab={() => playlists.deletePlaylist(playlist._id)}
-                    onTabSelect={() => handleTabSelect(playlist._id)}
-                >
-                    <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>
-                        <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
-                    </ElementDropHandler>
-                </Tab>
-            {/each} 
-        </TabList>
+<ControlBar />
 
-        {#each $playlists as playlist (playlist._id)}
-            <TabView>
-                <Playlist playlist={playlist} />
-            </TabView>
-        {/each}
-    </Tabs>
-</div>
+    <div id="tab-view">
+        <Tabs selectedTabId={$selectedTabPlaylistId}>
+            <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist")}>
+                {#each $playlists as playlist (playlist._id)}
+                    <Tab 
+                        id={playlist._id}
+                        onCloseTab={() => playlists.deletePlaylist(playlist._id)}
+                        onTabSelect={() => handleTabSelect(playlist._id)}
+                    >
+                        <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>
+                            <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
+                        </ElementDropHandler>
+                    </Tab>
+                {/each} 
+            </TabList>
+            <div id="player-view-wrapper">
+
+            <div id="meta-drawer">
+                <MetaDrawer />
+            </div>
+            {#each $playlists as playlist (playlist._id)}
+                <TabView id={playlist._id} >
+                    <Playlist playlist={playlist} />
+                </TabView>
+            {/each}
+        </Tabs>
+    </div>
+
+
+<style>
+    #player-view-wrapper {
+      display: flex;
+    }
+
+    #meta-drawer {
+        width: 30vw;
+    }
+
+    #tab-view {
+        width: 100%;
+    }
+
+    @media screen and (max-width: 640px) {
+        #meta-drawer {
+            display: none;
+        }
+    }
+
+</style>
