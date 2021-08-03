@@ -4,7 +4,12 @@
 
 {#if currentItem?.metadata.albumArt || currentItem?.metadata.lyrics}
     <div id="meta-drawer">
-        <img id="album-art" src={currentItem.metadata.albumArt} alt="album art"/>
+        <img 
+            id="album-art" 
+            src={currentItem.metadata.albumArt} 
+            alt="album art"
+            on:dblclick={() => window.electron.send("enlargeAlbumCover", currentItem.metadata.albumArt)}
+        />
         <div id="lyrics-container">
             {#each currentItem.metadata.lyrics.split('\n') as line}
                 <div id="line">{line}</div>

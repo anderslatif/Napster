@@ -1,6 +1,9 @@
-const { BrowserWindow, ipcMain } = require("electron");
+const { BrowserWindow, ipcMain, screen } = require("electron");
 const { playlistHandler } = require("./filerHandler/playlistHandler.js");
 const storage = require("./db/storage.js");
+const path = require("path");
+
+let albumCoverWindow;
 
 function init(window, playlists) {
     ipcMain.on("toMain", async () => {
@@ -37,6 +40,30 @@ function init(window, playlists) {
 
     ipcMain.on("toMainChangePlaylistName", (event, { _id, name }) => {
         storage.update({ _id }, { $set: { name } });
+    });
+
+    ipcMain.on("enlargeAlbumCover", (event, url) => {
+        if (!albumCoverWindow) {
+            const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+            albumCoverWindow = new BrowserWindow({
+                height,
+                width: height,
+                frame: false,
+                webPreferences: {
+                    contextIsolation: true,
+                    enableRemoteModule: false,
+                    preload: path.join(__dirname, "preload.js")
+                }
+            });
+            albumCoverWindow.loadFile(path.join(__dirname, '/../public/albumcover.html'));
+            albumCoverWindow.webContents.send("sendAlbumCover", url);
+        }
+    });
+
+    ipcMain.on("closeAlbumCoverWindow", (event) => {
+        albumCoverWindow.close();
+        albumCoverWindow = undefined;
     });
  }
 

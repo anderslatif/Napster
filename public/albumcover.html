@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            height:100%; 
+            width:100%; 
+        }
+
+        #album-cover {
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napster</title>
+</head>
+<body>
+    <img id="album-cover" src="" alt="album cover" onclick="handleClickImage()">
+
+    <script>
+        window.electron.receive("sendAlbumCover", (url) => {
+            const albumCover = document.getElementById("album-cover");
+            albumCover.src = url;
+        });
+
+        function handleClickImage() {
+            window.electron.send("closeAlbumCoverWindow");
+        }
+    </script>
+</body>
+</html>
