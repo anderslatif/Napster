@@ -30,7 +30,7 @@
 	}
 
 	button:active {
-		background-color: black;
+		background-color: #333;
 	}
 	
 	.selected-tab {

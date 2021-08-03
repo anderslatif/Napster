@@ -5,6 +5,7 @@
     import ControlBar from "../ControlBar/ControlBar.svelte";
     import MetaDrawer from "../MetaDrawer/MetaDrawer.svelte";
     import ElementDropHandler from "../../GenericComponents/ElementDropHandler/ElementDropHandler.svelte"
+    import HorizontalDragAndDrop from "../../GenericComponents/HorizontalDragAndDrop/HorizontalDragAndDrop.svelte"
 	import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
     import { changeIsPlaying } from '../../utils/domSelector.js';
 
@@ -39,39 +40,47 @@
     <div id="tab-view">
         <Tabs selectedTabId={$selectedTabPlaylistId}>
             <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist")}>
-                {#each $playlists as playlist (playlist._id)}
-                    <Tab 
-                        id={playlist._id}
-                        onCloseTab={() => playlists.deletePlaylist(playlist._id)}
-                        onTabSelect={() => handleTabSelect(playlist._id)}
-                    >
-                        <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>
-                            <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
-                        </ElementDropHandler>
-                    </Tab>
-                {/each} 
+                <div id="tab-list-container">
+                    {#each $playlists as playlist (playlist._id)}
+                        <HorizontalDragAndDrop 
+                            containerId="tab-list-container" 
+                            playlistId={playlist._id} 
+                        >
+                        <Tab 
+                            id={playlist._id}
+                            onCloseTab={() => playlists.deletePlaylist(playlist._id)}
+                            onTabSelect={() => handleTabSelect(playlist._id)}
+                        >
+                                <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>
+                                    <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
+                                </ElementDropHandler>
+                        </Tab>
+                        </HorizontalDragAndDrop>
+                    {/each}
+                </div>
             </TabList>
-            <div id="player-view-wrapper">
 
-            <div id="meta-drawer">
-                <MetaDrawer />
-            </div>
-            {#each $playlists as playlist (playlist._id)}
-                <TabView id={playlist._id} >
-                    <Playlist playlist={playlist} />
-                </TabView>
-            {/each}
-        </Tabs>
+    <div id="player-view-wrapper">
+                <div id="meta-drawer-wrapper">
+                    <MetaDrawer currentItem={$playlistStore.currentItem} />
+                </div>
+
+                {#each $playlists as playlist (playlist._id)}
+                    <TabView id={playlist._id} >
+                        <Playlist playlist={playlist} />
+                    </TabView>
+                {/each}
+                </Tabs>
     </div>
 
 
 <style>
-    #player-view-wrapper {
+    #tab-list-container {
       display: flex;
     }
 
-    #meta-drawer {
-        width: 30vw;
+    #player-view-wrapper {
+      display: flex;
     }
 
     #tab-view {
@@ -79,9 +88,8 @@
     }
 
     @media screen and (max-width: 640px) {
-        #meta-drawer {
+        #meta-drawer-wrapper {
             display: none;
         }
     }
-
 </style>

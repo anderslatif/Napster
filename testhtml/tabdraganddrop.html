@@ -52,12 +52,10 @@
                 draggable.addEventListener("dragstart", () => {
                     draggable.classList.add("dragging");
 
-                    console.log(draggable.classList);
-
                     // deselect others if the dragged item is not selected yet another group is already selected
                     if (!draggable.classList.contains("selected")) {
                         document.querySelectorAll(".selected").forEach(selected => {
-                            selected.classList.toggle("selected");  
+                            selected.classList.toggle("selected");
                         });
                     }
 
@@ -104,8 +102,7 @@
 
                 return draggableElements.reduce((accumulator, child) => {
                     const box = child.getBoundingClientRect();
-                    console.log(box);
-                    const offset = x - box.right - box.width / 2;// todo changed
+                    const offset = x - box.right + box.width / 2; // todo changed
 
                     if (offset < 0 && offset > accumulator.offset) {
                         return { offset: offset, element: child }
