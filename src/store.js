@@ -121,6 +121,34 @@ function playlistsHandler() {
         deletePlaylist: (playlistId) => {
             window.electron.send("toMainDeletePlaylist", { _id: playlistId });
             update(playlists => playlists.filter(playlist => playlist._id !== playlistId));
+        },
+        openFiles: (itemIds) => {
+            update(playlists => {
+                const basePaths = [];
+                const paths = [];
+                const OSFileSeparator = getOSFileSeparator();
+                console.log(OSFileSeparator);
+
+                playlists.forEach(playlist => {
+                    playlist.items.forEach(item => {
+                        if (itemIds.includes(item.id)) {
+                            // assumes MacOS or Linux
+                            const splitPath = item.path.split(OSFileSeparator);
+                            splitPath.pop();
+                            const currentItemsBasePath = splitPath.join(OSFileSeparator);
+
+                            if (!basePaths.includes(currentItemsBasePath)) {
+                                basePaths.push(currentItemsBasePath);
+
+                                paths.push(item.path);
+                            }
+                        }
+                    });
+                });
+                window.electron.send("openFiles", paths);
+
+                return playlists;
+            });
         }
     };
 }
@@ -137,8 +165,19 @@ export function getPlaylistByName(playlistName) {
     return $playlist;
 }
 
+function getOSFileSeparator() {
+    let $OSFileSeparator;
+
+    const unsubscribe = OSFileSeparator.subscribe(value => {
+        $OSFileSeparator = value;
+    });
+    unsubscribe();
+    return $OSFileSeparator;
+}
+
 
 export const playlist = playlistHandler();
 export const playlists = playlistsHandler();
 export const selectedIdsStore = writable([]);
 export const selectedTabPlaylistId = writable();
+export const OSFileSeparator = writable();

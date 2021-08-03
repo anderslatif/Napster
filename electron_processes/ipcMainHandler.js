@@ -1,12 +1,16 @@
-const { BrowserWindow, ipcMain, screen } = require("electron");
+const { BrowserWindow, ipcMain, screen, shell } = require("electron");
 const { playlistHandler } = require("./filerHandler/playlistHandler.js");
 const storage = require("./db/storage.js");
 const path = require("path");
+const os = require("os");
 
 let albumCoverWindow;
 
 function init(window, playlists) {
     ipcMain.on("toMain", async () => {
+
+        const fileSeparator = os.platform() === "win32" ? "\\" : "/"
+        window.webContents.send("setOSFileSeparator", fileSeparator);
 
         if (process.env.NODE_ENV === "dev") {
             // to main is called when the the app is (re)rendered
@@ -44,7 +48,7 @@ function init(window, playlists) {
 
     ipcMain.on("enlargeAlbumCover", (event, url) => {
         if (!albumCoverWindow) {
-            const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+            const { height } = screen.getPrimaryDisplay().workAreaSize;
 
             albumCoverWindow = new BrowserWindow({
                 height,
@@ -65,6 +69,10 @@ function init(window, playlists) {
         albumCoverWindow.close();
         albumCoverWindow = undefined;
     });
+
+    ipcMain.on("openFiles", (event, paths) => {
+        paths.forEach(path => shell.showItemInFolder(path));
+    });
  }
 
 async function handlePathsToPlaylist(window, { _id, filePaths }) {
@@ -77,9 +85,7 @@ async function handlePathsToPlaylist(window, { _id, filePaths }) {
 }
 
 async function handleNewPaths(path) {
-    console.log("path ", path);
     const playlist = await storage.findOne({});
-    console.log("playlist ", playlist);
     handlePathsToPlaylist({ _id: playlist._id, filePaths: [path] });
 }
 

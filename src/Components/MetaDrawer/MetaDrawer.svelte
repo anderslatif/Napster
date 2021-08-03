@@ -35,6 +35,7 @@
         bottom: 0;
         overflow-y: auto;
         margin: 0.5em;
+        margin-right: 1em;
     }
 
     #line {

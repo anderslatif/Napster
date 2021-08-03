@@ -1,6 +1,10 @@
-import { playlist, playlists } from "../store.js";
+import { playlist, playlists, OSFileSeparator } from "../store.js";
 
-window.electron.send("toMain", "Rerendered"); 
+window.electron.send("toMain", "Rerendered");
+
+window.electron.receive("setOSFileSeparator", (fileSeparator) => {
+    OSFileSeparator.set(fileSeparator);
+});
 
 window.electron.receive("initializePlaylists", (initializedPlaylists) => {
     if (initializedPlaylists.length > 0) playlist.changePlaylist(initializedPlaylists[0]);

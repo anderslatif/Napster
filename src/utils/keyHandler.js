@@ -25,7 +25,7 @@ export function keyUp(event) {
 
 
 function keyHandler() {
-    
+
     if (pressedKeys.Space) {
         playOrPauseSong();
     }
@@ -69,6 +69,13 @@ function keyHandler() {
         else {
             skipSong(5);
         }
+    }
+
+    if (pressedKeys.KeyO) {
+        const itemIds = [];
+        document.querySelectorAll(".selected").forEach(selectedRow => itemIds.push(selectedRow.id));
+        playlists.openFiles(itemIds);
+
     }
 
 }
