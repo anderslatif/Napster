@@ -92,4 +92,14 @@
             display: none;
         }
     }
+    
+    @media screen and (max-width: 320px) {
+        #tab-list-container {
+            font-size: 0.4em;
+        }
+
+        #player-view-wrapper {
+            font-size: 0.6em;
+        }
+    }
 </style>
