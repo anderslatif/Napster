@@ -127,7 +127,6 @@ function playlistsHandler() {
                 const basePaths = [];
                 const paths = [];
                 const OSFileSeparator = getOSFileSeparator();
-                console.log(OSFileSeparator);
 
                 playlists.forEach(playlist => {
                     playlist.items.forEach(item => {

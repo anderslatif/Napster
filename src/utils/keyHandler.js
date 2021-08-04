@@ -11,6 +11,12 @@ export function keyDown(event) {
 
 export function keyUp(event) {
     pressedKeys[event.code] = false;
+    
+    if (event.code === "KeyO") {
+        // if I were to open the file view on key down then key up won't trigger
+        // instead trigger on key up
+        handleKeyOUp();
+    }
 
     if (event.key === "Meta") {
         // Macs modify the behavior with the Meta key and won't fire on keyUp for other keys pressed down simultanously. 
@@ -71,11 +77,10 @@ function keyHandler() {
         }
     }
 
-    if (pressedKeys.KeyO) {
-        const itemIds = [];
-        document.querySelectorAll(".selected").forEach(selectedRow => itemIds.push(selectedRow.id));
-        playlists.openFiles(itemIds);
+}
 
-    }
-
+function handleKeyOUp() {
+    const itemIds = [];
+    document.querySelectorAll(".selected").forEach(selectedRow => itemIds.push(selectedRow.id));
+    playlists.openFiles(itemIds);
 }
