@@ -1,6 +1,7 @@
 <script>
     export let playlistId;
     export let containerId;
+    export let onDragEnd;
 
     function handleDragStart(event) {
         const draggingTab = event.target;
@@ -18,14 +19,15 @@
         }  else {
             container.insertBefore(draggable , afterElement);
         }
-
     }
 
     function handleDragEnd(event) {
         const draggingTab = event.target;
         draggingTab.classList.remove("dragging-tab");
 
-        // todo save the new order in the store 
+        const container = document.getElementById(containerId).childNodes;
+        const playlistIdsInOrder = [...container].map(playlist => playlist.id).filter(Boolean);
+        onDragEnd(playlistIdsInOrder);
     }
 
     function findNextElement(container, x) {

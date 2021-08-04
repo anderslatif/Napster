@@ -34,7 +34,7 @@ async function initializeWindowsWithPlaylists(files) {
     let playlists = await storage.find();
     
     if (playlists.length === 0) {
-        const newPlaylist = { name: "Napster", items: [] };
+        const newPlaylist = { name: "Napster", items: [], order: 0 };
         playlists = await storage.insert(newPlaylist);
         
     }

@@ -31,8 +31,8 @@ function init(window, playlists) {
         storage.update({ _id }, { $set: { items: newItemList } });
     });
 
-    ipcMain.on("toMainCreatePlaylist", async (event, args) => {
-        const newPlaylist = { name: "New Playlist", items: [] };
+    ipcMain.on("toMainCreatePlaylist", async (event, { order }) => {
+        const newPlaylist = { name: "New Playlist", items: [], order };
         const playlist = await storage.insert(newPlaylist);
 
         window.webContents.send("newPlaylist", playlist);
@@ -72,6 +72,12 @@ function init(window, playlists) {
 
     ipcMain.on("openFiles", (event, paths) => {
         paths.forEach(path => shell.showItemInFolder(path));
+    });
+
+    ipcMain.on("rearrangePlaylistsOrder", (event, newOrderedPlaylist) => {
+        newOrderedPlaylist.map(playlist => {
+            storage.update({ _id: playlist._id }, { $set: {order: playlist.order } });
+        });
     });
  }
 

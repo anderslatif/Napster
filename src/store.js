@@ -55,8 +55,9 @@ function playlistsHandler() {
     return {
         subscribe,
         initializePlaylists: (playlists) => {
+            const sortedByOrderPlaylists = playlists.sort((first, second) => first.order - second.order)
             selectedTabPlaylistId.set(playlists[0]?._id);
-            set(playlists);
+            set(sortedByOrderPlaylists);
         },
         addPlaylistItems: (playlistId, newItems) => {
             update(playlists => {
@@ -83,6 +84,15 @@ function playlistsHandler() {
                     return playlist;
                 });
             })
+        },
+        rearrangePlaylistOrder: (playlistIdsInOrder) => {
+            update(playlists => {
+                const playlistsWithNewOrders = playlists.map(playlist => {
+                    return { ...playlist, order: playlistIdsInOrder.findIndex(id => id === playlist._id) };
+                });
+                window.electron.send("rearrangePlaylistsOrder", playlistsWithNewOrders);
+                return playlistsWithNewOrders;
+            });
         },
         deletePlaylistItems: (ids) => {
             update(playlists => {

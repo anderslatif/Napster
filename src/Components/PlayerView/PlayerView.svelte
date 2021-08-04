@@ -39,12 +39,13 @@
 
     <div id="tab-view">
         <Tabs selectedTabId={$selectedTabPlaylistId}>
-            <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist")}>
+            <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist", { order: $playlists.length })}>
                 <div id="tab-list-container">
                     {#each $playlists as playlist (playlist._id)}
                         <HorizontalDragAndDrop 
                             containerId="tab-list-container" 
-                            playlistId={playlist._id} 
+                            playlistId={playlist._id}
+                            onDragEnd={playlists.rearrangePlaylistOrder}
                         >
                         <Tab 
                             id={playlist._id}

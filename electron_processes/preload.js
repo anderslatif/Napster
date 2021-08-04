@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld(
             let validChannels = ["toMain",
                 "toMainDroppedFilePaths", "toMainSetSongList", 
                 "toMainChangePlaylistName", "toMainCreatePlaylist", "toMainDeletePlaylist",
-                "enlargeAlbumCover", "closeAlbumCoverWindow", "openFiles"];
+                "enlargeAlbumCover", "closeAlbumCoverWindow", "openFiles", "rearrangePlaylistsOrder"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
