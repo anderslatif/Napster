@@ -49,7 +49,7 @@
                         >
                         <Tab 
                             id={playlist._id}
-                            onCloseTab={() => playlists.deletePlaylist(playlist._id)}
+                            onCloseTab={() => playlists.deletePlaylist(playlist)}
                             onTabSelect={() => handleTabSelect(playlist._id)}
                         >
                                 <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>

@@ -18,3 +18,7 @@ window.electron.receive("fromMainDroppedFilePaths", ({ _id, playlistReadyDropped
 window.electron.receive("newPlaylist", playlist => {
     playlists.createPlaylist(playlist);
 });
+
+window.electron.receive("sendUndoneDeletedPlaylist", playlist => {
+    playlists.createPlaylist(playlist)
+});

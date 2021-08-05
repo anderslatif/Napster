@@ -77,6 +77,15 @@ function keyHandler() {
         }
     }
 
+    if (pressedKeys.KeyT &&
+        ((pressedKeys.ControlLeft || pressedKeys.ControlRight)
+        || (pressedKeys.MetaLeft || pressedKeys.MetaRight)
+        && (pressedKeys.ShiftLeft || pressedKeys.ShiftRight)
+        )
+    ) {
+            window.electron.send("undoDeletePlaylist");   
+        }
+
 }
 
 function handleKeyOUp() {

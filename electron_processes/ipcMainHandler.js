@@ -6,6 +6,8 @@ const os = require("os");
 
 let albumCoverWindow;
 
+const deletedPlaylists = [];
+
 function init(window, playlists) {
     ipcMain.on("toMain", async () => {
 
@@ -38,8 +40,9 @@ function init(window, playlists) {
         window.webContents.send("newPlaylist", playlist);
     });
 
-    ipcMain.on("toMainDeletePlaylist", (event, { _id }) => {
-        storage.removeOne({ _id });
+    ipcMain.on("toMainDeletePlaylist", (event, { playlist }) => {
+        deletedPlaylists.push(playlist);
+        storage.removeOne({ _id: playlist._id });
     });
 
     ipcMain.on("toMainChangePlaylistName", (event, { _id, name }) => {
@@ -78,6 +81,16 @@ function init(window, playlists) {
         newOrderedPlaylist.map(playlist => {
             storage.update({ _id: playlist._id }, { $set: {order: playlist.order } });
         });
+    });
+
+    ipcMain.on("undoDeletePlaylist", async () => {
+        const playlistToReAdd = deletedPlaylists.pop();
+        if (playlistToReAdd) {
+            delete playlistToReAdd._id;
+            const newPlaylist = await storage.insert(playlistToReAdd);
+
+            window.webContents.send("sendUndoneDeletedPlaylist", newPlaylist);
+        }
     });
  }
 

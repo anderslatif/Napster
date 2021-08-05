@@ -43,10 +43,10 @@
                 // webkit does not respect the OS ordering of folders/files so an alphabetic sort is needed
                 await Promise.all(sortListAlphabetically(entries).map(async (entry) => {
                     if (entry.isFile) {
-                        files.push(`${path}${OSFileSeparator}${entry.name}`);
+                        files.push(`${path}${$OSFileSeparator}${entry.name}`);
                     } else if (entry.isDirectory) {
                         const newDirectoryReader = entry.createReader();
-                        await walkDirRecursively(`${path}${OSFileSeparator}${entry.name}`, newDirectoryReader);
+                        await walkDirRecursively(`${path}${$OSFileSeparator}${entry.name}`, newDirectoryReader);
                     }
                 }));
                 resolve();

@@ -7,7 +7,8 @@ contextBridge.exposeInMainWorld(
             let validChannels = ["toMain",
                 "toMainDroppedFilePaths", "toMainSetSongList", 
                 "toMainChangePlaylistName", "toMainCreatePlaylist", "toMainDeletePlaylist",
-                "enlargeAlbumCover", "closeAlbumCoverWindow", "openFiles", "rearrangePlaylistsOrder"];
+                "enlargeAlbumCover", "closeAlbumCoverWindow", "openFiles", 
+                "rearrangePlaylistsOrder", "undoDeletePlaylist"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
@@ -15,7 +16,7 @@ contextBridge.exposeInMainWorld(
         receive: (channel, func) => {
             let validChannels = ["fromMain", "setOSFileSeparator", 
                 "initializePlaylists", "fromMainDroppedFilePaths", 
-                "newPlaylist", "sendAlbumCover"];
+                "newPlaylist", "sendAlbumCover", "sendUndoneDeletedPlaylist"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
                 ipcRenderer.on(channel, (event, ...args) => func(...args));

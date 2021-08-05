@@ -124,13 +124,13 @@ function playlistsHandler() {
         },
         createPlaylist: (playlist) => {
             update(playlists => {
-                playlists.push(playlist);
+                playlists.push({ ...playlist, order: playlists.length });
                 return playlists;
             })
         },
-        deletePlaylist: (playlistId) => {
-            window.electron.send("toMainDeletePlaylist", { _id: playlistId });
-            update(playlists => playlists.filter(playlist => playlist._id !== playlistId));
+        deletePlaylist: (playlistToDelete) => {
+            window.electron.send("toMainDeletePlaylist", { playlist: playlistToDelete });
+            update(playlists => playlists.filter(playlist => playlist._id !== playlistToDelete._id));
         },
         openFiles: (itemIds) => {
             update(playlists => {
