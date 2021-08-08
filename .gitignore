@@ -1,10 +1,7 @@
 todo.txt
-
 /public/build/
-
-.DS_Store
-
 data.db
+electron-builder.env
 
 # Logs
 logs
