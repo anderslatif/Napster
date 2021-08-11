@@ -8,8 +8,8 @@ async function createWindow(playlists) {
     // Create the browser window with node integration
     const window = new BrowserWindow({
         title: "Napster",
-        width: 1400,
-        height: 600,
+        width: 1000,
+        height: 1200,
         webPreferences: {
             contextIsolation: true,
             enableRemoteModule: false,
@@ -39,7 +39,7 @@ async function initializeWindowsWithPlaylists(files) {
         
     }
 
-    createWindow(playlists);            
+    return createWindow(playlists);            
 }
 
 module.exports = {

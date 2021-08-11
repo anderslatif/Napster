@@ -13,7 +13,7 @@
         />
         {/if}
         <div id="lyrics-container">
-            {#each currentItem.metadata.lyrics.split('\n') as line}
+            {#each currentItem.metadata.lyrics?.split('\n') as line}
                 <div id="line">{line}</div>
             {/each}
             <br><br><br><br>

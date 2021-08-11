@@ -12,9 +12,11 @@ export function keyDown(event) {
 export function keyUp(event) {
     pressedKeys[event.code] = false;
     
-    if (event.code === "KeyO") {
+    if (event.code === "KeyO" && (pressedKeys.ControlLeft || pressedKeys.ControlLeft)) {
         // if I were to open the file view on key down then key up won't trigger
         // instead trigger on key up
+        pressedKeys.ControlLeft = false;
+        pressedKeys.ControlRight = false;
         handleKeyOUp();
     }
 

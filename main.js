@@ -1,5 +1,5 @@
-require("dotenv").config();
-const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron')
+require("dotenv").config({ path: 'electron-builder.env'});
+const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 process.env['APP_DATA'] = (app || require("electron").remote.app).getPath("userData");
@@ -22,15 +22,25 @@ menu.append(new MenuItem({
     submenu: [
     {
         label: "Quit",
-        accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'CTRL+Q',
+        accelerator: process.platform === 'darwin' ? 'CMD+Q' : 'CTRL+Q',
         click: () => {
             app.quit()
+        }
+    },
+    {
+        label: "Turn Debug On",
+        accelerator: process.platform === 'darwin' ? 'CMD+D' : 'CTRL+D',
+        click: () => {
+            console.log(window);
+            window.webContents.openDevTools();
         }
     }]
 }));
 Menu.setApplicationMenu(menu);
 
-app.on("ready", () => {
+let window;
+
+app.on("ready", async () => {
     const files = []
     app.on("open-file", (event, path) => {
         console.log("OPEN FILE???");
@@ -38,7 +48,7 @@ app.on("ready", () => {
     });    
 
     // database call here and loop through each playlist and create a 
-    initialize.initializeWindowsWithPlaylists();
+    window = await initialize.initializeWindowsWithPlaylists();
 
     if (process.platform === 'darwin') {
     }

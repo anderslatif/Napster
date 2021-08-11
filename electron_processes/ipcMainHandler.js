@@ -1,5 +1,5 @@
 const { BrowserWindow, ipcMain, screen, shell } = require("electron");
-const { playlistHandler } = require("./filerHandler/playlistHandler.js");
+const { playlistHandler } = require("./fileHandler/playlistHandler.js");
 const storage = require("./db/storage.js");
 const path = require("path");
 const os = require("os");

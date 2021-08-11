@@ -28,20 +28,24 @@ function convertSecondsToTimeString(durationInSeconds) {
 
 function tryToGetTitleFromFilename(filename) {
     try {
-        return filename.split(".")[1].substring(1, filename.length)
+        return filename.split(".")[1].substring(1, filename.length);
     } catch {
-        return ""
+        return "";
     }
 }
 
 async function getSongFromAPI(artist, title) {
     if (process.env.GENIUS_ACCESS_TOKEN && artist && title) {
-        return await getSong({
-            apiKey: process.env.GENIUS_ACCESS_TOKEN,
-            artist,
-            title,
-            optimizeQuery: true
-        }) || {};
+        try {
+            return await getSong({
+                apiKey: process.env.GENIUS_ACCESS_TOKEN,
+                artist,
+                title,
+                optimizeQuery: true
+            }) || {};    
+        } catch {
+            return {};
+        }
     }
     return {};
 }
