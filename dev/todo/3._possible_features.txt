@@ -1,8 +1,3 @@
-allow dropping file(s) in the middle of the playlist
 
-wavesurfer 
-https://wavesurfer-js.org/example/spectrogram/index.html
-
-
-view lyrics
+analyze audio - substitute the range slider with audio waves
 
