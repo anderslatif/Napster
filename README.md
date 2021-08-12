@@ -8,6 +8,8 @@ The players I have tried do not fulfill my needs.
 
 ### Features
 
+* Napster remembers your playlists, their order and the songs in them automatically. It's as easy as closing it and opening it again. 
+
 * Add songs by dropping folders or files on a playlist.
 
 * Rearrange songs with intuitive drag and drop. 
