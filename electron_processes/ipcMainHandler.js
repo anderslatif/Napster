@@ -83,15 +83,19 @@ function init(window, playlists) {
         });
     });
 
-    ipcMain.on("undoDeletePlaylist", async () => {
-        const playlistToReAdd = deletedPlaylists.pop();
-        if (playlistToReAdd) {
-            delete playlistToReAdd._id;
-            const newPlaylist = await storage.insert(playlistToReAdd);
-
-            window.webContents.send("sendUndoneDeletedPlaylist", newPlaylist);
-        }
+    ipcMain.on("undoDeletePlaylist", () => {
+        handleUndoDeletePlaylist(window);
     });
+
+    ipcMain.on("debugWindowOn", () => {
+        window.webContents.openDevTools();
+    });
+
+    ipcMain.on("quit", () => {
+        const { quitApplication } = require("../main.js");
+        quitApplication();
+    });
+
  }
 
 async function handlePathsToPlaylist(window, { _id, filePaths }) {
@@ -108,7 +112,18 @@ async function handleNewPaths(path) {
     handlePathsToPlaylist({ _id: playlist._id, filePaths: [path] });
 }
 
+async function handleUndoDeletePlaylist(window) {
+    const playlistToReAdd = deletedPlaylists.pop();
+    if (playlistToReAdd) {
+        delete playlistToReAdd._id;
+        const newPlaylist = await storage.insert(playlistToReAdd);
+
+        window.webContents.send("sendUndoneDeletedPlaylist", newPlaylist);
+    }
+}
+
 module.exports = {
     init,
-    handleNewPaths
+    handleNewPaths,
+    handleUndoDeletePlaylist
 };

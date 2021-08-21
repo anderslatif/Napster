@@ -8,7 +8,8 @@ contextBridge.exposeInMainWorld(
                 "toMainDroppedFilePaths", "toMainSetSongList", 
                 "toMainChangePlaylistName", "toMainCreatePlaylist", "toMainDeletePlaylist",
                 "enlargeAlbumCover", "closeAlbumCoverWindow", "openFiles", 
-                "rearrangePlaylistsOrder", "undoDeletePlaylist"];
+                "rearrangePlaylistsOrder", "undoDeletePlaylist",
+                "debugWindowOn", "quit"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }

@@ -5,11 +5,13 @@ import { skipSong, playOrPauseSong } from "../playlist/howler.js";
 const pressedKeys = {};
 
 export function keyDown(event) {
+    event.preventDefault();
     pressedKeys[event.code] = true;
     keyHandler();
 }
 
 export function keyUp(event) {
+    event.preventDefault();
     pressedKeys[event.code] = false;
     
     if (event.code === "KeyO" && (pressedKeys.ControlLeft || pressedKeys.ControlLeft)) {
@@ -36,6 +38,14 @@ function keyHandler() {
 
     if (pressedKeys.Space) {
         playOrPauseSong();
+    }
+
+    if (pressedKeys.KeyD && (pressedKeys.MetaLeft || pressedKeys.MetaRight)) {
+        window.electron.send("debugWindowOn");   
+    }
+
+    if (pressedKeys.KeyQ && (pressedKeys.MetaLeft || pressedKeys.MetaRight)) {
+        window.electron.send("quit");   
     }
 
     if (pressedKeys.Backspace || pressedKeys.Delete) {

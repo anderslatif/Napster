@@ -5,7 +5,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 process.env['APP_DATA'] = (app || require("electron").remote.app).getPath("userData");
 
 const initialize = require("./electron_processes/initialize.js");
-const { handleNewPaths } = require("./electron_processes/ipcMainHandler.js");
+const { handleNewPaths, handleUndoDeletePlaylist } = require("./electron_processes/ipcMainHandler.js");
 
 // If in development use electron-reload to watch for
 // changes in the current directory
@@ -24,6 +24,7 @@ menu.append(new MenuItem({
         label: "Quit",
         accelerator: process.platform === 'darwin' ? 'CMD+Q' : 'CTRL+Q',
         click: () => {
+            console.log("********************");
             app.quit()
         }
     },
@@ -31,8 +32,18 @@ menu.append(new MenuItem({
         label: "Turn Debug On",
         accelerator: process.platform === 'darwin' ? 'CMD+D' : 'CTRL+D',
         click: () => {
-            console.log(window);
             window.webContents.openDevTools();
+        }
+    },
+    {
+        label: `Open in ${process.platform === 'darwin' ? 'Finder' : 'File Explorer'}. Click not supported. Use the shortcut.`,
+        accelerator: process.platform === 'darwin' ? 'CMD+O' : 'CTRL+O',
+     },
+    {
+        label: "Undo Deleted Tab",
+        accelerator: process.platform === 'darwin' ? 'CMD+T' : 'CTRL+T',
+        click: () => {
+            handleUndoDeletePlaylist(window);
         }
     }]
 }));
@@ -59,8 +70,15 @@ app.on("ready", async () => {
     });
 });
 
+function quitApplication() {
+    app.quit();
+}
 
 
 app.on('window-all-closed', () => {
     app.quit();
 });
+
+module.exports = {
+    quitApplication
+};
