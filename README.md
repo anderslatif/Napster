@@ -14,11 +14,13 @@ The players I have tried do not fulfill my needs.
 
 * Rearrange songs with intuitive drag and drop. 
 
-* Create playlists with tabs. Arrange tabs. Undo delete. 
+* Create playlists with tabs. Arrange tabs. Undo delete (CMD+T / CTRL+T). 
 
 * Move songs between playlists by dragging the elements onto the tab titles. 
 
-* Play videos. 
+* Press CTRL+O on playlist items to open in Finder/File Explorer. 
+
+* Play videos.
 
 ![Napster Screenshot](./dev/Screenshot.png)
 
@@ -44,4 +46,6 @@ To make it build for other OS add electron-builder configs for other OS. I have 
 
 Napster has not been tested on anything but MacOS. 
 
-Feel free to create an issue. Right now I'm assuming no one will use it but me.
+The intention has always been to make something for myself that fulfills my personal needs. But I also see value in open-sourcing the code for others.
+
+Feel free to create an issue, though.
