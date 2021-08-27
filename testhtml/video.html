@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: black;
+        }
+
+        video {
+            flex: 1;
+            height: 95vh;
+        }
+
+  
+        #controls {
+            width: 100%;
+        }
+
+        button {
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0);
+            color: darkgrey;
+            border: 0;
+        }
+
+        .n1 {
+            width: 5%;
+        }
+
+        .n2 {
+            width: 5%;
+        }
+
+        .n3 {
+            width: 84%;
+        }
+
+        .n4 {
+            width: 5%;
+        }
+    </style>
+</head>
+<body>
+<!-- assignment https://cdn.jsdelivr.net/npm/@vime/core@%5E5/themes/default.css -->
+<!-- assignment https://vjs.zencdn.net/7.11.4/video-js.css -->
+
+    <video width="800px" height="500px">
+        <source src="https://media.vimejs.com/720p.mp4" type="video/mp4">
+        <!-- <track default kind="subtitles" src="https://media.vimejs.com/subs/english.vtt" srclang="en" label="English" /> -->
+    </video>
+
+    <div id="controls">
+        <button class="n1">❚❚ / ▶</button>
+        <button class="n2">■</button>
+        <input class="n3" type="range" min="0" max="11" >
+
+        <button class="n4">
+            <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%" fill="darkgrey">
+                <path d="m 10,16 2,0 0,-4 4,0 0,-2 L 10,10 l 0,6 0,0 z"></path>
+                <path d="m 20,10 0,2 4,0 0,4 2,0 L 26,10 l -6,0 0,0 z"></path>
+                <path d="m 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z"></path>
+                <path d="M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z"></path>
+            </svg>
+        </button>
+    </div>
+</body>
+</html>
