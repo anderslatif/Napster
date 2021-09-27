@@ -52,10 +52,8 @@ Menu.setApplicationMenu(menu);
 let window;
 
 app.on("ready", async () => {
-    const files = []
     app.on("open-file", (event, path) => {
-        console.log("OPEN FILE???");
-        files.push(path);
+        handleNewPaths(path);
     });    
 
     // database call here and loop through each playlist and create a 

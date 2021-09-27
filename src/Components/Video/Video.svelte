@@ -40,6 +40,7 @@
         max-height: 100vh;
         object-fit: contain;
         position: fixed;
+        outline: none;
     }
 
 </style>

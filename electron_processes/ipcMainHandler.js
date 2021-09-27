@@ -5,10 +5,13 @@ const path = require("path");
 const os = require("os");
 
 let albumCoverWindow;
+let initializedWindow;
 
 const deletedPlaylists = [];
 
 function init(window, playlists) {
+    initializedWindow = window;
+
     ipcMain.on("toMain", async () => {
 
         const fileSeparator = os.platform() === "win32" ? "\\" : "/"
@@ -109,7 +112,7 @@ async function handlePathsToPlaylist(window, { _id, filePaths }) {
 
 async function handleNewPaths(path) {
     const playlist = await storage.findOne({});
-    handlePathsToPlaylist({ _id: playlist._id, filePaths: [path] });
+    handlePathsToPlaylist(initializedWindow, { _id: playlist._id, filePaths: [path] });
 }
 
 async function handleUndoDeletePlaylist(window) {
