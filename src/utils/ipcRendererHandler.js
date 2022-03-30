@@ -22,3 +22,7 @@ window.electron.receive("newPlaylist", playlist => {
 window.electron.receive("sendUndoneDeletedPlaylist", playlist => {
     playlists.createPlaylist(playlist)
 });
+
+window.electron.receive("fromMainplayNext", () => {
+    playlist.playNext();
+});

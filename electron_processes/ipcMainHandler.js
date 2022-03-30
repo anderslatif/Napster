@@ -71,6 +71,10 @@ function init(window, playlists) {
         }
     });
 
+    ipcMain.on("toMainPlayNext", () => {
+        window.webContents.send("fromMainplayNext");
+    });
+
     ipcMain.on("closeAlbumCoverWindow", (event) => {
         albumCoverWindow.close();
         albumCoverWindow = undefined;

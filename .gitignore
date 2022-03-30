@@ -3,6 +3,9 @@ todo.txt
 data.db
 electron-builder.env
 
+# Since Electron has loading problems with dotenv I create my own .env file
+env.json
+
 # Logs
 logs
 *.log

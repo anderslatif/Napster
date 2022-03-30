@@ -1,5 +1,10 @@
 const mm = require('music-metadata');
 const { getSong } = require('genius-lyrics-api');
+let customenv;
+try {
+    // it's not necessary that the file exists
+    customenv = require("../../env.json");
+} catch {}
 
 async function getMusicMetaData(filePath) {
     const metadata = await mm.parseFile(filePath);
@@ -35,10 +40,10 @@ function tryToGetTitleFromFilename(filename) {
 }
 
 async function getSongFromAPI(artist, title) {
-    if (process.env.GENIUS_ACCESS_TOKEN && artist && title) {
+    if (customenv && artist && title) {
         try {
             return await getSong({
-                apiKey: process.env.GENIUS_ACCESS_TOKEN,
+                apiKey: customenv.GENIUS_ACCESS_TOKEN,
                 artist,
                 title,
                 optimizeQuery: true

@@ -32,7 +32,6 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "dotenv": "^9.0.2",
     "ffmpeg": "^0.0.4",
     "genius-lyrics-api": "^3.0.6",
     "howler": "^2.2.1",

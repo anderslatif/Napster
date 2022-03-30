@@ -1,4 +1,3 @@
-require("dotenv").config({ path: 'electron-builder.env'});
 const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';

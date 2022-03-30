@@ -24,7 +24,7 @@ The players I have tried do not fulfill my needs.
 
 ![Napster Screenshot](./dev/Screenshot.png)
 
-* As seen above lyrics and album cover is also retrieved which isn't part of the song file meta-data. This requires internet connection and only appears if it can be retrieved and when the player is expanded to a certain width. For now this is a locked feature. Unless people want to use this feature it requires a custom fix. Create a .env file and put your API access token from [Genius](https://docs.genius.com/). It should be named GENIUS_ACCESS_TOKEN=xxxxxxxxx
+* As seen above lyrics and album cover is also retrieved which isn't part of the song file meta-data. This requires internet connection and only appears if it can be retrieved and when the player is expanded to a certain width. For now this is a locked feature. Unless people want to use this feature it requires a custom fix. Create a env.json file and put your API access token from [Genius](https://docs.genius.com/). The key should be named "GENIUS_ACCESS_TOKEN".
 
 ### Development
 
