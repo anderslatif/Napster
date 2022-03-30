@@ -11,9 +11,14 @@
     function handleDragOver(event) {
         const container = document.getElementById(containerId);
 
+        // if dragging songs then don't handle drag of tab
+        const isDraggingSongsOverTab = document.querySelector(".dragging");
+        if (isDraggingSongsOverTab) return;
+
+        // handle tabs being dragged before or after other tabs
         const afterElement = findNextElement(container, event.clientX);
         const draggable = document.querySelector(".dragging-tab");
-                
+        
         if (!afterElement) {
             container.appendChild(draggable);
         }  else {

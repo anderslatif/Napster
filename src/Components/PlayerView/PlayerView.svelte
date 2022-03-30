@@ -8,7 +8,7 @@
     import HorizontalDragAndDrop from "../../GenericComponents/HorizontalDragAndDrop/HorizontalDragAndDrop.svelte"
 	import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
     import { changeIsPlaying } from '../../utils/domSelector.js';
-
+    import PlayListHandler from "../../playlist/Playlist.js";
 
     function handleTabSelect(playlistId) {
         selectedTabPlaylistId.set(playlistId);
@@ -25,13 +25,26 @@
 
         const draggedIds = $selectedIdsStore;
         const draggedItems = draggedFromPlaylist.items.filter(item => draggedIds.includes(item.id));
-        const newItems = draggedFromPlaylist.items.filter(item => !draggedIds.includes(item.id));
-        
-        playlists.setPlaylistItems(draggedFromPlaylist._id, newItems);
-        playlists.setPlaylistItems(droppedOnPlaylistId, droppedOnPlaylist.items.concat(draggedItems));
 
-        // ignore the reordering that also saves to the store
-        setTimeout(() => playlistStore.setItems(newItems), 10);
+        // if no items are dragged over the tab and the tab are rearranged then don't update the playlist items
+        if (draggedItems.length > 0) {
+            const newItemsDraggedFrom = draggedFromPlaylist.items.filter(item => !draggedIds.includes(item.id));
+            const newItemsDroppedOn = droppedOnPlaylist.items.concat(draggedItems);
+
+            playlists.setPlaylistItems(draggedFromPlaylist._id, newItemsDraggedFrom);
+            playlists.setPlaylistItems(droppedOnPlaylistId, newItemsDroppedOn);
+
+            // if the playlist that is dragged from is current playlist then update items for that playlist            
+            if (PlayListHandler.playlistId === draggedFromPlaylist._id) {
+                // ignore the reordering that also saves to the store
+                setTimeout(() => playlistStore.setItems(newItemsDraggedFrom), 10);
+            }
+            if (PlayListHandler.playlistId === droppedOnPlaylist._id) {
+                setTimeout(() => playlistStore.setItems(newItemsDroppedOn), 10);
+            }
+
+        }        
+
     }
 </script>
 

@@ -1,3 +1,7 @@
 if video is playing then space shouldn't start music
 
+spacebar shouldn't affect scroll
+
+lyrics should change when a song changes
+
 
