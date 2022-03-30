@@ -18,7 +18,6 @@ export function playSong(song, playlist) {
     src: song.path,
     html5: true,
     onend: () => {
-      // playlist.playNext();
       window.electron.send("toMainPlayNext");
     }
   });
