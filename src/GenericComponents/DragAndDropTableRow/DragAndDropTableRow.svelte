@@ -161,6 +161,6 @@
     }
     
     .selected {
-	    background-color: rgb(0, 0, 41);
+	    background-color: rgb(0, 0, 119);
     }
 </style>
