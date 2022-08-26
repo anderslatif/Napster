@@ -10,7 +10,7 @@
 	{#if $playlist.currentIsAudio}
 		<PlayerView />
 	{:else}
-		<Video videoFile={$playlist.currentItem} />
+		<Video videoFilePath={$playlist.currentItem.path} />
 	{/if}
 </main>
 

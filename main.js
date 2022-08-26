@@ -44,6 +44,15 @@ menu.append(new MenuItem({
         click: () => {
             handleUndoDeletePlaylist(window);
         }
+    }, 
+    {
+        label: "Stop video. Click not supported. Use the shortcut.",
+        accelerator: 's'
+    },
+    , 
+    {
+        label: "Show playlist pane in video view. Click not supported. Use the shortcut.",
+        accelerator: 'l'
     }]
 }));
 Menu.setApplicationMenu(menu);

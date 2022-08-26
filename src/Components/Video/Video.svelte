@@ -1,5 +1,5 @@
 <script>   
-    export let videoFile;
+    export let videoFilePath;
 
     import { playlist } from "../../store.js";
     import { getSound } from "../../playlist/howler.js";
@@ -8,17 +8,32 @@
     
     import { onMount } from "svelte";
 
+    let video;
+    let source;
+
     let showPlaylistPane = false;
 
     onMount(() => {
+        video = document.getElementsByTagName("video")[0];
+        source = video.getElementsByTagName("source");
+
         getSound()?.stop();
 
-        document.getElementById("video").addEventListener("ended", () => {
+        video.addEventListener("ended", () => {
             playlist.playNext();
         });
     });
 
-    function keyDownHandler({ key }) {
+    playlist.subscribe((playlist) => {
+        if (!playlist.currentIsAudio && playlist.currentItem.path !== videoFilePath) {
+            videoFilePath = playlist.currentItem.path;
+            source.src = videoFilePath;
+            video.load();
+            video.play();
+        }
+    });
+
+    function keyDownHandler({ key }) {        
         if (key === 'l' || key === 'L') {
             showPlaylistPane = !showPlaylistPane;
         } else if (key === 's' || key === 'S') {
@@ -42,7 +57,7 @@
     {/if}
     
     <video id="video" controls autoplay>
-        <source src={videoFile.path}>
+        <source src={videoFilePath}>
         <track kind="captions">
     </video>
 </div>
@@ -72,5 +87,6 @@
         object-fit: contain;
         position: fixed;
         outline: none;
+        z-index: 1;
     }
 </style>
