@@ -36,6 +36,8 @@ class Playlist {
     play(item) {
         this.currentItem = item;
 
+        const video = document.getElementsByTagName("video")[0]?.pause();
+
         if (item.type === "audio") {
             this.currentIsAudio = true;
             playSong(item, this);

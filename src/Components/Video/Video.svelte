@@ -15,17 +15,18 @@
 
     onMount(() => {
         video = document.getElementsByTagName("video")[0];
-        source = video.getElementsByTagName("source");
+        source = video.getElementsByTagName("source")[0];
 
         getSound()?.stop();
-
+        
         video.addEventListener("ended", () => {
+            video.pause();
             playlist.playNext();
         });
     });
 
     playlist.subscribe((playlist) => {
-        if (!playlist.currentIsAudio && playlist.currentItem.path !== videoFilePath) {
+        if (!playlist.currentIsAudio && source && videoFilePath && playlist.currentItem.path !== videoFilePath) {
             videoFilePath = playlist.currentItem.path;
             source.src = videoFilePath;
             video.load();
@@ -42,7 +43,9 @@
     }
 
     function stopVideo() {
-        document.getElementById("video").pause();
+        video.pause();
+        video.currentTime = 0;
+        videoFilePath = "";
         playlist.stop();
     }
 
