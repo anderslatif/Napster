@@ -2,7 +2,7 @@ const { getMusicMetaData, isAudio, convertSecondsToTimeString, tryToGetTitleFrom
 const { getffmpegMetaData, isVideo } = require("./videoUtils.js");
 const { guid, getFileName } = require("./generalUtils.js");
 
-async function playlistHandler(filePaths) {
+async function playlistHandler(filePaths, window) {
     const playlistReadyFiles = await Promise.all(filePaths.map( async (path) => {
   
       const fileNameSplit = path.split(".");
@@ -16,6 +16,8 @@ async function playlistHandler(filePaths) {
         const durationString = convertSecondsToTimeString(duration);
 
         const { albumArt, lyrics } = await getSongFromAPI(artist, title);
+
+        window.webContents.send("itemProcessed");
 
         return {
           id: guid(),
@@ -37,6 +39,8 @@ async function playlistHandler(filePaths) {
         const parsedVideo = await getffmpegMetaData(path);
         const { title, track, artist, album, duration }  = parsedVideo.metadata;
 
+        window.webContents.send("itemProcessed");
+
         return {
           id: guid(),
           type: "video",
@@ -50,6 +54,8 @@ async function playlistHandler(filePaths) {
             durationString: duration.raw.substr(0, duration.raw.length-3) // removes .00 (miliseconds)
           }
         };
+      } else {
+        window.webContents.send("itemProcessed");
       }
     }));
     return playlistReadyFiles.filter(Boolean);

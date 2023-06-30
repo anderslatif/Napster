@@ -9,6 +9,7 @@
 	import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
     import { changeIsPlaying } from '../../utils/domSelector.js';
     import PlayListHandler from "../../playlist/Playlist.js";
+    import ProgressBar from '../ProgressBar/ProgressBar.svelte';
 
     function handleTabSelect(playlistId) {
         selectedTabPlaylistId.set(playlistId);
@@ -49,43 +50,44 @@
 </script>
 
 <ControlBar />
+<ProgressBar />
 
-    <div id="tab-view">
-        <Tabs selectedTabId={$selectedTabPlaylistId}>
-            <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist", { order: $playlists.length })}>
-                <div id="tab-list-container">
-                    {#each $playlists as playlist (playlist._id)}
-                        <HorizontalDragAndDrop 
-                            containerId="tab-list-container" 
-                            playlistId={playlist._id}
-                            onDragEnd={playlists.rearrangePlaylistOrder}
-                        >
-                        <Tab 
-                            id={playlist._id}
-                            onCloseTab={() => playlists.deletePlaylist(playlist)}
-                            onTabSelect={() => handleTabSelect(playlist._id)}
-                        >
-                                <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>
-                                    <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
-                                </ElementDropHandler>
-                        </Tab>
-                        </HorizontalDragAndDrop>
-                    {/each}
-                </div>
-            </TabList>
-
-    <div id="player-view-wrapper">
-                <div id="meta-drawer-wrapper">
-                    <MetaDrawer currentItem={$playlistStore.currentItem} />
-                </div>
-
+<div id="tab-view">
+    <Tabs selectedTabId={$selectedTabPlaylistId}>
+        <TabList onNewTab={() => window.electron.send("toMainCreatePlaylist", { order: $playlists.length })}>
+            <div id="tab-list-container">
                 {#each $playlists as playlist (playlist._id)}
-                    <TabView id={playlist._id} >
-                        <Playlist playlist={playlist} />
-                    </TabView>
+                    <HorizontalDragAndDrop 
+                        containerId="tab-list-container" 
+                        playlistId={playlist._id}
+                        onDragEnd={playlists.rearrangePlaylistOrder}
+                    >
+                    <Tab 
+                        id={playlist._id}
+                        onCloseTab={() => playlists.deletePlaylist(playlist)}
+                        onTabSelect={() => handleTabSelect(playlist._id)}
+                    >
+                            <ElementDropHandler onElementsDropped={() => handleElementsDroppedOnTab(playlist._id)}>
+                                <EditableField content={playlist.name} onSubmit={(newTitle) => playlists.updatePlaylistName(playlist._id, newTitle)} /> 
+                            </ElementDropHandler>
+                    </Tab>
+                    </HorizontalDragAndDrop>
                 {/each}
-                </Tabs>
-    </div>
+            </div>
+        </TabList>
+
+<div id="player-view-wrapper">
+            <div id="meta-drawer-wrapper">
+                <MetaDrawer currentItem={$playlistStore.currentItem} />
+            </div>
+
+            {#each $playlists as playlist (playlist._id)}
+                <TabView id={playlist._id} >
+                    <Playlist playlist={playlist} />
+                </TabView>
+            {/each}
+            </Tabs>
+</div>
 
 
 <style>

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron');
+const { app, BrowserWindow, Menu, MenuItem } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 process.env['APP_DATA'] = (app || require("electron").remote.app).getPath("userData");
@@ -23,7 +23,6 @@ menu.append(new MenuItem({
         label: "Quit",
         accelerator: process.platform === 'darwin' ? 'CMD+Q' : 'CTRL+Q',
         click: () => {
-            console.log("********************");
             app.quit()
         }
     },

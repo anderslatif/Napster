@@ -106,7 +106,7 @@ function init(window, playlists) {
  }
 
 async function handlePathsToPlaylist(window, { _id, filePaths }) {
-    const playlist = await playlistHandler(filePaths);
+    const playlist = await playlistHandler(filePaths, window);
 
     const currentPlaylist = await storage.findOne({ _id });
     storage.update({ _id }, { $set: { items: currentPlaylist.items.concat(playlist) } });

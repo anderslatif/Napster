@@ -36,7 +36,9 @@
     "genius-lyrics-api": "^3.0.6",
     "howler": "^2.2.1",
     "music-metadata": "^7.8.8",
-    "nedb": "^1.8.0"
+    "nedb": "^1.8.0",
+    "socket.io": "^4.7.0",
+    "socket.io-client": "^4.7.0"
   },
   "build": {
     "appId": "com.andl.napster",

@@ -3,17 +3,23 @@
   import PlaylistColumns from "./SubComponents/PlaylistColumns.svelte";
   import Item from "../Item/Item.svelte";
   import ResizableTable from "../../GenericComponents/ResizableTable/ResizableTable.svelte";
+  import { songsProcessedCount } from "../../store.js";
 
   export let playlist;
 
   let lastClickedTableRowId;
   let selectedIds = [];
 
+  function handleFileUpload(filePaths) {
+    window.electron.send("toMainDroppedFilePaths", { _id: playlist._id, filePaths })
+		songsProcessedCount.set({ total: filePaths.length, remaining: filePaths.length, percentage: 0.0 });
+  }
+
 </script>
 
 <div class="playlist">
   <table id="playlist-table" class="playlist-table">
-    <FileUpload onFileUpload={(filePaths) => window.electron.send("toMainDroppedFilePaths", { _id: playlist._id, filePaths })}>
+    <FileUpload onFileUpload={handleFileUpload}>
       <ResizableTable tableId="playlist-table">
         <PlaylistColumns />
       </ResizableTable>

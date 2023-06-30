@@ -184,7 +184,29 @@ function getOSFileSeparator() {
     return $OSFileSeparator;
 }
 
+function customSongsProcessStore() {
+    const { subscribe, set, update } = writable({ total: 0, remaining: 0, percentage: 0.0 });
 
+    return {
+        subscribe,
+        set,
+        update,
+        reset: () => set({ total: 0, remaining: 0, percentage: 0.0 }),
+        decrementOneSong: () => update((value) => {
+            const newRemaningValue = value.remaining - 1;
+            if (newRemaningValue === 0) {
+                return { total: 0, remaining: 0, percentage: 0.0 };
+            } else {
+                const processed = value.total - value.remaining + 1;
+                const newPercentage = (processed / value.total).toFixed(1);
+                const newValue = { total: value.total, remaining: newRemaningValue, percentage: newPercentage};
+                return newValue;
+            }
+        }),
+    };
+};
+
+export const songsProcessedCount = customSongsProcessStore();
 export const playlist = playlistHandler();
 export const playlists = playlistsHandler();
 export const selectedIdsStore = writable([]);

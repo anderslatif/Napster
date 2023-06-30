@@ -1,4 +1,4 @@
-import { playlist, playlists, OSFileSeparator } from "../store.js";
+import { playlist, playlists, OSFileSeparator, songsProcessedCount } from "../store.js";
 
 window.electron.send("toMain", "Rerendered");
 
@@ -25,4 +25,8 @@ window.electron.receive("sendUndoneDeletedPlaylist", playlist => {
 
 window.electron.receive("fromMainplayNext", () => {
     playlist.playNext();
+});
+
+window.electron.receive("itemProcessed", () => {
+    songsProcessedCount.decrementOneSong();
 });
