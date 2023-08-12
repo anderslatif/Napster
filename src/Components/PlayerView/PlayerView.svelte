@@ -1,6 +1,6 @@
 <script>
     import { Tabs, TabList, TabView, Tab } from '../../GenericComponents/Tabs/tabs.js';
-    import EditableField from "../../GenericComponents/EditableField/EditableField.svelte";
+    import EditableField from "../../../EditableField/EditableField.svelte";
 	import Playlist from "../Playlist/Playlist.svelte"
     import ControlBar from "../ControlBar/ControlBar.svelte";
     import MetaDrawer from "../MetaDrawer/MetaDrawer.svelte";
@@ -62,7 +62,7 @@
                         playlistId={playlist._id}
                         onDragEnd={playlists.rearrangePlaylistOrder}
                     >
-                    <Tab 
+                    <Tab
                         id={playlist._id}
                         onCloseTab={() => playlists.deletePlaylist(playlist)}
                         onTabSelect={() => handleTabSelect(playlist._id)}
@@ -106,16 +106,6 @@
     @media screen and (max-width: 640px) {
         #meta-drawer-wrapper {
             display: none;
-        }
-    }
-    
-    @media screen and (max-width: 320px) {
-        #tab-list-container {
-            font-size: 0.4em;
-        }
-
-        #player-view-wrapper {
-            font-size: 0.6em;
         }
     }
 </style>
