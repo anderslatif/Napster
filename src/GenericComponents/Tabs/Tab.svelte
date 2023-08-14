@@ -12,7 +12,8 @@
     registerTab(tab);
 </script>
 
-<button class:selected-tab={$selectedTab === tab} 
+<div class:selected-tab={$selectedTab === tab}>
+<button
 	on:mouseup={(event) => {
 		// middle click
 		if (event.which === 2) {
@@ -25,7 +26,8 @@
 	}">
 	<slot></slot>
 </button>
-<button class:selected-tab={$selectedTab === tab} on:click={() => onCloseTab(tab)}>x</button>
+<button  on:click={() => onCloseTab(tab)}>x</button>
+</div>
 
 <style>
 	button {

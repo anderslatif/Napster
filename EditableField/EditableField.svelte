@@ -16,9 +16,7 @@
 	{#if isEditing}
 		<input class="editable-input" bind:value={content} on:keydown={handleSubmit} />
 	{:else}
-		<div>
-			{content}
-        </div>
+		{content}
 	{/if}
 </div>
 
