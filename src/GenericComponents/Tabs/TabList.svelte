@@ -11,7 +11,6 @@
 
     let tabContainer;
     let tabListContainer;
-    let showStickyNewTabButton;
     let newTabButtonSticky;
 
     function handleOnWheel(event) {
@@ -33,14 +32,6 @@
         setTimeout(() => {
             for (let tabItem of tabListContainer.children) {
                 tabListWidth += tabItem.offsetWidth;
-            }
-
-            if (tabListWidth < viewportWidth) {
-                showStickyNewTabButton = true;
-                // this is to offset the width of the new tab button so that it appears
-                setTimeout(() => {
-                    tabListWidth += newTabButtonSticky.offsetWidth;
-                })
             }
 
             tabListContainer.style.width = tabListWidth + 'px';
@@ -110,14 +101,9 @@
                     </Tab>
                 </div>
             </HorizontalDragAndDrop>
-            {#if true}
-                <button class="tab-item new-tab-button-sticky-right" bind:this={newTabButtonSticky} on:click={onNewTab}>+</button>
-            {/if}
         {/each}
 
-    {#if true}
         <button class="tab-item new-tab-button-sticky-right" bind:this={newTabButtonSticky} on:click={onNewTab}>+</button>
-    {/if}
     </div>
 </div>
 
