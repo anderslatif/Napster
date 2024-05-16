@@ -30,15 +30,21 @@ The players I have tried do not fulfill my needs.
 
 To get started: 
 
-`npm i `
+```bash
+$ npm install
+```
 
 To start in development mode:
 
-`npm run start-dev`
+```bash
+$ npm run start-dev
+```
 
 To build the player yourself:
 
-`npm run dist`
+```bash
+$ npm run dist
+```
 
 To make it build for other OS add electron-builder configs for other OS. I have chosen not to add this to make the dist command faster. 
 

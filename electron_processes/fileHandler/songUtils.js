@@ -47,7 +47,7 @@ async function getSongFromAPI(artist, title) {
                 artist,
                 title,
                 optimizeQuery: true
-            }) || {};    
+            }) || {};
         } catch {
             return {};
         }
