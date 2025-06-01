@@ -17,6 +17,7 @@ export function playSong(song, playlist) {
   sound = new Howler.Howl({
     src: song.path,
     html5: true,
+    volume: 0.8,
     onend: () => {
       window.electron.send("toMainPlayNext");
     }

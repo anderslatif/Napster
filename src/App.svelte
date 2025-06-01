@@ -3,6 +3,16 @@
 	import { keyDown, keyUp } from "./utils/keyHandler.js";
 	import { playlist } from "./store.js";
 	import PlayerView from "./Components/PlayerView/PlayerView.svelte";
+    import {playOrPauseSong } from "./playlist/howler.js";
+
+	if ('mediaSession' in navigator) {
+		navigator.mediaSession.setActionHandler('pause', () => {
+			playOrPauseSong();
+		});
+		navigator.mediaSession.setActionHandler('play', () => {
+			playOrPauseSong();
+		});
+	}
 
 </script>
 

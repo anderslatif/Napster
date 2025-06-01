@@ -2,7 +2,7 @@
     // import { TabView, Tab } from '../../GenericComponents/Tabs/tabs.js';
     import Tab from "./Tab.svelte";
     import ElementDropHandler from "../../GenericComponents/ElementDropHandler/ElementDropHandler.svelte"
-    import EditableField from "../../../EditableField/EditableField.svelte";
+    import EditableField from "../EditableField/EditableField.svelte";
     import HorizontalDragAndDrop from "../../GenericComponents/HorizontalDragAndDrop/HorizontalDragAndDrop.svelte";
     import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
 
