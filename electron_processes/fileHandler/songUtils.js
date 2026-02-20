@@ -42,12 +42,17 @@ function tryToGetTitleFromFilename(filename) {
 async function getSongFromAPI(artist, title) {
     if (customenv && artist && title) {
         try {
-            return await getSong({
+            const foundSongLyrics = await getSong({
                 apiKey: customenv.GENIUS_ACCESS_TOKEN,
                 artist,
                 title,
                 optimizeQuery: true
-            }) || {};
+            });
+            if (foundSongLyrics?.title.toLowerCase().includes(title.toLowerCase())) {
+                return foundSongLyrics;
+            } else {
+                return {};
+            }
         } catch {
             return {};
         }
