@@ -49,6 +49,9 @@ async function getSongFromAPI(artist, title) {
                 optimizeQuery: true
             });
             if (foundSongLyrics?.title.toLowerCase().includes(title.toLowerCase())) {
+                if (foundSongLyrics.lyrics) {
+                    foundSongLyrics.lyrics = foundSongLyrics.lyrics.replace(/^\d+\s*Contributors?.+?Lyrics/i, '').trimStart();
+                }
                 return foundSongLyrics;
             } else {
                 return {};
