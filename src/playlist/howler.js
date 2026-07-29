@@ -1,4 +1,5 @@
 import Howler from "howler";
+import { pathToFileUrl } from "../utils/pathToFileUrl.js";
 
 let sound;
 
@@ -12,7 +13,9 @@ export function playSong(song, playlist) {
   sound?.stop();
 
   sound = new Howler.Howl({
-    src: song.path,
+    src: pathToFileUrl(song.path),
+    // taken from the raw path since howler infers the format from the extension
+    format: [song.path.split(".").pop().toLowerCase()],
     html5: true,
     volume: 0.8,
     onend: () => {

@@ -3,6 +3,7 @@
 
     import { playlist } from "../../store.js";
     import { getSound } from "../../playlist/howler.js";
+    import { pathToFileUrl } from "../../utils/pathToFileUrl.js";
     
     import Playlist from "../Playlist/Playlist.svelte";
     
@@ -28,7 +29,7 @@
     playlist.subscribe((playlist) => {
         if (!playlist.currentIsAudio && source && videoFilePath && playlist.currentItem.path !== videoFilePath) {
             videoFilePath = playlist.currentItem.path;
-            source.src = videoFilePath;
+            source.src = pathToFileUrl(videoFilePath);
             video.load();
             video.play();
         }
@@ -60,7 +61,7 @@
     {/if}
     
     <video id="video" controls autoplay>
-        <source src={videoFilePath}>
+        <source src={pathToFileUrl(videoFilePath)}>
         <track kind="captions">
     </video>
 </div>
