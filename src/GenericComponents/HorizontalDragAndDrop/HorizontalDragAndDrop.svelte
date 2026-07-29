@@ -1,67 +1,47 @@
 <script>
-    export let playlistId;
-    export let containerId;
-    export let onDragEnd;
+    export let itemId;
+    export let onReorder;
 
     function handleDragStart(event) {
-        const draggingTab = event.target;
-        draggingTab.classList.add("dragging-tab");
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", itemId);
+        event.target.classList.add("dragging-tab");
     }
 
     function handleDragOver(event) {
-        const container = document.getElementById(containerId);
+        // if songs are being dragged then let the drop handler deal with it
+        if (document.querySelector(".dragging")) return;
 
-        // if dragging songs then don't handle drag of tab
-        const isDraggingSongsOverTab = document.querySelector(".dragging");
-        if (isDraggingSongsOverTab) return;
+        // allow this element to be a drop target
+        event.preventDefault();
+    }
 
-        // handle tabs being dragged before or after other tabs
-        const afterElement = findNextElement(container, event.clientX);
-        const draggable = document.querySelector(".dragging-tab");
-        
-        if (!afterElement) {
-            // insert before the new tab button so it always stays after the last tab
-            const newTabButton = container.querySelector(".new-tab-button-sticky-right");
-            if (newTabButton) {
-                container.insertBefore(draggable, newTabButton);
-            } else {
-                container.appendChild(draggable);
-            }
-        }  else {
-            container.insertBefore(draggable , afterElement);
-        }
+    function handleDrop(event) {
+        if (document.querySelector(".dragging")) return;
+
+        event.preventDefault();
+
+        const draggedItemId = event.dataTransfer.getData("text/plain");
+        if (!draggedItemId || draggedItemId === itemId) return;
+
+        // insert after this element when the cursor is past its horizontal midpoint
+        const box = event.currentTarget.getBoundingClientRect();
+        const insertAfter = event.clientX > box.left + box.width / 2;
+
+        onReorder(draggedItemId, itemId, insertAfter);
     }
 
     function handleDragEnd(event) {
-        const draggingTab = event.target;
-        draggingTab.classList.remove("dragging-tab");
-
-        const container = document.getElementById(containerId).childNodes;
-        const playlistIdsInOrder = [...container].map(playlist => playlist.id).filter(Boolean);
-        onDragEnd(playlistIdsInOrder);
-    }
-
-    function findNextElement(container, x) {
-        const draggableElements = [...container.querySelectorAll(".draggable-tab:not(.dragging-tab)")];
-
-        return draggableElements.reduce((accumulator, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = x - box.right + box.width / 2;
-
-            if (offset < 0 && offset > accumulator.offset) {
-                return { offset: offset, element: child }
-            } else {
-                return accumulator;
-            }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
+        event.target.classList.remove("dragging-tab");
     }
 </script>
 
-<div 
-    id={playlistId}
+<div
+    id={itemId}
     class="draggable-tab"
     on:dragstart={handleDragStart}
     on:dragover={handleDragOver}
+    on:drop={handleDrop}
     on:dragend={handleDragEnd}
     draggable="true"
 >

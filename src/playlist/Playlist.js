@@ -65,7 +65,7 @@ class Playlist {
         this.currentIndex = 0;
         this.playlistId = playlist._id;
         this.items = playlist.items;
-        if (playlist.items.length > 0) this.currentIndex = this.items[this.currentIndex];
+        if (playlist.items.length > 0) this.currentItem = this.items[this.currentIndex];
 
         return this;
     }

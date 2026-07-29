@@ -19,7 +19,8 @@ function playlistHandler() {
         playItem: (item, playlist) => {
             update(Playlist => {
                 if (Playlist.playlistId !== playlist._id) {
-                    playlistHandler().changePlaylist(playlist);
+                    currentPlaylistId = playlist._id;
+                    Playlist.changePlaylist(playlist);
                 }
                 return Playlist.playItem(item)
             });
@@ -55,8 +56,9 @@ function playlistsHandler() {
     return {
         subscribe,
         initializePlaylists: (playlists) => {
-            const sortedByOrderPlaylists = playlists.sort((first, second) => first.order - second.order)
-            selectedTabPlaylistId.set(playlists[0]?._id);
+            // copy before sorting so the incoming array is not mutated
+            const sortedByOrderPlaylists = [...playlists].sort((first, second) => first.order - second.order);
+            selectedTabPlaylistId.set(sortedByOrderPlaylists[0]?._id);
             set(sortedByOrderPlaylists);
         },
         addPlaylistItems: (playlistId, newItems) => {
@@ -66,7 +68,7 @@ function playlistsHandler() {
 
                         const updatedItems = playlist.items.concat(newItems);
                         if (currentPlaylistId === playlistId) {
-                            playlistHandler().setItems(updatedItems);
+                            playlistStore.setItems(updatedItems);
                         }
                         return { ...playlist, items: updatedItems };
                     }
@@ -79,7 +81,7 @@ function playlistsHandler() {
                 return playlists.map(playlist => {
                     if (playlist._id === playlistId) {
                         window.electron.send("toMainSetSongList", { _id: playlist._id, newItemList: items });
-                        playlist.items = items;
+                        return { ...playlist, items };
                     }
                     return playlist;
                 });
@@ -87,9 +89,13 @@ function playlistsHandler() {
         },
         rearrangePlaylistOrder: (playlistIdsInOrder) => {
             update(playlists => {
-                const playlistsWithNewOrders = playlists.map(playlist => {
-                    return { ...playlist, order: playlistIdsInOrder.findIndex(id => id === playlist._id) };
-                });
+                // reorder the array itself so the rendered tab order follows the store
+                const playlistsWithNewOrders = playlists
+                    .map(playlist => {
+                        return { ...playlist, order: playlistIdsInOrder.findIndex(id => id === playlist._id) };
+                    })
+                    .sort((first, second) => first.order - second.order);
+
                 window.electron.send("rearrangePlaylistsOrder", playlistsWithNewOrders);
                 return playlistsWithNewOrders;
             });
@@ -100,8 +106,8 @@ function playlistsHandler() {
                     if (playlist.items.some(item => ids.includes(item.id))) { 
                         const newItemList = playlist.items.filter(item => !ids.includes(item.id));
                     
-                        // update the current playlist 
-                        playlistHandler().setItems(newItemList);
+                        // update the current playlist
+                        playlistStore.setItems(newItemList);
                         // update the database
                         window.electron.send("toMainSetSongList", { _id: playlist._id, newItemList }); 
 
@@ -124,8 +130,13 @@ function playlistsHandler() {
         },
         createPlaylist: (playlist) => {
             update(playlists => {
-                playlists.push({ ...playlist, order: playlists.length });
-                return playlists;
+                // place the new playlist last regardless of the existing order values,
+                // which are not guaranteed to be a dense 0..n-1 sequence after rearranging
+                const highestOrder = playlists.reduce((highest, existingPlaylist) => {
+                    return Math.max(highest, existingPlaylist.order ?? -1);
+                }, -1);
+
+                return [...playlists, { ...playlist, order: highestOrder + 1 }];
             })
         },
         deletePlaylist: (playlistToDelete) => {
@@ -164,16 +175,6 @@ function playlistsHandler() {
 
 
 
-export function getPlaylistByName(playlistName) {
-    let $playlist;
-
-    const unsubscribe = playlist.subscribe(value => {
-        $playlist = value;
-    });
-    unsubscribe();
-    return $playlist;
-}
-
 function getOSFileSeparator() {
     let $OSFileSeparator;
 
@@ -198,7 +199,9 @@ function customSongsProcessStore() {
                 return { total: 0, remaining: 0, percentage: 0.0 };
             } else {
                 const processed = value.total - value.remaining + 1;
-                const newPercentage = (processed / value.total).toFixed(1);
+                // kept as a 0..1 ratio to match the default max of <progress>,
+                // unrounded so the bar moves smoothly rather than in 10% steps
+                const newPercentage = processed / value.total;
                 const newValue = { total: value.total, remaining: newRemaningValue, percentage: newPercentage};
                 return newValue;
             }
@@ -207,7 +210,9 @@ function customSongsProcessStore() {
 };
 
 export const songsProcessedCount = customSongsProcessStore();
-export const playlist = playlistHandler();
+// single instance shared by every consumer, including the playlists handler above
+const playlistStore = playlistHandler();
+export const playlist = playlistStore;
 export const playlists = playlistsHandler();
 export const selectedIdsStore = writable([]);
 export const selectedTabPlaylistId = writable();

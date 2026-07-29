@@ -4,6 +4,7 @@
     import ElementDropHandler from "../../GenericComponents/ElementDropHandler/ElementDropHandler.svelte"
     import EditableField from "../EditableField/EditableField.svelte";
     import HorizontalDragAndDrop from "../../GenericComponents/HorizontalDragAndDrop/HorizontalDragAndDrop.svelte";
+    import PlayListHandler from "../../playlist/Playlist.js";
     import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
 
 
@@ -11,7 +12,6 @@
 
     let tabContainer;
     let tabListContainer;
-    let newTabButtonSticky;
 
     function handleOnWheel(event) {
         if (event.deltaY > 0) {
@@ -76,6 +76,20 @@
 
     }
 
+    function handleTabReorder(draggedPlaylistId, droppedOnPlaylistId, insertAfter) {
+        const playlistIdsInOrder = $playlists.map(playlist => playlist._id);
+
+        const draggedIndex = playlistIdsInOrder.indexOf(draggedPlaylistId);
+        if (draggedIndex === -1) return;
+        playlistIdsInOrder.splice(draggedIndex, 1);
+
+        const droppedOnIndex = playlistIdsInOrder.indexOf(droppedOnPlaylistId);
+        if (droppedOnIndex === -1) return;
+        playlistIdsInOrder.splice(droppedOnIndex + (insertAfter ? 1 : 0), 0, draggedPlaylistId);
+
+        playlists.rearrangePlaylistOrder(playlistIdsInOrder);
+    }
+
     function onNewTab() {
         window.electron.send("toMainCreatePlaylist", { order: $playlists.length });
     }
@@ -84,10 +98,9 @@
 <div id="tab-container" bind:this={tabContainer} on:wheel={handleOnWheel}>
     <div id="tab-list-container" bind:this={tabListContainer}>
         {#each $playlists as playlist (playlist._id)}
-            <HorizontalDragAndDrop 
-                containerId="tab-list-container" 
-                playlistId={playlist._id}
-                onDragEnd={playlists.rearrangePlaylistOrder}
+            <HorizontalDragAndDrop
+                itemId={playlist._id}
+                onReorder={handleTabReorder}
             >
                 <div class="tab-item">
                     <Tab
@@ -103,7 +116,7 @@
             </HorizontalDragAndDrop>
         {/each}
 
-        <button class="tab-item new-tab-button-sticky-right" bind:this={newTabButtonSticky} on:click={onNewTab}>+</button>
+        <button class="tab-item new-tab-button-sticky-right" on:click={onNewTab}>+</button>
     </div>
 </div>
 
