@@ -20,7 +20,13 @@
         const draggable = document.querySelector(".dragging-tab");
         
         if (!afterElement) {
-            container.appendChild(draggable);
+            // insert before the new tab button so it always stays after the last tab
+            const newTabButton = container.querySelector(".new-tab-button-sticky-right");
+            if (newTabButton) {
+                container.insertBefore(draggable, newTabButton);
+            } else {
+                container.appendChild(draggable);
+            }
         }  else {
             container.insertBefore(draggable , afterElement);
         }
