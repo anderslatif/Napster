@@ -4,7 +4,6 @@
     import ControlBar from "../ControlBar/ControlBar.svelte";
     import MetaDrawer from "../MetaDrawer/MetaDrawer.svelte";
 	import { playlist as playlistStore, playlists, selectedIdsStore, selectedTabPlaylistId } from "../../store.js";
-    import { changeIsPlaying } from '../../utils/domSelector.js';
     import PlayListHandler from "../../playlist/Playlist.js";
     import ProgressBar from '../ProgressBar/ProgressBar.svelte';
 

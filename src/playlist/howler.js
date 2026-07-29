@@ -1,5 +1,4 @@
 import Howler from "howler";
-import { changeIsPlaying } from "../utils/domSelector.js";
 
 let sound;
 
@@ -9,8 +8,6 @@ export function getSound() {
 
 export function playSong(song, playlist) { 
   if (!song) return;
-
-  changeIsPlaying(song.id);
 
   sound?.stop();
 

@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 import Playlist from "./playlist/Playlist.js";
-import { changeIsPlaying } from "./utils/domSelector";
 
 let currentPlaylistId;
 
@@ -10,11 +9,7 @@ function playlistHandler() {
     return {
         subscribe,
         setItems: (items) => {
-            update(Playlist => {
-                // the need for a timeout is because the items also get set in playlists which rerenders the entire view
-                setTimeout(() => changeIsPlaying(Playlist.currentItem?.id), 10);
-                return Playlist.setItems(items)
-            });
+            update(Playlist => Playlist.setItems(items));
         },
         playItem: (item, playlist) => {
             update(Playlist => {

@@ -8,6 +8,7 @@
     export let changeLastClickedTableRowId;
     export let updateSelectedIds;
     export let selected;
+    export let isPlaying = false;
 
     import { selectedIdsStore } from "../../store.js";
 
@@ -133,6 +134,7 @@
     id={id}
     class="draggable list-item list-item-container-{index % 2}"
     class:selected={selected}
+    class:isPlaying={isPlaying}
     data-index={index}
     on:click={handleClick}
     on:dragstart={handleDragStart}
@@ -162,5 +164,10 @@
     
     .selected {
 	    background-color: rgb(0, 0, 119);
+    }
+
+    .isPlaying {
+        text-decoration: underline;
+        font-weight: 900;
     }
 </style>

@@ -66,13 +66,6 @@ button:focus {
 	border-color: #666;
 }
 
-/* Dynamically added to the song that is playing
-Svelte was throwing an error since it was unused so I put it here */
-.isPlaying {
-    text-decoration: underline;
-	font-weight: 900;
-}
-
 .selected {
 	background-color: rgb(0, 0, 41);
 }

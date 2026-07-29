@@ -41,11 +41,6 @@
 
     function handleTabSelect(playlistId) {
         selectedTabPlaylistId.set(playlistId);
-        // restyle the playing track when a tab i select
-        if ($playlistStore.playlistId === playlistId && $playlistStore.currentItem) {
-            // give it time to change view
-            setTimeout(() => changeIsPlaying($playlistStore.currentItem.id), 10);
-        }
     }
 
     function handleElementsDroppedOnTab(droppedOnPlaylistId) {

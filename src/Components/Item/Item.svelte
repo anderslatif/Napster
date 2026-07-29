@@ -14,6 +14,10 @@
 
   const { title, track, artist, album, year, durationString } = item.metadata;
 
+  // also compare the playlist so the same song in another playlist is not highlighted
+  $: isPlaying = item.id === $playlistStore.currentItem?.id
+                 && playlist._id === $playlistStore.playlistId;
+
   function handleOrderChange(newIdList) {
     const newItemList = sortListByIdList(playlist.items, newIdList);
     playlists.setPlaylistItems(playlist._id, newItemList);
@@ -35,6 +39,7 @@
   changeLastClickedTableRowId={changeLastClickedTableRowId}
   updateSelectedIds={updateSelectedIds}
   selected={selectedIds.includes(item.id)}
+  isPlaying={isPlaying}
 >
   <td id="track">{track?.no || ""}</td>
   <td id="title">{title || ""}</td>
